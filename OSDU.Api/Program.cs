@@ -1,0 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using OSDU.Business;
+using OSDU.Data;
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
+builder.Services.AddOpenApi();
+builder.Services.AddProblemDetails();
+builder.Services.AddDbContext<OsduDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("OSDU")));
+builder.Services.AddScoped<AssetRepository>();
+builder.Services.AddScoped<AssetService>();
+var app = builder.Build();
+app.UseExceptionHandler();
+if (app.Environment.IsDevelopment()) app.MapOpenApi();
+app.MapGet("/", () => Results.Ok(new { application="OSDU", api="/api/assets" }));
+app.MapControllers();
+app.Run();
