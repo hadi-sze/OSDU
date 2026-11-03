@@ -46,6 +46,3484 @@ namespace OSDU.Data.Migrations
 
                     b.ToTable("Assets", (string)null);
                 });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Cartoreferencesystem", b =>
+                {
+                    b.Property<int>("CrsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("CRS_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CrsId"));
+
+                    b.Property<string>("CrsName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("CRS_NAME");
+
+                    b.Property<string>("CrsType")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("CRS_TYPE");
+
+                    b.Property<string>("GeodeticSource")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("GEODETIC_SOURCE");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("ProjectionType")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("PROJECTION_TYPE");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("CrsId");
+
+                    b.ToTable("CARTOREFERENCESYSTEM", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Equipment", b =>
+                {
+                    b.Property<int>("EquipmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("EQUIPMENT_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EquipmentId"));
+
+                    b.Property<DateTime?>("CommissionDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("COMMISSION_DATE");
+
+                    b.Property<DateTime?>("DecommissionDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DECOMMISSION_DATE");
+
+                    b.Property<string>("EquipmentAliasName")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("EQUIPMENT_ALIAS_NAME");
+
+                    b.Property<string>("EquipmentName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("EQUIPMENT_NAME");
+
+                    b.Property<string>("EquipmentSubType")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("EQUIPMENT_SUB_TYPE");
+
+                    b.Property<string>("EquipmentType")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("EQUIPMENT_TYPE");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<int?>("ManufacturerBaId")
+                        .HasColumnType("int")
+                        .HasColumnName("MANUFACTURER_BA_ID");
+
+                    b.Property<int?>("RDataAccessCategoryId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_DATA_ACCESS_CATEGORY_ID");
+
+                    b.Property<int?>("REquipmentSubTypeId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_EQUIPMENT_SUB_TYPE_ID");
+
+                    b.Property<int?>("REquipmentTypeId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_EQUIPMENT_TYPE_ID");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<int?>("SerialNum")
+                        .HasColumnType("int")
+                        .HasColumnName("SERIAL_NUM");
+
+                    b.HasKey("EquipmentId");
+
+                    b.HasIndex("ManufacturerBaId");
+
+                    b.HasIndex("RDataAccessCategoryId");
+
+                    b.HasIndex("REquipmentSubTypeId");
+
+                    b.HasIndex("REquipmentTypeId");
+
+                    b.ToTable("EQUIPMENT", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Facility", b =>
+                {
+                    b.Property<int>("FacilityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("FACILITY_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FacilityId"));
+
+                    b.Property<DateTime?>("AbandonedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ABANDONED_DATE");
+
+                    b.Property<DateTime?>("ActiveDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ACTIVE_DATE");
+
+                    b.Property<DateTime?>("ConstructedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CONSTRUCTED_DATE");
+
+                    b.Property<int?>("CrsId")
+                        .HasColumnType("int")
+                        .HasColumnName("CRS_ID");
+
+                    b.Property<string>("CrsName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("CRS_NAME");
+
+                    b.Property<string>("CurrentOperator")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("CURRENT_OPERATOR");
+
+                    b.Property<decimal?>("Depth")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("DEPTH");
+
+                    b.Property<decimal?>("Elevation")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("ELEVATION");
+
+                    b.Property<string>("EquipmentCatalogue")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("EQUIPMENT_CATALOGUE");
+
+                    b.Property<decimal?>("FacilityDiameter")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("FACILITY_DIAMETER");
+
+                    b.Property<string>("FacilityFunction")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("FACILITY_FUNCTION");
+
+                    b.Property<string>("FacilityLongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("FACILITY_LONG_NAME");
+
+                    b.Property<string>("FacilityName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("FACILITY_NAME");
+
+                    b.Property<int?>("FacilityNo")
+                        .HasColumnType("int")
+                        .HasColumnName("FACILITY_NO");
+
+                    b.Property<string>("FacilityShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("FACILITY_SHORT_NAME");
+
+                    b.Property<string>("FacilityType")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("FACILITY_TYPE");
+
+                    b.Property<int?>("FacilityTypeId")
+                        .HasColumnType("int")
+                        .HasColumnName("FACILITY_TYPE_ID");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<bool?>("IsVirtual")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_VIRTUAL");
+
+                    b.Property<DateTime?>("LastInjectionDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LAST_INJECTION_DATE");
+
+                    b.Property<DateTime?>("LastProductionDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LAST_PRODUCTION_DATE");
+
+                    b.Property<DateTime?>("LastReportedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LAST_REPORTED_DATE");
+
+                    b.Property<bool>("OffshoreInd")
+                        .HasColumnType("bit")
+                        .HasColumnName("OFFSHORE_IND");
+
+                    b.Property<DateTime?>("OnInjectionDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ON_INJECTION_DATE");
+
+                    b.Property<DateTime?>("OnProductionDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ON_PRODUCTION_DATE");
+
+                    b.Property<int?>("RDataAccessCategoryId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_DATA_ACCESS_CATEGORY_ID");
+
+                    b.Property<int?>("REquipmentCatalogueId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_EQUIPMENT_CATALOGUE_ID");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("Uidref")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .HasColumnName("UIDREF");
+
+                    b.Property<decimal?>("XCoordinate")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("X_COORDINATE");
+
+                    b.Property<decimal?>("YCoordinate")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("Y_COORDINATE");
+
+                    b.HasKey("FacilityId");
+
+                    b.HasIndex("CrsId");
+
+                    b.HasIndex("FacilityTypeId");
+
+                    b.HasIndex("RDataAccessCategoryId");
+
+                    b.ToTable("FACILITY", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Field", b =>
+                {
+                    b.Property<int>("FieldId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("FIELD_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FieldId"));
+
+                    b.Property<int?>("CrsId")
+                        .HasColumnType("int")
+                        .HasColumnName("CRS_ID");
+
+                    b.Property<string>("CrsName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("CRS_NAME");
+
+                    b.Property<string>("FieldAbbreviation")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("FIELD_ABBREVIATION");
+
+                    b.Property<string>("FieldName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("FIELD_NAME");
+
+                    b.Property<string>("FieldTypeName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("FIELD_TYPE_NAME");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<int?>("RDataAccessCategoryId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_DATA_ACCESS_ CATEGORY_ID");
+
+                    b.Property<int?>("RFieldTypeId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_FIELD_TYPE_ID");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("SourceName")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("SOURCE_NAME");
+
+                    b.Property<string>("Uidref")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .HasColumnName("UIDREF");
+
+                    b.Property<decimal?>("XCoordinate")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("X_COORDINATE");
+
+                    b.Property<decimal?>("YCoordinate")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("Y_COORDINATE");
+
+                    b.HasKey("FieldId");
+
+                    b.HasIndex("CrsId");
+
+                    b.HasIndex("RDataAccessCategoryId");
+
+                    b.HasIndex("RFieldTypeId");
+
+                    b.ToTable("FIELD", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.FlowModel", b =>
+                {
+                    b.Property<int>("FlowModelId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("FLOW_MODEL_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FlowModelId"));
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("COMMENT");
+
+                    b.Property<DateTime?>("EffectiveDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EFFECTIVE_DATE");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EXPIRY_DATE");
+
+                    b.Property<string>("FlowModelName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("FLOW_MODEL_NAME");
+
+                    b.Property<int?>("InstallationId")
+                        .HasColumnType("int")
+                        .HasColumnName("INSTALLATION_ID");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.HasKey("FlowModelId");
+
+                    b.HasIndex("InstallationId");
+
+                    b.ToTable("FLOW_MODEL", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Formation", b =>
+                {
+                    b.Property<int>("FormationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("FORMATION_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FormationId"));
+
+                    b.Property<long?>("AttrBigint")
+                        .HasColumnType("bigint")
+                        .HasColumnName("ATTR_BIGINT");
+
+                    b.Property<int?>("AttrInt")
+                        .HasColumnType("int")
+                        .HasColumnName("ATTR_INT");
+
+                    b.Property<short?>("AttrSmallint")
+                        .HasColumnType("smallint")
+                        .HasColumnName("ATTR_SMALLINT");
+
+                    b.Property<string>("FormationName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("FORMATION_NAME");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.Property<bool?>("TestBit")
+                        .HasColumnType("bit")
+                        .HasColumnName("TEST_BIT");
+
+                    b.HasKey("FormationId");
+
+                    b.ToTable("FORMATION", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.OrgUnit", b =>
+                {
+                    b.Property<int>("OrgUnitId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("ORG_UNIT_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrgUnitId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("OrgUnitAbberivation")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)")
+                        .HasColumnName("ORG_UNIT_ABBERIVATION");
+
+                    b.Property<string>("OrgUnitName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("ORG_UNIT_NAME");
+
+                    b.Property<string>("OrgUnitShortName")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ORG_UNIT_SHORT_NAME");
+
+                    b.Property<int?>("ROrgUnitCategoryId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_ORG_UNIT_CATEGORY_ID");
+
+                    b.Property<int>("ROrgUnitTypeId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_ORG_UNIT_TYPE_ID");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.HasKey("OrgUnitId");
+
+                    b.HasIndex("ROrgUnitCategoryId");
+
+                    b.HasIndex("ROrgUnitTypeId");
+
+                    b.ToTable("ORG_UNIT", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Pool", b =>
+                {
+                    b.Property<int>("PoolId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("POOL_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PoolId"));
+
+                    b.Property<DateTime?>("DiscoveryDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DISCOVERY_DATE");
+
+                    b.Property<DateTime?>("EffectiveDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EFFECTIVE_DATE");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EXPIRY_DATE");
+
+                    b.Property<int?>("FieldId")
+                        .HasColumnType("int")
+                        .HasColumnName("FIELD_ID");
+
+                    b.Property<string>("FieldName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("FIELD_NAME");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("PoolCode")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("POOL_CODE");
+
+                    b.Property<string>("PoolName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("POOL_NAME");
+
+                    b.Property<string>("PoolNameAbbreviation")
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)")
+                        .HasColumnName("POOL_NAME_ABBREVIATION");
+
+                    b.Property<string>("PoolStatus")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("POOL_STATUS");
+
+                    b.Property<string>("PoolType")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("POOL_TYPE");
+
+                    b.Property<int?>("RDataAccessCategoryId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_DATA_ACCESS_ CATEGORY_ID");
+
+                    b.Property<int?>("RPoolStatusId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_POOL_STATUS_ID");
+
+                    b.Property<int?>("RPoolTypeId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_POOL_TYPE_ID");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.HasKey("PoolId");
+
+                    b.HasIndex("FieldId");
+
+                    b.HasIndex("RDataAccessCategoryId");
+
+                    b.HasIndex("RPoolStatusId");
+
+                    b.HasIndex("RPoolTypeId");
+
+                    b.ToTable("POOL", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RCompletionType", b =>
+                {
+                    b.Property<int>("RCompletionTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_COMPLETION_TYPE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RCompletionTypeId"));
+
+                    b.Property<string>("CompletionType")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("COMPLETION_TYPE");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("RCompletionTypeId");
+
+                    b.ToTable("R_COMPLETION_TYPE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RCouplingType", b =>
+                {
+                    b.Property<int>("RCouplingTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_COUPLING_TYPE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RCouplingTypeId"));
+
+                    b.Property<string>("CouplingType")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("COUPLING_TYPE");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("RCouplingTypeId");
+
+                    b.ToTable("R_COUPLING_TYPE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RDataAccessCategory", b =>
+                {
+                    b.Property<int>("RDataAccessCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_DATA_ACCESS_CATEGORY_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RDataAccessCategoryId"));
+
+                    b.Property<string>("DataAccessCategory")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .HasColumnName("DATA_ACCESS_CATEGORY");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("RDataAccessCategoryId");
+
+                    b.ToTable("R_DATA_ACCESS_CATEGORY", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.REquipmentCatalogue", b =>
+                {
+                    b.Property<int>("REquipmentCatalogueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_EQUIPMENT_CATALOGUE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("REquipmentCatalogueId"));
+
+                    b.Property<string>("EquipmentCatalogue")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("EQUIPMENT_CATALOGUE");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("REquipmentCatalogueId");
+
+                    b.ToTable("R_EQUIPMENT_CATALOGUE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.REquipmentSubType", b =>
+                {
+                    b.Property<int>("REquipmentSubTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_EQUIPMENT_SUB_TYPE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("REquipmentSubTypeId"));
+
+                    b.Property<bool?>("BarrierElement")
+                        .HasColumnType("bit")
+                        .HasColumnName("BARRIER_ELEMENT");
+
+                    b.Property<string>("EquipmentSubType")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("EQUIPMENT_SUB_TYPE");
+
+                    b.Property<string>("EquipmentType")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("EQUIPMENT_TYPE");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<int?>("REquipmentTypeId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_EQUIPMENT_TYPE_ID");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("REquipmentSubTypeId");
+
+                    b.HasIndex("REquipmentTypeId");
+
+                    b.ToTable("R_EQUIPMENT_SUB_TYPE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.REquipmentType", b =>
+                {
+                    b.Property<int>("REquipmentTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_EQUIPMENT_TYPE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("REquipmentTypeId"));
+
+                    b.Property<string>("EquipmentCatalogue")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("EQUIPMENT_CATALOGUE");
+
+                    b.Property<string>("EquipmentType")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("EQUIPMENT_TYPE");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<int?>("REquipmentCatalogueId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_EQUIPMENT_CATALOGUE_ID");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("REquipmentTypeId");
+
+                    b.HasIndex("REquipmentCatalogueId");
+
+                    b.ToTable("R_EQUIPMENT_TYPE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RFacilityType", b =>
+                {
+                    b.Property<int>("RFacilityTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_FACILITY_TYPE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RFacilityTypeId"));
+
+                    b.Property<string>("FacilityType")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("FACILITY_TYPE");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("RFacilityTypeId");
+
+                    b.ToTable("R_FACILITY_TYPE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RFieldType", b =>
+                {
+                    b.Property<int>("RFieldTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_FIELD_TYPE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RFieldTypeId"));
+
+                    b.Property<string>("Abbreviation")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)")
+                        .HasColumnName("ABBREVIATION");
+
+                    b.Property<string>("ColorCode")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)")
+                        .HasColumnName("COLOR_CODE");
+
+                    b.Property<string>("DisplayName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("DISPLAY_NAME");
+
+                    b.Property<DateTime?>("EffectiveDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EFFECTIVE_DATE");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EXPIRY_DATE");
+
+                    b.Property<string>("FieldTypeName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("FIELD_TYPE_NAME");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.Property<string>("SourceName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("SOURCE_NAME");
+
+                    b.HasKey("RFieldTypeId");
+
+                    b.ToTable("R_FIELD_TYPE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.ROrgUnitCategory", b =>
+                {
+                    b.Property<int>("ROrgUnitCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_ORG_UNIT_CATEGORY_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ROrgUnitCategoryId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("OrgUnitCategory")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("ORG_UNIT_CATEGORY");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("ROrgUnitCategoryId");
+
+                    b.ToTable("R_ORG_UNIT_CATEGORY", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.ROrgUnitType", b =>
+                {
+                    b.Property<int>("ROrgUnitTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_ORG_UNIT_TYPE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ROrgUnitTypeId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("OrgUnitType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("ORG_UNIT_TYPE");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("ROrgUnitTypeId");
+
+                    b.ToTable("R_ORG_UNIT_TYPE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RPerforationMethod", b =>
+                {
+                    b.Property<int>("RPerforationMethodId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_PERFORATION_METHOD_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RPerforationMethodId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("PerforationMethod")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("PERFORATION_METHOD");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("RPerforationMethodId");
+
+                    b.ToTable("R_PERFORATION_METHOD", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RPerforationType", b =>
+                {
+                    b.Property<int>("RPerforationTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_PERFORATION_TYPE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RPerforationTypeId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("PerforationType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("PERFORATION_TYPE");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("RPerforationTypeId");
+
+                    b.ToTable("R_PERFORATION_TYPE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RPlotSymbol", b =>
+                {
+                    b.Property<int>("RPlotSymbolId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_PLOT_SYMBOL_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RPlotSymbolId"));
+
+                    b.Property<string>("ColorCode")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)")
+                        .HasColumnName("COLOR_CODE");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<byte[]>("PlotSymbol")
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("PLOT_SYMBOL");
+
+                    b.Property<string>("PlotSymbolType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("PLOT_SYMBOL_TYPE");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("RPlotSymbolId");
+
+                    b.ToTable("R_PLOT_SYMBOL", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RPoolStatus", b =>
+                {
+                    b.Property<int>("RPoolStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_POOL_STATUS_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RPoolStatusId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("PoolStatus")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("POOL_STATUS");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("RPoolStatusId");
+
+                    b.ToTable("R_POOL_STATUS", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RPoolType", b =>
+                {
+                    b.Property<int>("RPoolTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_POOL_TYPE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RPoolTypeId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("PoolType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("POOL_TYPE");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("RPoolTypeId");
+
+                    b.ToTable("R_POOL_TYPE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RReportingEntityKind", b =>
+                {
+                    b.Property<int>("RReportingEntityKindId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_REPORTING_ENTITY_KIND_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RReportingEntityKindId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("ReportingEntityKind")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("REPORTING_ENTITY_KIND");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.HasKey("RReportingEntityKindId");
+
+                    b.ToTable("R_REPORTING_ENTITY_KIND", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RSource", b =>
+                {
+                    b.Property<int>("RSourceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_SOURCE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RSourceId"));
+
+                    b.Property<string>("Abbreviation")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)")
+                        .HasColumnName("ABBREVIATION");
+
+                    b.Property<string>("ColorCode")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)")
+                        .HasColumnName("COLOR_CODE");
+
+                    b.Property<string>("DisplayName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("DISPLAY_NAME");
+
+                    b.Property<DateTime?>("EffectiveDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EFFECTIVE_DATE");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EXPIRY_DATE");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.Property<string>("SourceName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SOURCE_NAME");
+
+                    b.HasKey("RSourceId");
+
+                    b.ToTable("R_SOURCE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RTimezone", b =>
+                {
+                    b.Property<int>("RTimezoneId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_TIMEZONE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RTimezoneId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.Property<string>("Timezone")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("TIMEZONE");
+
+                    b.HasKey("RTimezoneId");
+
+                    b.ToTable("R_TIMEZONE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RTubularType", b =>
+                {
+                    b.Property<int>("RTubularTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_TUBULAR_TYPE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RTubularTypeId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.Property<string>("TubularType")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("TUBULAR_TYPE");
+
+                    b.HasKey("RTubularTypeId");
+
+                    b.ToTable("R_TUBULAR_TYPE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RWellClass", b =>
+                {
+                    b.Property<int>("RWellClassId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_WELL_CLASS_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RWellClassId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.Property<string>("WellClass")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("WELL_CLASS");
+
+                    b.HasKey("RWellClassId");
+
+                    b.ToTable("R_WELL_CLASS", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RWellDatumType", b =>
+                {
+                    b.Property<int>("WellDatumTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("WELL_DATUM_TYPE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WellDatumTypeId"));
+
+                    b.Property<string>("Abbreviation")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("ABBREVIATION");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.Property<string>("WellDatumType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("WELL_DATUM_TYPE");
+
+                    b.HasKey("WellDatumTypeId");
+
+                    b.ToTable("R_WELL_DATUM_TYPE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RWellStatus", b =>
+                {
+                    b.Property<int>("RWellStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_WELL_STATUS_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RWellStatusId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<int?>("RSourceId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_SOURCE_ID");
+
+                    b.Property<int>("RWellStatusTypeId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_WELL_STATUS_TYPE_ID");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.Property<string>("WellStatus")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)")
+                        .HasColumnName("WELL_STATUS");
+
+                    b.HasKey("RWellStatusId");
+
+                    b.HasIndex("RSourceId");
+
+                    b.HasIndex("RWellStatusTypeId");
+
+                    b.ToTable("R_WELL_STATUS", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RWellStatusType", b =>
+                {
+                    b.Property<int>("RWellStatusTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("R_WELL_STATUS_TYPE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RWellStatusTypeId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<int?>("RSourceId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_SOURCE_ID");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.Property<string>("WellStatusType")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)")
+                        .HasColumnName("WELL_STATUS_TYPE");
+
+                    b.HasKey("RWellStatusTypeId");
+
+                    b.HasIndex("RSourceId");
+
+                    b.ToTable("R_WELL_STATUS_TYPE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.ReportingEntity", b =>
+                {
+                    b.Property<int>("ReportingEntityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("REPORTING_ENTITY_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReportingEntityId"));
+
+                    b.Property<int>("AssociatedObjectId")
+                        .HasColumnType("int")
+                        .HasColumnName("ASSOCIATED_OBJECT_ID");
+
+                    b.Property<string>("AssociatedObjectName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("ASSOCIATED_OBJECT_NAME");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<int>("RReportingEntityKindId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_REPORTING_ENTITY_KIND_ID");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.HasKey("ReportingEntityId");
+
+                    b.HasIndex("RReportingEntityKindId");
+
+                    b.ToTable("REPORTING_ENTITY", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Well", b =>
+                {
+                    b.Property<int>("WellId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("WELL_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WellId"));
+
+                    b.Property<DateTime?>("AbandonmentDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ABANDONMENT_DATE");
+
+                    b.Property<decimal?>("BottomHoleXLon")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("BOTTOM_HOLE_X_LON");
+
+                    b.Property<decimal?>("BottomHoleYLat")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("BOTTOM_HOLE_Y_LAT");
+
+                    b.Property<DateTime?>("CompletionDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("COMPLETION_DATE");
+
+                    b.Property<int?>("CrsId")
+                        .HasColumnType("int")
+                        .HasColumnName("CRS_ID");
+
+                    b.Property<string>("CrsName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("CRS_NAME");
+
+                    b.Property<int?>("CurrentClassId")
+                        .HasColumnType("int")
+                        .HasColumnName("CURRENT_CLASS_ID");
+
+                    b.Property<decimal?>("DeepestDepth")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("DEEPEST_DEPTH");
+
+                    b.Property<string>("DepthDatum")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("DEPTH_DATUM");
+
+                    b.Property<decimal?>("DepthDatumElev")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("DEPTH_DATUM_ELEV");
+
+                    b.Property<int?>("DepthDatumId")
+                        .HasColumnType("int")
+                        .HasColumnName("DEPTH_DATUM_ID");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EXPIRY_DATE");
+
+                    b.Property<bool?>("FaultedInd")
+                        .HasColumnType("bit")
+                        .HasColumnName("FAULTED_IND");
+
+                    b.Property<int?>("FieldId")
+                        .HasColumnType("int")
+                        .HasColumnName("FIELD_ID");
+
+                    b.Property<string>("FieldName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("FIELD_NAME");
+
+                    b.Property<DateTime?>("FinalDrillDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("FINAL_DRILL_DATE");
+
+                    b.Property<decimal?>("GroundElev")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("GROUND_ELEV");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<bool?>("IsVirtual")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_VIRTUAL");
+
+                    b.Property<decimal?>("LogTd")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("LOG_TD");
+
+                    b.Property<decimal?>("MaxTvd")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("MAX_TVD");
+
+                    b.Property<decimal?>("NetPay")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("NET_PAY");
+
+                    b.Property<bool>("OffshoreInd")
+                        .HasColumnType("bit")
+                        .HasColumnName("OFFSHORE_IND");
+
+                    b.Property<string>("Operator")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("OPERATOR");
+
+                    b.Property<string>("PlotName")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("PLOT_NAME");
+
+                    b.Property<decimal?>("PlugbackDepth")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("PLUGBACK_DEPTH");
+
+                    b.Property<DateTime?>("ProductionStartDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("PRODUCTION_START_DATE");
+
+                    b.Property<int?>("RDataAccessCategoryId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_DATA_ACCESS_ CATEGORY_ID");
+
+                    b.Property<int?>("RPlotSymbolId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_PLOT_SYMBOL_ID");
+
+                    b.Property<int?>("RTimezoneId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_TIMEZONE_ID");
+
+                    b.Property<int?>("RWellProfileId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_WELL_PROFILE_ID");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<DateTime?>("SpudDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("SPUD_DATE");
+
+                    b.Property<string>("SpudDateTz")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("SPUD_DATE_TZ");
+
+                    b.Property<string>("Uidref")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .HasColumnName("UIDREF");
+
+                    b.Property<string>("Uwi")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("UWI");
+
+                    b.Property<decimal?>("WaterAcousticVel")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("WATER_ACOUSTIC_VEL");
+
+                    b.Property<decimal?>("WaterDepth")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("WATER_DEPTH");
+
+                    b.Property<string>("WaterDepthDatum")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("WATER_DEPTH_DATUM");
+
+                    b.Property<string>("WellAliasName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("WELL_ALIAS_NAME");
+
+                    b.Property<string>("WellClass")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("WELL_CLASS");
+
+                    b.Property<string>("WellName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("WELL_NAME");
+
+                    b.Property<string>("WellOwner")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("WELL_OWNER");
+
+                    b.Property<string>("WellProfile")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)")
+                        .HasColumnName("WELL_PROFILE");
+
+                    b.Property<decimal?>("XCoordinate")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("X_COORDINATE");
+
+                    b.Property<decimal?>("YCoordinate")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("Y_COORDINATE");
+
+                    b.HasKey("WellId");
+
+                    b.HasIndex("CrsId");
+
+                    b.HasIndex("CurrentClassId");
+
+                    b.HasIndex("DepthDatumId");
+
+                    b.HasIndex("FieldId");
+
+                    b.HasIndex("RDataAccessCategoryId");
+
+                    b.HasIndex("RPlotSymbolId");
+
+                    b.HasIndex("RTimezoneId");
+
+                    b.HasIndex("RWellProfileId");
+
+                    b.ToTable("WELL", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.WellCompletion", b =>
+                {
+                    b.Property<int>("WellCompletionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("WELL_COMPLETION_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WellCompletionId"));
+
+                    b.Property<decimal?>("BaseDepth")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("BASE_DEPTH");
+
+                    b.Property<DateTime?>("CompletionDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("COMPLETION_DATE");
+
+                    b.Property<int?>("CompletionObsNo")
+                        .HasColumnType("int")
+                        .HasColumnName("COMPLETION_OBS_NO");
+
+                    b.Property<string>("CompletionType")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("COMPLETION_TYPE");
+
+                    b.Property<int?>("CompletionTypeId")
+                        .HasColumnType("int")
+                        .HasColumnName("COMPLETION_TYPE_ID");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EXPIRY_DATE");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<decimal?>("TopDepth")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("TOP_DEPTH");
+
+                    b.Property<string>("Uidref")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .HasColumnName("UIDREF");
+
+                    b.Property<string>("WellCompletionName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("WELL_COMPLETION_NAME");
+
+                    b.Property<int?>("WellboreId")
+                        .HasColumnType("int")
+                        .HasColumnName("WELLBORE_ID");
+
+                    b.Property<string>("WellboreUwi")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("WELLBORE_UWI");
+
+                    b.Property<int?>("ZoneId")
+                        .HasColumnType("int")
+                        .HasColumnName("ZONE_ID");
+
+                    b.Property<string>("ZoneName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("ZONE_NAME");
+
+                    b.HasKey("WellCompletionId");
+
+                    b.HasIndex("CompletionTypeId");
+
+                    b.HasIndex("WellboreId");
+
+                    b.HasIndex("ZoneId");
+
+                    b.ToTable("WELL_COMPLETION", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.WellPerforation", b =>
+                {
+                    b.Property<int>("WellPerforationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("WELL_PERFORATION_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WellPerforationId"));
+
+                    b.Property<decimal?>("BaseDepth")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("BASE_DEPTH");
+
+                    b.Property<int?>("BaseZoneId")
+                        .HasColumnType("int")
+                        .HasColumnName("BASE_ZONE_ID");
+
+                    b.Property<string>("BaseZoneName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("BASE_ZONE_NAME");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("EXPIRY_DATE");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<decimal?>("PerforationAngle")
+                        .HasPrecision(10, 5)
+                        .HasColumnType("decimal(10,5)")
+                        .HasColumnName("PERFORATION_ANGLE");
+
+                    b.Property<int?>("PerforationCount")
+                        .HasColumnType("int")
+                        .HasColumnName("PERFORATION_COUNT");
+
+                    b.Property<decimal?>("PerforationDensity")
+                        .HasPrecision(10, 5)
+                        .HasColumnType("decimal(10,5)")
+                        .HasColumnName("PERFORATION_DENSITY");
+
+                    b.Property<decimal?>("PerforationDiameter")
+                        .HasPrecision(8, 3)
+                        .HasColumnType("decimal(8,3)")
+                        .HasColumnName("PERFORATION_DIAMETER");
+
+                    b.Property<string>("PerforationMethod")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("PERFORATION_METHOD");
+
+                    b.Property<int?>("PerforationMethodId")
+                        .HasColumnType("int")
+                        .HasColumnName("PERFORATION_METHOD_ID");
+
+                    b.Property<int>("PerforationObsNo")
+                        .HasColumnType("int")
+                        .HasColumnName("PERFORATION_OBS_NO");
+
+                    b.Property<string>("PerforationPhase")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("PERFORATION_PHASE");
+
+                    b.Property<string>("PerforationType")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("PERFORATION_TYPE");
+
+                    b.Property<int?>("PerforationTypeId")
+                        .HasColumnType("int")
+                        .HasColumnName("PERFORATION_TYPE_ID");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnName("REMARK");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<decimal?>("TopDepth")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("TOP_DEPTH");
+
+                    b.Property<int?>("TopZoneId")
+                        .HasColumnType("int")
+                        .HasColumnName("TOP_ZONE_ID");
+
+                    b.Property<string>("TopZoneName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("TOP_ZONE_NAME");
+
+                    b.Property<int>("WellCompletionId")
+                        .HasColumnType("int")
+                        .HasColumnName("WELL_COMPLETION_ID");
+
+                    b.Property<string>("WellCompletionName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("WELL_COMPLETION_NAME");
+
+                    b.HasKey("WellPerforationId");
+
+                    b.HasIndex("BaseZoneId");
+
+                    b.HasIndex("PerforationMethodId");
+
+                    b.HasIndex("PerforationTypeId");
+
+                    b.HasIndex("TopZoneId");
+
+                    b.HasIndex("WellCompletionId");
+
+                    b.ToTable("WELL_PERFORATION", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.WellTubular", b =>
+                {
+                    b.Property<int>("WellTubularId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("WELL_TUBULAR_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WellTubularId"));
+
+                    b.Property<decimal?>("BaseDepth")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("BASE_DEPTH");
+
+                    b.Property<string>("CouplingType")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("COUPLING_TYPE");
+
+                    b.Property<decimal?>("InsideDiameter")
+                        .HasPrecision(8, 3)
+                        .HasColumnType("decimal(8,3)")
+                        .HasColumnName("INSIDE_DIAMETER");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<int?>("JointCount")
+                        .HasColumnType("int")
+                        .HasColumnName("JOINT_COUNT");
+
+                    b.Property<decimal?>("JointLength")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("JOINT_LENGTH");
+
+                    b.Property<decimal?>("OutsideDiameter")
+                        .HasPrecision(8, 3)
+                        .HasColumnType("decimal(8,3)")
+                        .HasColumnName("OUTSIDE_DIAMETER");
+
+                    b.Property<decimal?>("PackerSetDepth")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("PACKER_SET_DEPTH");
+
+                    b.Property<int?>("RCouplingTypeId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_COUPLING_TYPE_ID");
+
+                    b.Property<int?>("RTubularTypeId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_TUBULAR_TYPE_ID");
+
+                    b.Property<decimal?>("Roughness")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("ROUGHNESS");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<decimal?>("TopDepth")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("TOP_DEPTH");
+
+                    b.Property<decimal?>("TubularDensity")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("TUBULAR_DENSITY");
+
+                    b.Property<string>("TubularGrade")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("TUBULAR_GRADE");
+
+                    b.Property<DateTime>("TubularInDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("TUBULAR_IN_DATE");
+
+                    b.Property<DateTime?>("TubularOutDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("TUBULAR_OUT_DATE");
+
+                    b.Property<decimal?>("TubularStrength")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("TUBULAR_STRENGTH");
+
+                    b.Property<decimal?>("TubularThickness")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("TUBULAR_THICKNESS");
+
+                    b.Property<string>("TubularType")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("TUBULAR_TYPE");
+
+                    b.Property<decimal?>("TubularWeight")
+                        .HasPrecision(15, 5)
+                        .HasColumnType("decimal(15,5)")
+                        .HasColumnName("TUBULAR_WEIGHT");
+
+                    b.Property<int>("WellboreId")
+                        .HasColumnType("int")
+                        .HasColumnName("WELLBORE_ID");
+
+                    b.Property<string>("WellboreUwi")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("WELLBORE_UWI");
+
+                    b.HasKey("WellTubularId");
+
+                    b.HasIndex("RCouplingTypeId");
+
+                    b.HasIndex("RTubularTypeId");
+
+                    b.HasIndex("WellboreId");
+
+                    b.ToTable("WELL_TUBULAR", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Wellbore", b =>
+                {
+                    b.Property<int>("WellboreId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("WELLBORE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WellboreId"));
+
+                    b.Property<int?>("BhCrsId")
+                        .HasColumnType("int")
+                        .HasColumnName("BH_CRS_ID");
+
+                    b.Property<string>("BhCrsName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("BH_CRS_NAME");
+
+                    b.Property<decimal?>("BhXCoordinate")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("BH_X_COORDINATE");
+
+                    b.Property<decimal?>("BhYCoordinate")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("BH_Y_COORDINATE");
+
+                    b.Property<DateTime?>("CompletionDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("COMPLETION_DATE");
+
+                    b.Property<int?>("CrsId")
+                        .HasColumnType("int")
+                        .HasColumnName("CRS_ID");
+
+                    b.Property<string>("CrsName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("CRS_NAME");
+
+                    b.Property<string>("DepthDatum")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("DEPTH_DATUM");
+
+                    b.Property<decimal?>("DepthDatumElev")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("DEPTH_DATUM_ELEV");
+
+                    b.Property<int?>("DepthDatumId")
+                        .HasColumnType("int")
+                        .HasColumnName("DEPTH_DATUM_ID");
+
+                    b.Property<decimal?>("DerrickFloorElev")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("DERRICK_FLOOR_ELEV");
+
+                    b.Property<decimal?>("DrillTd")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("DRILL_TD");
+
+                    b.Property<int?>("FieldId")
+                        .HasColumnType("int")
+                        .HasColumnName("FIELD_ID");
+
+                    b.Property<string>("FieldName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("FIELD_NAME");
+
+                    b.Property<string>("FormationAtTd")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("FORMATION_AT_TD");
+
+                    b.Property<decimal?>("GroundElev")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("GROUND_ELEV");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<decimal?>("KbElev")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("KB_ELEV");
+
+                    b.Property<decimal?>("KickOffDepth")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("KICK_OFF_DEPTH");
+
+                    b.Property<int?>("ParentWellboreId")
+                        .HasColumnType("int")
+                        .HasColumnName("PARENT_WELLBORE_ID");
+
+                    b.Property<string>("ParentWellboreUwi")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("PARENT_WELLBORE_UWI");
+
+                    b.Property<decimal?>("PlugbackDepth")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("PLUGBACK_DEPTH");
+
+                    b.Property<int?>("RPlotSymbolId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_PLOT_SYMBOL_ID");
+
+                    b.Property<int?>("RTimezoneId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_TIMEZONE_ID");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<DateTime?>("SpudDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("SPUD_DATE");
+
+                    b.Property<string>("SpudDateTz")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("SPUD_DATE_TZ");
+
+                    b.Property<string>("Uidref")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .HasColumnName("UIDREF");
+
+                    b.Property<decimal?>("WaterDepth")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("WATER_DEPTH");
+
+                    b.Property<int>("WellId")
+                        .HasColumnType("int")
+                        .HasColumnName("WELL_ID");
+
+                    b.Property<string>("WellUwi")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("WELL_UWI");
+
+                    b.Property<string>("WellboreName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("WELLBORE_NAME");
+
+                    b.Property<string>("WellboreNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("WELLBORE_NUMBER");
+
+                    b.Property<string>("WellboreUwi")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("WELLBORE_UWI");
+
+                    b.Property<decimal?>("XCoordinate")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("X_COORDINATE");
+
+                    b.Property<decimal?>("YCoordinate")
+                        .HasPrecision(18, 9)
+                        .HasColumnType("decimal(18,9)")
+                        .HasColumnName("Y_COORDINATE");
+
+                    b.HasKey("WellboreId");
+
+                    b.HasIndex("BhCrsId");
+
+                    b.HasIndex("CrsId");
+
+                    b.HasIndex("DepthDatumId");
+
+                    b.HasIndex("FieldId");
+
+                    b.HasIndex("ParentWellboreId");
+
+                    b.HasIndex("RPlotSymbolId");
+
+                    b.HasIndex("RTimezoneId");
+
+                    b.HasIndex("WellId");
+
+                    b.ToTable("WELLBORE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Zone", b =>
+                {
+                    b.Property<int>("ZoneId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("ZONE_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ZoneId"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
+
+                    b.Property<string>("LongName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("LONG_NAME");
+
+                    b.Property<int?>("PoolId")
+                        .HasColumnType("int")
+                        .HasColumnName("POOL_ID");
+
+                    b.Property<string>("PoolName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("POOL_NAME");
+
+                    b.Property<int?>("RDataAccessCategoryId")
+                        .HasColumnType("int")
+                        .HasColumnName("R_DATA_ACCESS_ CATEGORY_ID");
+
+                    b.Property<string>("RowChangedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CHANGED_BY");
+
+                    b.Property<DateTime?>("RowChangedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CHANGED_DATE");
+
+                    b.Property<string>("RowCreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("ROW_CREATED_BY");
+
+                    b.Property<DateTime?>("RowCreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ROW_CREATED_DATE");
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("SHORT_NAME");
+
+                    b.Property<string>("ZoneName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("ZONE_NAME");
+
+                    b.HasKey("ZoneId");
+
+                    b.HasIndex("PoolId");
+
+                    b.HasIndex("RDataAccessCategoryId");
+
+                    b.ToTable("ZONE", (string)null);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Equipment", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.OrgUnit", null)
+                        .WithMany()
+                        .HasForeignKey("ManufacturerBaId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RDataAccessCategory", null)
+                        .WithMany()
+                        .HasForeignKey("RDataAccessCategoryId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.REquipmentSubType", null)
+                        .WithMany()
+                        .HasForeignKey("REquipmentSubTypeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.REquipmentType", null)
+                        .WithMany()
+                        .HasForeignKey("REquipmentTypeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Facility", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.Cartoreferencesystem", null)
+                        .WithMany()
+                        .HasForeignKey("CrsId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RFacilityType", null)
+                        .WithMany()
+                        .HasForeignKey("FacilityTypeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RDataAccessCategory", null)
+                        .WithMany()
+                        .HasForeignKey("RDataAccessCategoryId")
+                        .OnDelete(DeleteBehavior.NoAction);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Field", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.Cartoreferencesystem", null)
+                        .WithMany()
+                        .HasForeignKey("CrsId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RDataAccessCategory", null)
+                        .WithMany()
+                        .HasForeignKey("RDataAccessCategoryId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RFieldType", null)
+                        .WithMany()
+                        .HasForeignKey("RFieldTypeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.FlowModel", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.ReportingEntity", null)
+                        .WithMany()
+                        .HasForeignKey("InstallationId")
+                        .OnDelete(DeleteBehavior.NoAction);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.OrgUnit", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.ROrgUnitCategory", null)
+                        .WithMany()
+                        .HasForeignKey("ROrgUnitCategoryId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.ROrgUnitType", null)
+                        .WithMany()
+                        .HasForeignKey("ROrgUnitTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Pool", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.Field", null)
+                        .WithMany()
+                        .HasForeignKey("FieldId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RDataAccessCategory", null)
+                        .WithMany()
+                        .HasForeignKey("RDataAccessCategoryId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RPoolStatus", null)
+                        .WithMany()
+                        .HasForeignKey("RPoolStatusId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RPoolType", null)
+                        .WithMany()
+                        .HasForeignKey("RPoolTypeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.REquipmentSubType", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.REquipmentType", null)
+                        .WithMany()
+                        .HasForeignKey("REquipmentTypeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.REquipmentType", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.REquipmentCatalogue", null)
+                        .WithMany()
+                        .HasForeignKey("REquipmentCatalogueId")
+                        .OnDelete(DeleteBehavior.NoAction);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RWellStatus", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.RSource", null)
+                        .WithMany()
+                        .HasForeignKey("RSourceId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RWellStatusType", null)
+                        .WithMany()
+                        .HasForeignKey("RWellStatusTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.RWellStatusType", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.RSource", null)
+                        .WithMany()
+                        .HasForeignKey("RSourceId")
+                        .OnDelete(DeleteBehavior.NoAction);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.ReportingEntity", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.RReportingEntityKind", null)
+                        .WithMany()
+                        .HasForeignKey("RReportingEntityKindId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Well", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.Cartoreferencesystem", null)
+                        .WithMany()
+                        .HasForeignKey("CrsId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RWellClass", null)
+                        .WithMany()
+                        .HasForeignKey("CurrentClassId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RWellDatumType", null)
+                        .WithMany()
+                        .HasForeignKey("DepthDatumId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.Field", null)
+                        .WithMany()
+                        .HasForeignKey("FieldId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RDataAccessCategory", null)
+                        .WithMany()
+                        .HasForeignKey("RDataAccessCategoryId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RPlotSymbol", null)
+                        .WithMany()
+                        .HasForeignKey("RPlotSymbolId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RTimezone", null)
+                        .WithMany()
+                        .HasForeignKey("RTimezoneId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RWellStatus", null)
+                        .WithMany()
+                        .HasForeignKey("RWellProfileId")
+                        .OnDelete(DeleteBehavior.NoAction);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.WellCompletion", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.RCompletionType", null)
+                        .WithMany()
+                        .HasForeignKey("CompletionTypeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.Wellbore", null)
+                        .WithMany()
+                        .HasForeignKey("WellboreId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.Zone", null)
+                        .WithMany()
+                        .HasForeignKey("ZoneId")
+                        .OnDelete(DeleteBehavior.NoAction);
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.WellPerforation", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.Zone", null)
+                        .WithMany()
+                        .HasForeignKey("BaseZoneId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RPerforationMethod", null)
+                        .WithMany()
+                        .HasForeignKey("PerforationMethodId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RPerforationType", null)
+                        .WithMany()
+                        .HasForeignKey("PerforationTypeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.Zone", null)
+                        .WithMany()
+                        .HasForeignKey("TopZoneId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.WellCompletion", null)
+                        .WithMany()
+                        .HasForeignKey("WellCompletionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.WellTubular", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.RCouplingType", null)
+                        .WithMany()
+                        .HasForeignKey("RCouplingTypeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RTubularType", null)
+                        .WithMany()
+                        .HasForeignKey("RTubularTypeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.Wellbore", null)
+                        .WithMany()
+                        .HasForeignKey("WellboreId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Wellbore", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.Cartoreferencesystem", null)
+                        .WithMany()
+                        .HasForeignKey("BhCrsId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.Cartoreferencesystem", null)
+                        .WithMany()
+                        .HasForeignKey("CrsId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RWellDatumType", null)
+                        .WithMany()
+                        .HasForeignKey("DepthDatumId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.Field", null)
+                        .WithMany()
+                        .HasForeignKey("FieldId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.Wellbore", null)
+                        .WithMany()
+                        .HasForeignKey("ParentWellboreId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RPlotSymbol", null)
+                        .WithMany()
+                        .HasForeignKey("RPlotSymbolId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RTimezone", null)
+                        .WithMany()
+                        .HasForeignKey("RTimezoneId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.Well", null)
+                        .WithMany()
+                        .HasForeignKey("WellId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OSDU.Data.MasterData.Zone", b =>
+                {
+                    b.HasOne("OSDU.Data.MasterData.Pool", null)
+                        .WithMany()
+                        .HasForeignKey("PoolId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("OSDU.Data.MasterData.RDataAccessCategory", null)
+                        .WithMany()
+                        .HasForeignKey("RDataAccessCategoryId")
+                        .OnDelete(DeleteBehavior.NoAction);
+                });
 #pragma warning restore 612, 618
         }
     }

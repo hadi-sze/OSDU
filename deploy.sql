@@ -35,3 +35,1442 @@ END;
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [CARTOREFERENCESYSTEM] (
+        [CRS_ID] int NOT NULL IDENTITY,
+        [CRS_NAME] nvarchar(50) NOT NULL,
+        [CRS_TYPE] nvarchar(50) NULL,
+        [GEODETIC_SOURCE] nvarchar(50) NULL,
+        [PROJECTION_TYPE] nvarchar(50) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [REMARK] nvarchar(2000) NULL,
+        CONSTRAINT [PK_CARTOREFERENCESYSTEM] PRIMARY KEY ([CRS_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [FORMATION] (
+        [FORMATION_ID] int NOT NULL IDENTITY,
+        [FORMATION_NAME] nvarchar(50) NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [TEST_BIT] bit NULL,
+        [ATTR_SMALLINT] smallint NULL,
+        [ATTR_INT] int NULL,
+        [ATTR_BIGINT] bigint NULL,
+        CONSTRAINT [PK_FORMATION] PRIMARY KEY ([FORMATION_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_COMPLETION_TYPE] (
+        [R_COMPLETION_TYPE_ID] int NOT NULL IDENTITY,
+        [COMPLETION_TYPE] nvarchar(40) NOT NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(255) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [REMARK] nvarchar(2000) NULL,
+        CONSTRAINT [PK_R_COMPLETION_TYPE] PRIMARY KEY ([R_COMPLETION_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_COUPLING_TYPE] (
+        [R_COUPLING_TYPE_ID] int NOT NULL IDENTITY,
+        [COUPLING_TYPE] nvarchar(40) NOT NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [REMARK] nvarchar(2000) NULL,
+        CONSTRAINT [PK_R_COUPLING_TYPE] PRIMARY KEY ([R_COUPLING_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_DATA_ACCESS_CATEGORY] (
+        [R_DATA_ACCESS_CATEGORY_ID] int NOT NULL IDENTITY,
+        [DATA_ACCESS_CATEGORY] nvarchar(64) NOT NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        CONSTRAINT [PK_R_DATA_ACCESS_CATEGORY] PRIMARY KEY ([R_DATA_ACCESS_CATEGORY_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_EQUIPMENT_CATALOGUE] (
+        [R_EQUIPMENT_CATALOGUE_ID] int NOT NULL IDENTITY,
+        [EQUIPMENT_CATALOGUE] nvarchar(40) NOT NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        CONSTRAINT [PK_R_EQUIPMENT_CATALOGUE] PRIMARY KEY ([R_EQUIPMENT_CATALOGUE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_FACILITY_TYPE] (
+        [R_FACILITY_TYPE_ID] int NOT NULL IDENTITY,
+        [FACILITY_TYPE] nvarchar(40) NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        CONSTRAINT [PK_R_FACILITY_TYPE] PRIMARY KEY ([R_FACILITY_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_FIELD_TYPE] (
+        [R_FIELD_TYPE_ID] int NOT NULL IDENTITY,
+        [DISPLAY_NAME] nvarchar(50) NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [ABBREVIATION] nvarchar(15) NULL,
+        [COLOR_CODE] nvarchar(15) NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [EFFECTIVE_DATE] datetime2 NULL,
+        [EXPIRY_DATE] datetime2 NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [SOURCE_NAME] nvarchar(50) NULL,
+        [FIELD_TYPE_NAME] nvarchar(50) NOT NULL,
+        CONSTRAINT [PK_R_FIELD_TYPE] PRIMARY KEY ([R_FIELD_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_ORG_UNIT_CATEGORY] (
+        [R_ORG_UNIT_CATEGORY_ID] int NOT NULL IDENTITY,
+        [ORG_UNIT_CATEGORY] nvarchar(50) NOT NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        CONSTRAINT [PK_R_ORG_UNIT_CATEGORY] PRIMARY KEY ([R_ORG_UNIT_CATEGORY_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_ORG_UNIT_TYPE] (
+        [R_ORG_UNIT_TYPE_ID] int NOT NULL IDENTITY,
+        [ORG_UNIT_TYPE] nvarchar(50) NOT NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        CONSTRAINT [PK_R_ORG_UNIT_TYPE] PRIMARY KEY ([R_ORG_UNIT_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_PERFORATION_METHOD] (
+        [R_PERFORATION_METHOD_ID] int NOT NULL IDENTITY,
+        [PERFORATION_METHOD] nvarchar(50) NOT NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        CONSTRAINT [PK_R_PERFORATION_METHOD] PRIMARY KEY ([R_PERFORATION_METHOD_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_PERFORATION_TYPE] (
+        [R_PERFORATION_TYPE_ID] int NOT NULL IDENTITY,
+        [PERFORATION_TYPE] nvarchar(50) NOT NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        CONSTRAINT [PK_R_PERFORATION_TYPE] PRIMARY KEY ([R_PERFORATION_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_PLOT_SYMBOL] (
+        [R_PLOT_SYMBOL_ID] int NOT NULL IDENTITY,
+        [COLOR_CODE] nvarchar(10) NULL,
+        [IS_ACTIVE] bit NULL,
+        [PLOT_SYMBOL] varbinary(max) NULL,
+        [PLOT_SYMBOL_TYPE] nvarchar(50) NOT NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [REMARK] nvarchar(2000) NULL,
+        CONSTRAINT [PK_R_PLOT_SYMBOL] PRIMARY KEY ([R_PLOT_SYMBOL_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_POOL_STATUS] (
+        [R_POOL_STATUS_ID] int NOT NULL IDENTITY,
+        [POOL_STATUS] nvarchar(50) NOT NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [REMARK] nvarchar(2000) NULL,
+        CONSTRAINT [PK_R_POOL_STATUS] PRIMARY KEY ([R_POOL_STATUS_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_POOL_TYPE] (
+        [R_POOL_TYPE_ID] int NOT NULL IDENTITY,
+        [POOL_TYPE] nvarchar(50) NOT NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [REMARK] nvarchar(2000) NULL,
+        CONSTRAINT [PK_R_POOL_TYPE] PRIMARY KEY ([R_POOL_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_REPORTING_ENTITY_KIND] (
+        [R_REPORTING_ENTITY_KIND_ID] int NOT NULL IDENTITY,
+        [REPORTING_ENTITY_KIND] nvarchar(40) NOT NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        CONSTRAINT [PK_R_REPORTING_ENTITY_KIND] PRIMARY KEY ([R_REPORTING_ENTITY_KIND_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_SOURCE] (
+        [R_SOURCE_ID] int NOT NULL IDENTITY,
+        [DISPLAY_NAME] nvarchar(30) NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [ABBREVIATION] nvarchar(15) NULL,
+        [COLOR_CODE] nvarchar(15) NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [EFFECTIVE_DATE] datetime2 NULL,
+        [EXPIRY_DATE] datetime2 NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [SOURCE_NAME] nvarchar(30) NOT NULL,
+        CONSTRAINT [PK_R_SOURCE] PRIMARY KEY ([R_SOURCE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_TIMEZONE] (
+        [R_TIMEZONE_ID] int NOT NULL IDENTITY,
+        [TIMEZONE] nvarchar(40) NOT NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        CONSTRAINT [PK_R_TIMEZONE] PRIMARY KEY ([R_TIMEZONE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_TUBULAR_TYPE] (
+        [R_TUBULAR_TYPE_ID] int NOT NULL IDENTITY,
+        [TUBULAR_TYPE] nvarchar(40) NOT NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [REMARK] nvarchar(2000) NULL,
+        CONSTRAINT [PK_R_TUBULAR_TYPE] PRIMARY KEY ([R_TUBULAR_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_WELL_CLASS] (
+        [R_WELL_CLASS_ID] int NOT NULL IDENTITY,
+        [WELL_CLASS] nvarchar(50) NOT NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [REMARK] nvarchar(2000) NULL,
+        CONSTRAINT [PK_R_WELL_CLASS] PRIMARY KEY ([R_WELL_CLASS_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_WELL_DATUM_TYPE] (
+        [WELL_DATUM_TYPE_ID] int NOT NULL IDENTITY,
+        [WELL_DATUM_TYPE] nvarchar(50) NOT NULL,
+        [ABBREVIATION] nvarchar(50) NULL,
+        [LONG_NAME] nvarchar(50) NULL,
+        [SHORT_NAME] nvarchar(50) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [REMARK] nvarchar(2000) NULL,
+        CONSTRAINT [PK_R_WELL_DATUM_TYPE] PRIMARY KEY ([WELL_DATUM_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_EQUIPMENT_TYPE] (
+        [R_EQUIPMENT_TYPE_ID] int NOT NULL IDENTITY,
+        [EQUIPMENT_CATALOGUE] nvarchar(40) NULL,
+        [EQUIPMENT_TYPE] nvarchar(40) NOT NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [R_EQUIPMENT_CATALOGUE_ID] int NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        CONSTRAINT [PK_R_EQUIPMENT_TYPE] PRIMARY KEY ([R_EQUIPMENT_TYPE_ID]),
+        CONSTRAINT [FK_R_EQUIPMENT_TYPE_R_EQUIPMENT_CATALOGUE_R_EQUIPMENT_CATALOGUE_ID] FOREIGN KEY ([R_EQUIPMENT_CATALOGUE_ID]) REFERENCES [R_EQUIPMENT_CATALOGUE] ([R_EQUIPMENT_CATALOGUE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [FACILITY] (
+        [FACILITY_ID] int NOT NULL IDENTITY,
+        [FACILITY_NAME] nvarchar(40) NOT NULL,
+        [FACILITY_TYPE_ID] int NULL,
+        [FACILITY_TYPE] nvarchar(40) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [CONSTRUCTED_DATE] datetime2 NULL,
+        [ACTIVE_DATE] datetime2 NULL,
+        [ABANDONED_DATE] datetime2 NULL,
+        [OFFSHORE_IND] bit NOT NULL,
+        [R_EQUIPMENT_CATALOGUE_ID] int NULL,
+        [EQUIPMENT_CATALOGUE] nvarchar(40) NULL,
+        [X_COORDINATE] decimal(18,9) NULL,
+        [Y_COORDINATE] decimal(18,9) NULL,
+        [CRS_ID] int NULL,
+        [CRS_NAME] nvarchar(50) NULL,
+        [CURRENT_OPERATOR] nvarchar(40) NULL,
+        [DEPTH] decimal(18,9) NULL,
+        [ELEVATION] decimal(18,9) NULL,
+        [FACILITY_DIAMETER] decimal(18,9) NULL,
+        [FACILITY_FUNCTION] nvarchar(40) NULL,
+        [FACILITY_NO] int NULL,
+        [FACILITY_SHORT_NAME] nvarchar(30) NULL,
+        [FACILITY_LONG_NAME] nvarchar(255) NULL,
+        [LAST_INJECTION_DATE] datetime2 NULL,
+        [LAST_PRODUCTION_DATE] datetime2 NULL,
+        [LAST_REPORTED_DATE] datetime2 NULL,
+        [ON_INJECTION_DATE] datetime2 NULL,
+        [ON_PRODUCTION_DATE] datetime2 NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [IS_VIRTUAL] bit NULL,
+        [UIDREF] nvarchar(64) NULL,
+        [R_DATA_ACCESS_CATEGORY_ID] int NULL,
+        CONSTRAINT [PK_FACILITY] PRIMARY KEY ([FACILITY_ID]),
+        CONSTRAINT [FK_FACILITY_CARTOREFERENCESYSTEM_CRS_ID] FOREIGN KEY ([CRS_ID]) REFERENCES [CARTOREFERENCESYSTEM] ([CRS_ID]),
+        CONSTRAINT [FK_FACILITY_R_DATA_ACCESS_CATEGORY_R_DATA_ACCESS_CATEGORY_ID] FOREIGN KEY ([R_DATA_ACCESS_CATEGORY_ID]) REFERENCES [R_DATA_ACCESS_CATEGORY] ([R_DATA_ACCESS_CATEGORY_ID]),
+        CONSTRAINT [FK_FACILITY_R_FACILITY_TYPE_FACILITY_TYPE_ID] FOREIGN KEY ([FACILITY_TYPE_ID]) REFERENCES [R_FACILITY_TYPE] ([R_FACILITY_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [FIELD] (
+        [FIELD_ID] int NOT NULL IDENTITY,
+        [FIELD_NAME] nvarchar(100) NOT NULL,
+        [FIELD_TYPE_NAME] nvarchar(50) NULL,
+        [FIELD_ABBREVIATION] nvarchar(20) NULL,
+        [X_COORDINATE] decimal(18,9) NULL,
+        [Y_COORDINATE] decimal(18,9) NULL,
+        [CRS_ID] int NULL,
+        [CRS_NAME] nvarchar(50) NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [SOURCE_NAME] nvarchar(40) NULL,
+        [R_FIELD_TYPE_ID] int NULL,
+        [UIDREF] nvarchar(64) NULL,
+        [R_DATA_ACCESS_ CATEGORY_ID] int NULL,
+        CONSTRAINT [PK_FIELD] PRIMARY KEY ([FIELD_ID]),
+        CONSTRAINT [FK_FIELD_CARTOREFERENCESYSTEM_CRS_ID] FOREIGN KEY ([CRS_ID]) REFERENCES [CARTOREFERENCESYSTEM] ([CRS_ID]),
+        CONSTRAINT [FK_FIELD_R_DATA_ACCESS_CATEGORY_R_DATA_ACCESS_ CATEGORY_ID] FOREIGN KEY ([R_DATA_ACCESS_ CATEGORY_ID]) REFERENCES [R_DATA_ACCESS_CATEGORY] ([R_DATA_ACCESS_CATEGORY_ID]),
+        CONSTRAINT [FK_FIELD_R_FIELD_TYPE_R_FIELD_TYPE_ID] FOREIGN KEY ([R_FIELD_TYPE_ID]) REFERENCES [R_FIELD_TYPE] ([R_FIELD_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [ORG_UNIT] (
+        [ORG_UNIT_ID] int NOT NULL IDENTITY,
+        [ORG_UNIT_NAME] nvarchar(255) NOT NULL,
+        [R_ORG_UNIT_TYPE_ID] int NOT NULL,
+        [R_ORG_UNIT_CATEGORY_ID] int NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ORG_UNIT_SHORT_NAME] nvarchar(40) NULL,
+        [ORG_UNIT_ABBERIVATION] nvarchar(15) NULL,
+        CONSTRAINT [PK_ORG_UNIT] PRIMARY KEY ([ORG_UNIT_ID]),
+        CONSTRAINT [FK_ORG_UNIT_R_ORG_UNIT_CATEGORY_R_ORG_UNIT_CATEGORY_ID] FOREIGN KEY ([R_ORG_UNIT_CATEGORY_ID]) REFERENCES [R_ORG_UNIT_CATEGORY] ([R_ORG_UNIT_CATEGORY_ID]),
+        CONSTRAINT [FK_ORG_UNIT_R_ORG_UNIT_TYPE_R_ORG_UNIT_TYPE_ID] FOREIGN KEY ([R_ORG_UNIT_TYPE_ID]) REFERENCES [R_ORG_UNIT_TYPE] ([R_ORG_UNIT_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [REPORTING_ENTITY] (
+        [REPORTING_ENTITY_ID] int NOT NULL IDENTITY,
+        [R_REPORTING_ENTITY_KIND_ID] int NOT NULL,
+        [ASSOCIATED_OBJECT_ID] int NOT NULL,
+        [ASSOCIATED_OBJECT_NAME] nvarchar(50) NOT NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        CONSTRAINT [PK_REPORTING_ENTITY] PRIMARY KEY ([REPORTING_ENTITY_ID]),
+        CONSTRAINT [FK_REPORTING_ENTITY_R_REPORTING_ENTITY_KIND_R_REPORTING_ENTITY_KIND_ID] FOREIGN KEY ([R_REPORTING_ENTITY_KIND_ID]) REFERENCES [R_REPORTING_ENTITY_KIND] ([R_REPORTING_ENTITY_KIND_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_WELL_STATUS_TYPE] (
+        [R_WELL_STATUS_TYPE_ID] int NOT NULL IDENTITY,
+        [WELL_STATUS_TYPE] nvarchar(60) NOT NULL,
+        [R_SOURCE_ID] int NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        CONSTRAINT [PK_R_WELL_STATUS_TYPE] PRIMARY KEY ([R_WELL_STATUS_TYPE_ID]),
+        CONSTRAINT [FK_R_WELL_STATUS_TYPE_R_SOURCE_R_SOURCE_ID] FOREIGN KEY ([R_SOURCE_ID]) REFERENCES [R_SOURCE] ([R_SOURCE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_EQUIPMENT_SUB_TYPE] (
+        [R_EQUIPMENT_SUB_TYPE_ID] int NOT NULL IDENTITY,
+        [EQUIPMENT_SUB_TYPE] nvarchar(40) NOT NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        [R_EQUIPMENT_TYPE_ID] int NULL,
+        [EQUIPMENT_TYPE] nvarchar(40) NULL,
+        [BARRIER_ELEMENT] bit NULL,
+        CONSTRAINT [PK_R_EQUIPMENT_SUB_TYPE] PRIMARY KEY ([R_EQUIPMENT_SUB_TYPE_ID]),
+        CONSTRAINT [FK_R_EQUIPMENT_SUB_TYPE_R_EQUIPMENT_TYPE_R_EQUIPMENT_TYPE_ID] FOREIGN KEY ([R_EQUIPMENT_TYPE_ID]) REFERENCES [R_EQUIPMENT_TYPE] ([R_EQUIPMENT_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [POOL] (
+        [POOL_ID] int NOT NULL IDENTITY,
+        [POOL_NAME] nvarchar(100) NOT NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [DISCOVERY_DATE] datetime2 NULL,
+        [EFFECTIVE_DATE] datetime2 NULL,
+        [EXPIRY_DATE] datetime2 NULL,
+        [FIELD_ID] int NULL,
+        [FIELD_NAME] nvarchar(100) NULL,
+        [POOL_CODE] nvarchar(20) NULL,
+        [POOL_NAME_ABBREVIATION] nvarchar(12) NULL,
+        [R_POOL_STATUS_ID] int NULL,
+        [POOL_STATUS] nvarchar(50) NULL,
+        [R_POOL_TYPE_ID] int NULL,
+        [POOL_TYPE] nvarchar(50) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [R_DATA_ACCESS_ CATEGORY_ID] int NULL,
+        CONSTRAINT [PK_POOL] PRIMARY KEY ([POOL_ID]),
+        CONSTRAINT [FK_POOL_FIELD_FIELD_ID] FOREIGN KEY ([FIELD_ID]) REFERENCES [FIELD] ([FIELD_ID]),
+        CONSTRAINT [FK_POOL_R_DATA_ACCESS_CATEGORY_R_DATA_ACCESS_ CATEGORY_ID] FOREIGN KEY ([R_DATA_ACCESS_ CATEGORY_ID]) REFERENCES [R_DATA_ACCESS_CATEGORY] ([R_DATA_ACCESS_CATEGORY_ID]),
+        CONSTRAINT [FK_POOL_R_POOL_STATUS_R_POOL_STATUS_ID] FOREIGN KEY ([R_POOL_STATUS_ID]) REFERENCES [R_POOL_STATUS] ([R_POOL_STATUS_ID]),
+        CONSTRAINT [FK_POOL_R_POOL_TYPE_R_POOL_TYPE_ID] FOREIGN KEY ([R_POOL_TYPE_ID]) REFERENCES [R_POOL_TYPE] ([R_POOL_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [FLOW_MODEL] (
+        [FLOW_MODEL_ID] int NOT NULL IDENTITY,
+        [FLOW_MODEL_NAME] nvarchar(255) NOT NULL,
+        [INSTALLATION_ID] int NULL,
+        [EXPIRY_DATE] datetime2 NULL,
+        [EFFECTIVE_DATE] datetime2 NULL,
+        [COMMENT] nvarchar(2000) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        CONSTRAINT [PK_FLOW_MODEL] PRIMARY KEY ([FLOW_MODEL_ID]),
+        CONSTRAINT [FK_FLOW_MODEL_REPORTING_ENTITY_INSTALLATION_ID] FOREIGN KEY ([INSTALLATION_ID]) REFERENCES [REPORTING_ENTITY] ([REPORTING_ENTITY_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [R_WELL_STATUS] (
+        [R_WELL_STATUS_ID] int NOT NULL IDENTITY,
+        [WELL_STATUS] nvarchar(60) NOT NULL,
+        [R_WELL_STATUS_TYPE_ID] int NOT NULL,
+        [R_SOURCE_ID] int NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(30) NULL,
+        CONSTRAINT [PK_R_WELL_STATUS] PRIMARY KEY ([R_WELL_STATUS_ID]),
+        CONSTRAINT [FK_R_WELL_STATUS_R_SOURCE_R_SOURCE_ID] FOREIGN KEY ([R_SOURCE_ID]) REFERENCES [R_SOURCE] ([R_SOURCE_ID]),
+        CONSTRAINT [FK_R_WELL_STATUS_R_WELL_STATUS_TYPE_R_WELL_STATUS_TYPE_ID] FOREIGN KEY ([R_WELL_STATUS_TYPE_ID]) REFERENCES [R_WELL_STATUS_TYPE] ([R_WELL_STATUS_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [EQUIPMENT] (
+        [EQUIPMENT_ID] int NOT NULL IDENTITY,
+        [COMMISSION_DATE] datetime2 NULL,
+        [DECOMMISSION_DATE] datetime2 NULL,
+        [EQUIPMENT_NAME] nvarchar(40) NOT NULL,
+        [EQUIPMENT_SUB_TYPE] nvarchar(40) NULL,
+        [EQUIPMENT_TYPE] nvarchar(40) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [R_EQUIPMENT_SUB_TYPE_ID] int NULL,
+        [R_EQUIPMENT_TYPE_ID] int NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [EQUIPMENT_ALIAS_NAME] nvarchar(40) NULL,
+        [SERIAL_NUM] int NULL,
+        [MANUFACTURER_BA_ID] int NULL,
+        [R_DATA_ACCESS_CATEGORY_ID] int NULL,
+        CONSTRAINT [PK_EQUIPMENT] PRIMARY KEY ([EQUIPMENT_ID]),
+        CONSTRAINT [FK_EQUIPMENT_ORG_UNIT_MANUFACTURER_BA_ID] FOREIGN KEY ([MANUFACTURER_BA_ID]) REFERENCES [ORG_UNIT] ([ORG_UNIT_ID]),
+        CONSTRAINT [FK_EQUIPMENT_R_DATA_ACCESS_CATEGORY_R_DATA_ACCESS_CATEGORY_ID] FOREIGN KEY ([R_DATA_ACCESS_CATEGORY_ID]) REFERENCES [R_DATA_ACCESS_CATEGORY] ([R_DATA_ACCESS_CATEGORY_ID]),
+        CONSTRAINT [FK_EQUIPMENT_R_EQUIPMENT_SUB_TYPE_R_EQUIPMENT_SUB_TYPE_ID] FOREIGN KEY ([R_EQUIPMENT_SUB_TYPE_ID]) REFERENCES [R_EQUIPMENT_SUB_TYPE] ([R_EQUIPMENT_SUB_TYPE_ID]),
+        CONSTRAINT [FK_EQUIPMENT_R_EQUIPMENT_TYPE_R_EQUIPMENT_TYPE_ID] FOREIGN KEY ([R_EQUIPMENT_TYPE_ID]) REFERENCES [R_EQUIPMENT_TYPE] ([R_EQUIPMENT_TYPE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [ZONE] (
+        [ZONE_ID] int NOT NULL IDENTITY,
+        [ZONE_NAME] nvarchar(255) NOT NULL,
+        [LONG_NAME] nvarchar(255) NULL,
+        [SHORT_NAME] nvarchar(255) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [POOL_ID] int NULL,
+        [POOL_NAME] nvarchar(100) NULL,
+        [R_DATA_ACCESS_ CATEGORY_ID] int NULL,
+        CONSTRAINT [PK_ZONE] PRIMARY KEY ([ZONE_ID]),
+        CONSTRAINT [FK_ZONE_POOL_POOL_ID] FOREIGN KEY ([POOL_ID]) REFERENCES [POOL] ([POOL_ID]),
+        CONSTRAINT [FK_ZONE_R_DATA_ACCESS_CATEGORY_R_DATA_ACCESS_ CATEGORY_ID] FOREIGN KEY ([R_DATA_ACCESS_ CATEGORY_ID]) REFERENCES [R_DATA_ACCESS_CATEGORY] ([R_DATA_ACCESS_CATEGORY_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [WELL] (
+        [WELL_ID] int NOT NULL IDENTITY,
+        [UWI] nvarchar(50) NOT NULL,
+        [WELL_NAME] nvarchar(50) NOT NULL,
+        [WELL_ALIAS_NAME] nvarchar(255) NULL,
+        [FIELD_ID] int NULL,
+        [FIELD_NAME] nvarchar(100) NULL,
+        [OFFSHORE_IND] bit NOT NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [WELL_OWNER] nvarchar(255) NULL,
+        [SPUD_DATE] datetime2 NULL,
+        [SPUD_DATE_TZ] nvarchar(40) NULL,
+        [R_TIMEZONE_ID] int NULL,
+        [COMPLETION_DATE] datetime2 NULL,
+        [PRODUCTION_START_DATE] datetime2 NULL,
+        [X_COORDINATE] decimal(18,9) NULL,
+        [Y_COORDINATE] decimal(18,9) NULL,
+        [CRS_ID] int NULL,
+        [CRS_NAME] nvarchar(50) NULL,
+        [CURRENT_CLASS_ID] int NULL,
+        [WELL_CLASS] nvarchar(50) NULL,
+        [DEEPEST_DEPTH] decimal(18,9) NULL,
+        [MAX_TVD] decimal(18,9) NULL,
+        [DEPTH_DATUM_ID] int NULL,
+        [DEPTH_DATUM] nvarchar(50) NULL,
+        [DEPTH_DATUM_ELEV] decimal(18,9) NULL,
+        [GROUND_ELEV] decimal(18,9) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [BOTTOM_HOLE_X_LON] decimal(18,9) NULL,
+        [BOTTOM_HOLE_Y_LAT] decimal(18,9) NULL,
+        [ABANDONMENT_DATE] datetime2 NULL,
+        [EXPIRY_DATE] datetime2 NULL,
+        [FAULTED_IND] bit NULL,
+        [FINAL_DRILL_DATE] datetime2 NULL,
+        [LOG_TD] decimal(15,5) NULL,
+        [NET_PAY] decimal(15,5) NULL,
+        [OPERATOR] nvarchar(40) NULL,
+        [PLOT_NAME] nvarchar(40) NULL,
+        [PLUGBACK_DEPTH] decimal(15,5) NULL,
+        [R_WELL_PROFILE_ID] int NULL,
+        [WELL_PROFILE] nvarchar(60) NULL,
+        [WATER_ACOUSTIC_VEL] decimal(15,5) NULL,
+        [WATER_DEPTH] decimal(15,5) NULL,
+        [WATER_DEPTH_DATUM] nvarchar(40) NULL,
+        [IS_VIRTUAL] bit NULL,
+        [R_PLOT_SYMBOL_ID] int NULL,
+        [UIDREF] nvarchar(64) NULL,
+        [R_DATA_ACCESS_ CATEGORY_ID] int NULL,
+        CONSTRAINT [PK_WELL] PRIMARY KEY ([WELL_ID]),
+        CONSTRAINT [FK_WELL_CARTOREFERENCESYSTEM_CRS_ID] FOREIGN KEY ([CRS_ID]) REFERENCES [CARTOREFERENCESYSTEM] ([CRS_ID]),
+        CONSTRAINT [FK_WELL_FIELD_FIELD_ID] FOREIGN KEY ([FIELD_ID]) REFERENCES [FIELD] ([FIELD_ID]),
+        CONSTRAINT [FK_WELL_R_DATA_ACCESS_CATEGORY_R_DATA_ACCESS_ CATEGORY_ID] FOREIGN KEY ([R_DATA_ACCESS_ CATEGORY_ID]) REFERENCES [R_DATA_ACCESS_CATEGORY] ([R_DATA_ACCESS_CATEGORY_ID]),
+        CONSTRAINT [FK_WELL_R_PLOT_SYMBOL_R_PLOT_SYMBOL_ID] FOREIGN KEY ([R_PLOT_SYMBOL_ID]) REFERENCES [R_PLOT_SYMBOL] ([R_PLOT_SYMBOL_ID]),
+        CONSTRAINT [FK_WELL_R_TIMEZONE_R_TIMEZONE_ID] FOREIGN KEY ([R_TIMEZONE_ID]) REFERENCES [R_TIMEZONE] ([R_TIMEZONE_ID]),
+        CONSTRAINT [FK_WELL_R_WELL_CLASS_CURRENT_CLASS_ID] FOREIGN KEY ([CURRENT_CLASS_ID]) REFERENCES [R_WELL_CLASS] ([R_WELL_CLASS_ID]),
+        CONSTRAINT [FK_WELL_R_WELL_DATUM_TYPE_DEPTH_DATUM_ID] FOREIGN KEY ([DEPTH_DATUM_ID]) REFERENCES [R_WELL_DATUM_TYPE] ([WELL_DATUM_TYPE_ID]),
+        CONSTRAINT [FK_WELL_R_WELL_STATUS_R_WELL_PROFILE_ID] FOREIGN KEY ([R_WELL_PROFILE_ID]) REFERENCES [R_WELL_STATUS] ([R_WELL_STATUS_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [WELLBORE] (
+        [WELLBORE_ID] int NOT NULL IDENTITY,
+        [WELL_ID] int NOT NULL,
+        [WELL_UWI] nvarchar(50) NOT NULL,
+        [WELLBORE_UWI] nvarchar(50) NOT NULL,
+        [WELLBORE_NAME] nvarchar(50) NULL,
+        [WELLBORE_NUMBER] nvarchar(50) NULL,
+        [X_COORDINATE] decimal(18,9) NULL,
+        [Y_COORDINATE] decimal(18,9) NULL,
+        [CRS_ID] int NULL,
+        [CRS_NAME] nvarchar(50) NULL,
+        [BH_X_COORDINATE] decimal(18,9) NULL,
+        [BH_Y_COORDINATE] decimal(18,9) NULL,
+        [BH_CRS_ID] int NULL,
+        [BH_CRS_NAME] nvarchar(50) NULL,
+        [FIELD_ID] int NULL,
+        [FIELD_NAME] nvarchar(100) NULL,
+        [KB_ELEV] decimal(18,9) NULL,
+        [GROUND_ELEV] decimal(18,9) NULL,
+        [DERRICK_FLOOR_ELEV] decimal(18,9) NULL,
+        [DEPTH_DATUM_ID] int NULL,
+        [DEPTH_DATUM] nvarchar(50) NULL,
+        [DEPTH_DATUM_ELEV] decimal(18,9) NULL,
+        [SPUD_DATE] datetime2 NULL,
+        [SPUD_DATE_TZ] nvarchar(40) NULL,
+        [R_TIMEZONE_ID] int NULL,
+        [COMPLETION_DATE] datetime2 NULL,
+        [DRILL_TD] decimal(18,9) NULL,
+        [PLUGBACK_DEPTH] decimal(18,9) NULL,
+        [KICK_OFF_DEPTH] decimal(18,9) NULL,
+        [WATER_DEPTH] decimal(18,9) NULL,
+        [PARENT_WELLBORE_ID] int NULL,
+        [PARENT_WELLBORE_UWI] nvarchar(50) NULL,
+        [FORMATION_AT_TD] nvarchar(255) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [UIDREF] nvarchar(64) NULL,
+        [R_PLOT_SYMBOL_ID] int NULL,
+        CONSTRAINT [PK_WELLBORE] PRIMARY KEY ([WELLBORE_ID]),
+        CONSTRAINT [FK_WELLBORE_CARTOREFERENCESYSTEM_BH_CRS_ID] FOREIGN KEY ([BH_CRS_ID]) REFERENCES [CARTOREFERENCESYSTEM] ([CRS_ID]),
+        CONSTRAINT [FK_WELLBORE_CARTOREFERENCESYSTEM_CRS_ID] FOREIGN KEY ([CRS_ID]) REFERENCES [CARTOREFERENCESYSTEM] ([CRS_ID]),
+        CONSTRAINT [FK_WELLBORE_FIELD_FIELD_ID] FOREIGN KEY ([FIELD_ID]) REFERENCES [FIELD] ([FIELD_ID]),
+        CONSTRAINT [FK_WELLBORE_R_PLOT_SYMBOL_R_PLOT_SYMBOL_ID] FOREIGN KEY ([R_PLOT_SYMBOL_ID]) REFERENCES [R_PLOT_SYMBOL] ([R_PLOT_SYMBOL_ID]),
+        CONSTRAINT [FK_WELLBORE_R_TIMEZONE_R_TIMEZONE_ID] FOREIGN KEY ([R_TIMEZONE_ID]) REFERENCES [R_TIMEZONE] ([R_TIMEZONE_ID]),
+        CONSTRAINT [FK_WELLBORE_R_WELL_DATUM_TYPE_DEPTH_DATUM_ID] FOREIGN KEY ([DEPTH_DATUM_ID]) REFERENCES [R_WELL_DATUM_TYPE] ([WELL_DATUM_TYPE_ID]),
+        CONSTRAINT [FK_WELLBORE_WELLBORE_PARENT_WELLBORE_ID] FOREIGN KEY ([PARENT_WELLBORE_ID]) REFERENCES [WELLBORE] ([WELLBORE_ID]),
+        CONSTRAINT [FK_WELLBORE_WELL_WELL_ID] FOREIGN KEY ([WELL_ID]) REFERENCES [WELL] ([WELL_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [WELL_COMPLETION] (
+        [WELL_COMPLETION_ID] int NOT NULL IDENTITY,
+        [WELLBORE_ID] int NULL,
+        [WELLBORE_UWI] nvarchar(50) NOT NULL,
+        [COMPLETION_DATE] datetime2 NULL,
+        [COMPLETION_OBS_NO] int NULL,
+        [COMPLETION_TYPE_ID] int NULL,
+        [COMPLETION_TYPE] nvarchar(40) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [EXPIRY_DATE] datetime2 NULL,
+        [TOP_DEPTH] decimal(15,5) NULL,
+        [BASE_DEPTH] decimal(15,5) NULL,
+        [ZONE_ID] int NULL,
+        [ZONE_NAME] nvarchar(255) NULL,
+        [REMARK] nvarchar(255) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [WELL_COMPLETION_NAME] nvarchar(50) NOT NULL,
+        [UIDREF] nvarchar(64) NULL,
+        CONSTRAINT [PK_WELL_COMPLETION] PRIMARY KEY ([WELL_COMPLETION_ID]),
+        CONSTRAINT [FK_WELL_COMPLETION_R_COMPLETION_TYPE_COMPLETION_TYPE_ID] FOREIGN KEY ([COMPLETION_TYPE_ID]) REFERENCES [R_COMPLETION_TYPE] ([R_COMPLETION_TYPE_ID]),
+        CONSTRAINT [FK_WELL_COMPLETION_WELLBORE_WELLBORE_ID] FOREIGN KEY ([WELLBORE_ID]) REFERENCES [WELLBORE] ([WELLBORE_ID]),
+        CONSTRAINT [FK_WELL_COMPLETION_ZONE_ZONE_ID] FOREIGN KEY ([ZONE_ID]) REFERENCES [ZONE] ([ZONE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [WELL_TUBULAR] (
+        [WELL_TUBULAR_ID] int NOT NULL IDENTITY,
+        [WELLBORE_ID] int NOT NULL,
+        [WELLBORE_UWI] nvarchar(50) NOT NULL,
+        [R_TUBULAR_TYPE_ID] int NULL,
+        [TUBULAR_TYPE] nvarchar(40) NOT NULL,
+        [R_COUPLING_TYPE_ID] int NULL,
+        [COUPLING_TYPE] nvarchar(40) NULL,
+        [TUBULAR_IN_DATE] datetime2 NOT NULL,
+        [TUBULAR_OUT_DATE] datetime2 NULL,
+        [TOP_DEPTH] decimal(15,5) NULL,
+        [BASE_DEPTH] decimal(15,5) NULL,
+        [INSIDE_DIAMETER] decimal(8,3) NULL,
+        [OUTSIDE_DIAMETER] decimal(8,3) NULL,
+        [TUBULAR_THICKNESS] decimal(15,5) NULL,
+        [JOINT_COUNT] int NULL,
+        [JOINT_LENGTH] decimal(15,5) NULL,
+        [ROUGHNESS] decimal(15,5) NULL,
+        [TUBULAR_DENSITY] decimal(15,5) NULL,
+        [TUBULAR_GRADE] nvarchar(40) NULL,
+        [TUBULAR_STRENGTH] decimal(15,5) NULL,
+        [TUBULAR_WEIGHT] decimal(15,5) NULL,
+        [PACKER_SET_DEPTH] decimal(15,5) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        CONSTRAINT [PK_WELL_TUBULAR] PRIMARY KEY ([WELL_TUBULAR_ID]),
+        CONSTRAINT [FK_WELL_TUBULAR_R_COUPLING_TYPE_R_COUPLING_TYPE_ID] FOREIGN KEY ([R_COUPLING_TYPE_ID]) REFERENCES [R_COUPLING_TYPE] ([R_COUPLING_TYPE_ID]),
+        CONSTRAINT [FK_WELL_TUBULAR_R_TUBULAR_TYPE_R_TUBULAR_TYPE_ID] FOREIGN KEY ([R_TUBULAR_TYPE_ID]) REFERENCES [R_TUBULAR_TYPE] ([R_TUBULAR_TYPE_ID]),
+        CONSTRAINT [FK_WELL_TUBULAR_WELLBORE_WELLBORE_ID] FOREIGN KEY ([WELLBORE_ID]) REFERENCES [WELLBORE] ([WELLBORE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE TABLE [WELL_PERFORATION] (
+        [WELL_PERFORATION_ID] int NOT NULL IDENTITY,
+        [WELL_COMPLETION_ID] int NOT NULL,
+        [PERFORATION_OBS_NO] int NOT NULL,
+        [PERFORATION_TYPE_ID] int NULL,
+        [PERFORATION_TYPE] nvarchar(50) NULL,
+        [PERFORATION_METHOD_ID] int NULL,
+        [PERFORATION_METHOD] nvarchar(50) NULL,
+        [EXPIRY_DATE] datetime2 NULL,
+        [TOP_DEPTH] decimal(15,5) NULL,
+        [TOP_ZONE_ID] int NULL,
+        [TOP_ZONE_NAME] nvarchar(255) NULL,
+        [BASE_DEPTH] decimal(15,5) NULL,
+        [BASE_ZONE_ID] int NULL,
+        [BASE_ZONE_NAME] nvarchar(255) NULL,
+        [PERFORATION_ANGLE] decimal(10,5) NULL,
+        [PERFORATION_COUNT] int NULL,
+        [PERFORATION_DENSITY] decimal(10,5) NULL,
+        [PERFORATION_DIAMETER] decimal(8,3) NULL,
+        [PERFORATION_PHASE] nvarchar(40) NULL,
+        [IS_ACTIVE] bit NOT NULL,
+        [REMARK] nvarchar(2000) NULL,
+        [ROW_CHANGED_BY] nvarchar(100) NULL,
+        [ROW_CHANGED_DATE] datetime2 NULL,
+        [ROW_CREATED_BY] nvarchar(100) NULL,
+        [ROW_CREATED_DATE] datetime2 NULL,
+        [WELL_COMPLETION_NAME] nvarchar(50) NOT NULL,
+        CONSTRAINT [PK_WELL_PERFORATION] PRIMARY KEY ([WELL_PERFORATION_ID]),
+        CONSTRAINT [FK_WELL_PERFORATION_R_PERFORATION_METHOD_PERFORATION_METHOD_ID] FOREIGN KEY ([PERFORATION_METHOD_ID]) REFERENCES [R_PERFORATION_METHOD] ([R_PERFORATION_METHOD_ID]),
+        CONSTRAINT [FK_WELL_PERFORATION_R_PERFORATION_TYPE_PERFORATION_TYPE_ID] FOREIGN KEY ([PERFORATION_TYPE_ID]) REFERENCES [R_PERFORATION_TYPE] ([R_PERFORATION_TYPE_ID]),
+        CONSTRAINT [FK_WELL_PERFORATION_WELL_COMPLETION_WELL_COMPLETION_ID] FOREIGN KEY ([WELL_COMPLETION_ID]) REFERENCES [WELL_COMPLETION] ([WELL_COMPLETION_ID]),
+        CONSTRAINT [FK_WELL_PERFORATION_ZONE_BASE_ZONE_ID] FOREIGN KEY ([BASE_ZONE_ID]) REFERENCES [ZONE] ([ZONE_ID]),
+        CONSTRAINT [FK_WELL_PERFORATION_ZONE_TOP_ZONE_ID] FOREIGN KEY ([TOP_ZONE_ID]) REFERENCES [ZONE] ([ZONE_ID])
+    );
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_EQUIPMENT_MANUFACTURER_BA_ID] ON [EQUIPMENT] ([MANUFACTURER_BA_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_EQUIPMENT_R_DATA_ACCESS_CATEGORY_ID] ON [EQUIPMENT] ([R_DATA_ACCESS_CATEGORY_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_EQUIPMENT_R_EQUIPMENT_SUB_TYPE_ID] ON [EQUIPMENT] ([R_EQUIPMENT_SUB_TYPE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_EQUIPMENT_R_EQUIPMENT_TYPE_ID] ON [EQUIPMENT] ([R_EQUIPMENT_TYPE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_FACILITY_CRS_ID] ON [FACILITY] ([CRS_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_FACILITY_FACILITY_TYPE_ID] ON [FACILITY] ([FACILITY_TYPE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_FACILITY_R_DATA_ACCESS_CATEGORY_ID] ON [FACILITY] ([R_DATA_ACCESS_CATEGORY_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_FIELD_CRS_ID] ON [FIELD] ([CRS_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_FIELD_R_DATA_ACCESS_ CATEGORY_ID] ON [FIELD] ([R_DATA_ACCESS_ CATEGORY_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_FIELD_R_FIELD_TYPE_ID] ON [FIELD] ([R_FIELD_TYPE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_FLOW_MODEL_INSTALLATION_ID] ON [FLOW_MODEL] ([INSTALLATION_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_ORG_UNIT_R_ORG_UNIT_CATEGORY_ID] ON [ORG_UNIT] ([R_ORG_UNIT_CATEGORY_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_ORG_UNIT_R_ORG_UNIT_TYPE_ID] ON [ORG_UNIT] ([R_ORG_UNIT_TYPE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_POOL_FIELD_ID] ON [POOL] ([FIELD_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_POOL_R_DATA_ACCESS_ CATEGORY_ID] ON [POOL] ([R_DATA_ACCESS_ CATEGORY_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_POOL_R_POOL_STATUS_ID] ON [POOL] ([R_POOL_STATUS_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_POOL_R_POOL_TYPE_ID] ON [POOL] ([R_POOL_TYPE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_R_EQUIPMENT_SUB_TYPE_R_EQUIPMENT_TYPE_ID] ON [R_EQUIPMENT_SUB_TYPE] ([R_EQUIPMENT_TYPE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_R_EQUIPMENT_TYPE_R_EQUIPMENT_CATALOGUE_ID] ON [R_EQUIPMENT_TYPE] ([R_EQUIPMENT_CATALOGUE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_R_WELL_STATUS_R_SOURCE_ID] ON [R_WELL_STATUS] ([R_SOURCE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_R_WELL_STATUS_R_WELL_STATUS_TYPE_ID] ON [R_WELL_STATUS] ([R_WELL_STATUS_TYPE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_R_WELL_STATUS_TYPE_R_SOURCE_ID] ON [R_WELL_STATUS_TYPE] ([R_SOURCE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_REPORTING_ENTITY_R_REPORTING_ENTITY_KIND_ID] ON [REPORTING_ENTITY] ([R_REPORTING_ENTITY_KIND_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_CRS_ID] ON [WELL] ([CRS_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_CURRENT_CLASS_ID] ON [WELL] ([CURRENT_CLASS_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_DEPTH_DATUM_ID] ON [WELL] ([DEPTH_DATUM_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_FIELD_ID] ON [WELL] ([FIELD_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_R_DATA_ACCESS_ CATEGORY_ID] ON [WELL] ([R_DATA_ACCESS_ CATEGORY_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_R_PLOT_SYMBOL_ID] ON [WELL] ([R_PLOT_SYMBOL_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_R_TIMEZONE_ID] ON [WELL] ([R_TIMEZONE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_R_WELL_PROFILE_ID] ON [WELL] ([R_WELL_PROFILE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_COMPLETION_COMPLETION_TYPE_ID] ON [WELL_COMPLETION] ([COMPLETION_TYPE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_COMPLETION_WELLBORE_ID] ON [WELL_COMPLETION] ([WELLBORE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_COMPLETION_ZONE_ID] ON [WELL_COMPLETION] ([ZONE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_PERFORATION_BASE_ZONE_ID] ON [WELL_PERFORATION] ([BASE_ZONE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_PERFORATION_PERFORATION_METHOD_ID] ON [WELL_PERFORATION] ([PERFORATION_METHOD_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_PERFORATION_PERFORATION_TYPE_ID] ON [WELL_PERFORATION] ([PERFORATION_TYPE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_PERFORATION_TOP_ZONE_ID] ON [WELL_PERFORATION] ([TOP_ZONE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_PERFORATION_WELL_COMPLETION_ID] ON [WELL_PERFORATION] ([WELL_COMPLETION_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_TUBULAR_R_COUPLING_TYPE_ID] ON [WELL_TUBULAR] ([R_COUPLING_TYPE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_TUBULAR_R_TUBULAR_TYPE_ID] ON [WELL_TUBULAR] ([R_TUBULAR_TYPE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELL_TUBULAR_WELLBORE_ID] ON [WELL_TUBULAR] ([WELLBORE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELLBORE_BH_CRS_ID] ON [WELLBORE] ([BH_CRS_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELLBORE_CRS_ID] ON [WELLBORE] ([CRS_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELLBORE_DEPTH_DATUM_ID] ON [WELLBORE] ([DEPTH_DATUM_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELLBORE_FIELD_ID] ON [WELLBORE] ([FIELD_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELLBORE_PARENT_WELLBORE_ID] ON [WELLBORE] ([PARENT_WELLBORE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELLBORE_R_PLOT_SYMBOL_ID] ON [WELLBORE] ([R_PLOT_SYMBOL_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELLBORE_R_TIMEZONE_ID] ON [WELLBORE] ([R_TIMEZONE_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_WELLBORE_WELL_ID] ON [WELLBORE] ([WELL_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_ZONE_POOL_ID] ON [ZONE] ([POOL_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    CREATE INDEX [IX_ZONE_R_DATA_ACCESS_ CATEGORY_ID] ON [ZONE] ([R_DATA_ACCESS_ CATEGORY_ID]);
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261103044228_AddPdmMasterData'
+)
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20261103044228_AddPdmMasterData', N'10.0.12');
+END;
+
+COMMIT;
+GO
+
