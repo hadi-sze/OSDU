@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace OSDU.Data;
 public class Asset {
@@ -6,7 +8,7 @@ public class Asset {
  public string? Description { get; set; }
  public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
 }
-public class OsduDbContext(DbContextOptions<OsduDbContext> options) : DbContext(options) {
+public class OsduDbContext(DbContextOptions<OsduDbContext> options) : IdentityDbContext<IdentityUser>(options) {
  public DbSet<MasterData.Cartoreferencesystem> CartoreferencesystemRecords => Set<MasterData.Cartoreferencesystem>();
  public DbSet<MasterData.Equipment> EquipmentRecords => Set<MasterData.Equipment>();
  public DbSet<MasterData.Facility> FacilityRecords => Set<MasterData.Facility>();
@@ -47,6 +49,7 @@ public class OsduDbContext(DbContextOptions<OsduDbContext> options) : DbContext(
  public DbSet<MasterData.Zone> ZoneRecords => Set<MasterData.Zone>();
  public DbSet<Asset> Assets => Set<Asset>();
  protected override void OnModelCreating(ModelBuilder b) {
+  base.OnModelCreating(b);
   MasterDataConfiguration.Configure(b);
   b.Entity<Asset>().ToTable("Assets");
   b.Entity<Asset>().Property(x=>x.Name).HasMaxLength(200).IsRequired();
