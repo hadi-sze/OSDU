@@ -58,6 +58,9 @@ public static class MasterDataConfiguration {
   b.Entity<Equipment>().HasOne<OrgUnit>().WithMany().HasForeignKey(x => x.ManufacturerBaId).OnDelete(DeleteBehavior.NoAction);
   b.Entity<Equipment>().Property(x => x.RDataAccessCategoryId).HasColumnName("R_DATA_ACCESS_CATEGORY_ID");
   b.Entity<Equipment>().HasOne<RDataAccessCategory>().WithMany().HasForeignKey(x => x.RDataAccessCategoryId).OnDelete(DeleteBehavior.NoAction);
+  b.Entity<Facility>().Property(x=>x.DepthUom).HasMaxLength(8).HasColumnName("DEPTH_UOM");
+  b.Entity<Facility>().Property(x=>x.ElevationUom).HasMaxLength(8).HasColumnName("ELEVATION_UOM");
+  b.Entity<Facility>().Property(x=>x.FacilityDiameterUom).HasMaxLength(8).HasColumnName("FACILITY_DIAMETER_UOM");
   b.Entity<Facility>().ToTable("FACILITY");
   b.Entity<Facility>().HasKey(x => x.FacilityId);
   b.Entity<Facility>().Property(x => x.FacilityId).HasColumnName("FACILITY_ID");

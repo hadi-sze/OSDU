@@ -1,7 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { CssVarsProvider, extendTheme, useColorScheme } from '@mui/joy/styles';
+import { joyTheme } from '../theme';
+import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import CssBaseline from '@mui/joy/CssBaseline';
 import Box from '@mui/joy/Box';
@@ -17,7 +18,7 @@ import Typography from '@mui/joy/Typography';
 import Stack from '@mui/joy/Stack';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
-import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
+import Image from 'next/image';
 import GoogleIcon from '@mui/icons-material/Google';
 import Alert from '@mui/joy/Alert';
 
@@ -54,13 +55,13 @@ function ColorSchemeToggle(props: IconButtonProps) {
   );
 }
 
-const customTheme = extendTheme({});
+
 
 export default function JoySignInSideTemplate() {
   const [busy, setBusy] = React.useState(false);
   const [message, setMessage] = React.useState('');
   return (
-    <CssVarsProvider theme={customTheme} defaultMode="dark" disableTransitionOnChange>
+    <CssVarsProvider theme={joyTheme} defaultMode="dark" disableTransitionOnChange>
       <CssBaseline />
       <GlobalStyles
         styles={{
@@ -100,9 +101,9 @@ export default function JoySignInSideTemplate() {
             sx={{ py: 3, display: 'flex', justifyContent: 'space-between' }}
           >
             <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
-              <IconButton variant="soft" color="primary" size="sm">
-                <BadgeRoundedIcon />
-              </IconButton>
+              <Box sx={{ width: 44, height: 50, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Image src="/nioclogo.png" alt="NIOC logo" width={44} height={50} style={{ objectFit: "contain" }} priority />
+              </Box>
               <Typography level="title-lg">OSDU</Typography>
             </Box>
             <ColorSchemeToggle />
@@ -238,4 +239,5 @@ export default function JoySignInSideTemplate() {
     </CssVarsProvider>
   );
 }
+
 

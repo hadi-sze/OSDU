@@ -39,6 +39,9 @@ public class Equipment {
 }
 
 public class Facility {
+ public string? DepthUom { get; set; }
+ public string? ElevationUom { get; set; }
+ public string? FacilityDiameterUom { get; set; }
  public int FacilityId { get; set; }
  public string FacilityName { get; set; } = "";
  public int? FacilityTypeId { get; set; }

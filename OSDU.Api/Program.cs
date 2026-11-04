@@ -9,6 +9,8 @@ builder.Services.AddProblemDetails();
 builder.Services.AddDbContext<OsduDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("OSDU")));
 builder.Services.AddScoped<AssetRepository>();
 builder.Services.AddScoped<AssetService>();
+builder.Services.AddScoped<FacilityRepository>();
+builder.Services.AddScoped<FacilityService>();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(o => {
  o.User.RequireUniqueEmail = true;
  o.Password.RequiredLength = 12;
