@@ -6,11 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
-builder.Services.AddDbContext<OsduDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("OSDU")));
+builder.Services.AddDbContext<OsduDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("OSDU")).UseOsduSeeding());
 builder.Services.AddScoped<AssetRepository>();
 builder.Services.AddScoped<AssetService>();
 builder.Services.AddScoped<FacilityRepository>();
 builder.Services.AddScoped<FacilityService>();
+builder.Services.AddScoped<WellStatusTypeRepository>();
+builder.Services.AddScoped<WellStatusTypeService>();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(o => {
  o.User.RequireUniqueEmail = true;
  o.Password.RequiredLength = 12;
@@ -27,6 +29,11 @@ builder.Services.ConfigureApplicationCookie(o => {
 });
 builder.Services.AddAuthorization();
 var app = builder.Build();
+if (builder.Configuration.GetValue<bool>("seed-data")) {
+ using var scope = app.Services.CreateScope();
+ await scope.ServiceProvider.GetRequiredService<OsduDbContext>().Database.MigrateAsync();
+ return;
+}
 app.UseAuthentication();
 app.UseAuthorization();
 // Optional one-time account provisioning; passwords never enter source control.
@@ -45,3 +52,4 @@ if (app.Environment.IsDevelopment()) app.MapOpenApi();
 app.MapGet("/", () => Results.Ok(new { application="OSDU", api="/api/assets" }));
 app.MapControllers().RequireAuthorization();
 app.Run();
+
