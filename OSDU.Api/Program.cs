@@ -13,6 +13,10 @@ builder.Services.AddScoped<FacilityRepository>();
 builder.Services.AddScoped<FacilityService>();
 builder.Services.AddScoped<WellStatusTypeRepository>();
 builder.Services.AddScoped<WellStatusTypeService>();
+builder.Services.AddScoped<WellStatusRepository>();
+builder.Services.AddScoped<WellStatusService>();
+builder.Services.AddScoped<OrgUnitTypeRepository>();
+builder.Services.AddScoped<OrgUnitTypeService>();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(o => {
  o.User.RequireUniqueEmail = true;
  o.Password.RequiredLength = 12;

@@ -3,11 +3,18 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export interface Asset { id: number; name: string; description: string | null; createdUtc: string }
 export type AssetInput = Pick<Asset, 'name' | 'description'>
 export const assetsApi = createApi({
-    reducerPath: 'assetsApi', baseQuery: fetchBaseQuery({ baseUrl: '/api/' }), tagTypes: ['Asset', 'Facility', 'WellStatusType'],
+    reducerPath: 'assetsApi', baseQuery: fetchBaseQuery({ baseUrl: '/api/' }), tagTypes: ['OrgUnitType','Asset', 'Facility', 'WellStatusType','WellStatus'],
     endpoints: b => ({
-  getWellStatusTypes:b.query<Record<string,unknown>[],void>({query:()=>'reference/well-status-types',providesTags:['WellStatusType']}),
+  getOrgUnitTypes:b.query<Record<string,unknown>[],void>({query:()=>'reference/org-unit-types',providesTags:['OrgUnitType']}),
+  createOrgUnitType:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'reference/org-unit-types',method:'POST',body}),invalidatesTags:['OrgUnitType']}),
+
+  getWellStatuses:b.query<Record<string,unknown>[],void>({query:()=>'reference/well-statuses',providesTags:['WellStatus']}),
+  getWellStatusTypeOptions:b.query<{id:number;label:string}[],void>({query:()=>'reference/well-statuses/types'}),
+  createWellStatus:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'reference/well-statuses',method:'POST',body}),invalidatesTags:['WellStatus']}),
+
+  getWellStatusTypes:b.query<Record<string,unknown>[],void>({query:()=>'reference/well-status-types',providesTags:['WellStatusType','WellStatus']}),
   getWellStatusSources:b.query<{id:number;label:string}[],void>({query:()=>'reference/well-status-types/sources'}),
-  createWellStatusType:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'reference/well-status-types',method:'POST',body}),invalidatesTags:['WellStatusType']}),
+  createWellStatusType:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'reference/well-status-types',method:'POST',body}),invalidatesTags:['WellStatusType','WellStatus']}),
 
         getFacilities: b.query<Record<string, unknown>[], void>({ query: () => 'facilities', providesTags: ['Facility'] }),
         getFacilityLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'facilities/lookups' }),
@@ -30,3 +37,7 @@ export const { useGetFacilitiesQuery, useGetFacilityLookupsQuery, useCreateFacil
 
 export const {useGetWellStatusTypesQuery,useGetWellStatusSourcesQuery,useCreateWellStatusTypeMutation}=assetsApi
 
+
+export const {useGetWellStatusesQuery,useGetWellStatusTypeOptionsQuery,useCreateWellStatusMutation}=assetsApi
+
+export const {useGetOrgUnitTypesQuery,useCreateOrgUnitTypeMutation}=assetsApi

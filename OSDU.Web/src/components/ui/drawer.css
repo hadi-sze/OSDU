@@ -1,0 +1,9 @@
+body{position:relative}
+.osdu-drawer-overlay{position:fixed;inset:0;z-index:1300;background:rgb(0 0 0 / .4);transition:opacity 250ms ease}
+.osdu-drawer-overlay[data-starting-style],.osdu-drawer-overlay[data-ending-style]{opacity:0}
+.osdu-drawer-viewport{position:fixed;inset:0;z-index:1300;pointer-events:none}
+.osdu-drawer-popup{position:absolute;right:0;top:0;bottom:0;width:min(100vw,500px);pointer-events:auto;outline:0;box-shadow:-8px 0 40px #0002;transform:translateX(var(--drawer-swipe-movement-x,0px));transition:transform 300ms cubic-bezier(.32,.72,0,1)}
+.osdu-drawer-popup[data-starting-style],.osdu-drawer-popup[data-ending-style]{transform:translateX(100%)}
+.osdu-drawer-popup[data-swiping]{transition:none}
+.osdu-drawer-content{height:100%;display:flex;flex-direction:column}
+@media(prefers-reduced-motion:reduce){.osdu-drawer-overlay,.osdu-drawer-popup{transition:none}}
