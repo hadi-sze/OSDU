@@ -7,6 +7,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
 builder.Services.AddDbContext<OsduDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("OSDU")).UseOsduSeeding());
+builder.Services.AddScoped<WellRepository>();
+builder.Services.AddScoped<WellService>();
 builder.Services.AddScoped<AssetRepository>();
 builder.Services.AddScoped<AssetService>();
 builder.Services.AddScoped<FacilityRepository>();

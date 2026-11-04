@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import OrgUnitTypeGrid from './org-unit-type-grid'
 import { Alert, Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControlLabel, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
 import { Drawer as ShadDrawer, DrawerContent, DrawerTitle, DrawerDescription } from '../components/ui/drawer'
 import { CssVarsProvider } from '@mui/joy/styles'
@@ -37,10 +38,10 @@ export default function OrgUnitTypes() {
   setSuccess('Saved '+result.orgUnitType+' successfully.');setValues(initial);setOpen(false)
  }catch(e){const err=e as {data?:{message?:string;errors?:Record<string,string[]>}};setError(err.data?.message||Object.values(err.data?.errors||{}).flat().join(' ')||'Unable to save. Please try again.')}}
  return <Stack spacing={2}>
-  <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Manage the categories used to classify organization unit typees.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setError('')}}>Add organization unit type</Button></Stack>
+  <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Manage geographic and business organization unit types.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setError('')}}>Add organization unit type</Button></Stack>
   {success&&<Alert severity="success" onClose={()=>setSuccess('')}>{success}</Alert>}
   {loadError&&<Alert severity="error">Unable to load records.<Button onClick={()=>refetch()}>Retry</Button></Alert>}
-  <Paper variant="outlined"><TableContainer><Table><TableHead><TableRow>{['Name','Short name','Long name','Active','Created by'].map(h=><TableCell key={h}>{h}</TableCell>)}</TableRow></TableHead><TableBody>{rows.map(r=><TableRow key={String(r.rOrgUnitTypeId)}>{['orgUnitType','shortName','longName','isActive','rowCreatedBy'].map(k=><TableCell key={k}>{typeof r[k]==='boolean'?(r[k]?'Yes':'No'):String(r[k]??'—')}</TableCell>)}</TableRow>)}{!rows.length&&<TableRow><TableCell colSpan={5}>{isLoading?'Loading…':'No organization unit types yet.'}</TableCell></TableRow>}</TableBody></Table></TableContainer></Paper>
+  <OrgUnitTypeGrid rows={rows} loading={isLoading}/>
   <ShadDrawer swipeDirection="right" open={open} onOpenChange={next=>{if(!next)close()}}>
    <DrawerContent>
     <CssVarsProvider theme={joyTheme}>
@@ -66,5 +67,6 @@ export default function OrgUnitTypes() {
   <Dialog open={!!pending} onClose={()=>setPending(null)}><DialogTitle>Discard unsaved changes?</DialogTitle><DialogContent>Your organization unit type has not been saved.</DialogContent><DialogActions><Button onClick={()=>setPending(null)}>Keep editing</Button><Button color="error" onClick={()=>{const action=pending;setPending(null);action?.()}}>Discard changes</Button></DialogActions></Dialog>
  </Stack>
 }
+
 
 

@@ -1,10 +1,25 @@
 'use client'
 import { useEffect, useState } from 'react'
+import OrgUnitTypeGrid from './org-unit-type-grid'
 import { Alert, Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControlLabel, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
+import { Drawer as ShadDrawer, DrawerContent, DrawerTitle, DrawerDescription } from '../components/ui/drawer'
+import { CssVarsProvider } from '@mui/joy/styles'
+import { joyTheme } from './theme'
+import JoyBox from '@mui/joy/Box'
+import JoyButton from '@mui/joy/Button'
+import JoyInput from '@mui/joy/Input'
+import JoyTextarea from '@mui/joy/Textarea'
+import JoyFormControl from '@mui/joy/FormControl'
+import JoyFormLabel from '@mui/joy/FormLabel'
+import JoyCheckbox from '@mui/joy/Checkbox'
+import JoyAutocomplete from '@mui/joy/Autocomplete'
+import JoyAlert from '@mui/joy/Alert'
+import JoyTypography from '@mui/joy/Typography'
+import JoyIconButton from '@mui/joy/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import AddIcon from '@mui/icons-material/Add'
-import {useGetWellStatusTypesQuery,useGetWellStatusSourcesQuery,useCreateWellStatusTypeMutation} from '../lib/store'
-const initial={wellStatusType:'',longName:'',shortName:'',remark:'',rSourceId:null as number|null,isActive:true}
+import {useGetWellStatusTypesQuery,useCreateWellStatusTypeMutation,useGetWellStatusSourcesQuery} from '../lib/store'
+const initial={wellStatusType:'',longName:'',shortName:'',remark:'',isActive:true,rSourceId:null as number|null}
 export default function WellStatusTypes() {
  const {data:rows=[],error:loadError,isLoading,refetch}=useGetWellStatusTypesQuery()
  const {data:sources=[],error:sourceError}=useGetWellStatusSourcesQuery()
@@ -27,23 +42,33 @@ export default function WellStatusTypes() {
   <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Manage the categories used to classify well statuses.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setError('')}}>Add well status type</Button></Stack>
   {success&&<Alert severity="success" onClose={()=>setSuccess('')}>{success}</Alert>}
   {loadError&&<Alert severity="error">Unable to load records.<Button onClick={()=>refetch()}>Retry</Button></Alert>}
-  <Paper variant="outlined"><TableContainer><Table><TableHead><TableRow>{['Name','Short name','Long name','Active','Created by'].map(h=><TableCell key={h}>{h}</TableCell>)}</TableRow></TableHead><TableBody>{rows.map(r=><TableRow key={String(r.rWellStatusTypeId)}>{['wellStatusType','shortName','longName','isActive','rowCreatedBy'].map(k=><TableCell key={k}>{typeof r[k]==='boolean'?(r[k]?'Yes':'No'):String(r[k]??'—')}</TableCell>)}</TableRow>)}{!rows.length&&<TableRow><TableCell colSpan={5}>{isLoading?'Loading…':'No well status types yet.'}</TableCell></TableRow>}</TableBody></Table></TableContainer></Paper>
-  <Drawer sx={{zIndex:1300}} anchor="right" open={open} onClose={close} slotProps={{paper:{sx:{width:{xs:'100%',sm:480}}}}}>
-   <Box component="form" onSubmit={save} sx={{height:'100%',display:'flex',flexDirection:'column'}} aria-labelledby="well-status-title">
-    <Stack direction="row" sx={{p:3,alignItems:'center',justifyContent:'space-between'}}><Typography id="well-status-title" variant="h6" component="h2">Add well status type</Typography><IconButton aria-label="Close drawer" disabled={saving} onClick={close}><CloseIcon/></IconButton></Stack><Divider/>
-    <Stack spacing={3} sx={{p:3,overflowY:'auto',flex:1}}>
-     <Typography variant="body2" color="text.secondary">ID and audit fields are assigned automatically when saved.</Typography>
-     {error&&<Alert severity="error">{error}</Alert>}
-     <TextField autoFocus label="Well status type" required value={values.wellStatusType} disabled={saving} onChange={e=>setValues(v=>({...v,wellStatusType:e.target.value}))} slotProps={{htmlInput:{maxLength:60}}} helperText="Required · up to 60 characters"/>
-     <TextField label="Short name" value={values.shortName} disabled={saving} onChange={e=>setValues(v=>({...v,shortName:e.target.value}))} slotProps={{htmlInput:{maxLength:30}}}/>
-     <TextField label="Long name" value={values.longName} disabled={saving} onChange={e=>setValues(v=>({...v,longName:e.target.value}))} slotProps={{htmlInput:{maxLength:255}}}/>
-     <Autocomplete options={sources} getOptionLabel={o=>o.label} isOptionEqualToValue={(a,b)=>a.id===b.id} value={sources.find(o=>o.id===values.rSourceId)||null} disabled={saving||!!sourceError} onChange={(_e,o)=>setValues(v=>({...v,rSourceId:o?.id??null}))} renderInput={params=><TextField {...params} label="Source" helperText={sourceError?'Source list unavailable; optional.':'Optional reference source'}/>}/>
-     <TextField label="Remarks" multiline rows={4} value={values.remark} disabled={saving} onChange={e=>setValues(v=>({...v,remark:e.target.value}))} slotProps={{htmlInput:{maxLength:2000}}}/>
-     <FormControlLabel control={<Checkbox checked={values.isActive} disabled={saving} onChange={e=>setValues(v=>({...v,isActive:e.target.checked}))}/>} label="Active"/>
-    </Stack><Divider/><Stack direction="row" spacing={2} sx={{p:3,justifyContent:'flex-end'}}><Button onClick={close} disabled={saving}>Cancel</Button><Button variant="contained" type="submit" disabled={saving||!values.wellStatusType.trim()}>{saving?'Saving…':'Save status type'}</Button></Stack>
-   </Box>
-  </Drawer>
+  <OrgUnitTypeGrid rows={rows} loading={isLoading} idKey="rWellStatusTypeId" nameKey="wellStatusType" entityLabel="Well status types"/>
+  <ShadDrawer swipeDirection="right" open={open} onOpenChange={next=>{if(!next)close()}}>
+   <DrawerContent>
+    <CssVarsProvider theme={joyTheme}>
+     <JoyBox component="form" onSubmit={save} sx={{height:'100dvh',display:'flex',flexDirection:'column',bgcolor:'background.surface',color:'text.primary'}}>
+      <JoyBox sx={{p:3,display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'1px solid',borderColor:'divider'}}>
+       <DrawerTitle style={{margin:0,fontSize:20,fontWeight:600}}>Add well status type</DrawerTitle>
+       <JoyIconButton aria-label="Close drawer" disabled={saving} onClick={close}><CloseIcon/></JoyIconButton>
+      </JoyBox>
+      <JoyBox sx={{p:3,display:'flex',flexDirection:'column',gap:2.5,overflowY:'auto',flex:1}}>
+       <DrawerDescription style={{margin:0,fontSize:14}}>Create a well status type such as Operating or Producing. ID and audit fields are assigned automatically.</DrawerDescription>
+       {error&&<JoyAlert color="danger">{error}</JoyAlert>}
+       <JoyFormControl required><JoyFormLabel>Well status type</JoyFormLabel><JoyInput autoFocus required disabled={saving} value={values.wellStatusType} onChange={e=>setValues(v=>({...v,wellStatusType:e.target.value}))} slotProps={{input:{maxLength:60}}}/></JoyFormControl>
+       <JoyFormControl><JoyFormLabel>Short name</JoyFormLabel><JoyInput disabled={saving} value={values.shortName} onChange={e=>setValues(v=>({...v,shortName:e.target.value}))} slotProps={{input:{maxLength:30}}}/></JoyFormControl>
+       <JoyFormControl><JoyFormLabel>Long name</JoyFormLabel><JoyInput disabled={saving} value={values.longName} onChange={e=>setValues(v=>({...v,longName:e.target.value}))} slotProps={{input:{maxLength:255}}}/></JoyFormControl>
+       <JoyFormControl><JoyFormLabel>Source</JoyFormLabel><JoyAutocomplete options={sources} getOptionLabel={o=>o.label} isOptionEqualToValue={(a,b)=>a.id===b.id} value={sources.find(o=>o.id===values.rSourceId)||null} disabled={saving||!!sourceError} onChange={(_e,o)=>setValues(v=>({...v,rSourceId:o?.id??null}))} placeholder="Optional source"/>{sourceError&&<JoyTypography level="body-xs" color="danger">Sources could not be loaded.</JoyTypography>}</JoyFormControl>
+       <JoyFormControl><JoyFormLabel>Remarks</JoyFormLabel><JoyTextarea minRows={3} disabled={saving} value={values.remark} onChange={e=>setValues(v=>({...v,remark:e.target.value}))} slotProps={{textarea:{maxLength:2000}}}/></JoyFormControl>
+       <JoyCheckbox label="Active" checked={values.isActive} disabled={saving} onChange={e=>setValues(v=>({...v,isActive:e.target.checked}))}/>
+      </JoyBox>
+      <JoyBox sx={{p:3,display:'flex',gap:2,justifyContent:'flex-end',borderTop:'1px solid',borderColor:'divider'}}><JoyButton variant="outlined" color="neutral" disabled={saving} onClick={close}>Cancel</JoyButton><JoyButton type="submit" loading={saving} disabled={!values.wellStatusType.trim()}>Save well status type</JoyButton></JoyBox>
+     </JoyBox>
+    </CssVarsProvider>
+   </DrawerContent>
+  </ShadDrawer>
   <Dialog open={!!pending} onClose={()=>setPending(null)}><DialogTitle>Discard unsaved changes?</DialogTitle><DialogContent>Your well status type has not been saved.</DialogContent><DialogActions><Button onClick={()=>setPending(null)}>Keep editing</Button><Button color="error" onClick={()=>{const action=pending;setPending(null);action?.()}}>Discard changes</Button></DialogActions></Dialog>
  </Stack>
 }
+
+
 

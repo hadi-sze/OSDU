@@ -3,8 +3,11 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export interface Asset { id: number; name: string; description: string | null; createdUtc: string }
 export type AssetInput = Pick<Asset, 'name' | 'description'>
 export const assetsApi = createApi({
-    reducerPath: 'assetsApi', baseQuery: fetchBaseQuery({ baseUrl: '/api/' }), tagTypes: ['OrgUnitType','Asset', 'Facility', 'WellStatusType','WellStatus'],
+    reducerPath: 'assetsApi', baseQuery: fetchBaseQuery({ baseUrl: '/api/' }), tagTypes: ['Well','OrgUnitType','Asset', 'Facility', 'WellStatusType','WellStatus'],
     endpoints: b => ({
+ getWells:b.query<Record<string,unknown>[],void>({query:()=>'wells',providesTags:['Well']}),
+ getWellLookups:b.query<Record<string,{id:number;label:string}[]>,void>({query:()=>'wells/lookups'}),
+ createWell:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'wells',method:'POST',body}),invalidatesTags:['Well']}),
   getOrgUnitTypes:b.query<Record<string,unknown>[],void>({query:()=>'reference/org-unit-types',providesTags:['OrgUnitType']}),
   createOrgUnitType:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'reference/org-unit-types',method:'POST',body}),invalidatesTags:['OrgUnitType']}),
 
@@ -41,3 +44,5 @@ export const {useGetWellStatusTypesQuery,useGetWellStatusSourcesQuery,useCreateW
 export const {useGetWellStatusesQuery,useGetWellStatusTypeOptionsQuery,useCreateWellStatusMutation}=assetsApi
 
 export const {useGetOrgUnitTypesQuery,useCreateOrgUnitTypeMutation}=assetsApi
+
+export const {useGetWellsQuery,useGetWellLookupsQuery,useCreateWellMutation}=assetsApi
