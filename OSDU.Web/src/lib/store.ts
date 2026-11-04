@@ -3,8 +3,23 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export interface Asset { id: number; name: string; description: string | null; createdUtc: string }
 export type AssetInput = Pick<Asset, 'name' | 'description'>
 export const assetsApi = createApi({
-    reducerPath: 'assetsApi', baseQuery: fetchBaseQuery({ baseUrl: '/api/' }), tagTypes: ['Well','OrgUnitType','Asset', 'Facility', 'WellStatusType','WellStatus'],
+    reducerPath: 'assetsApi', baseQuery: fetchBaseQuery({ baseUrl: '/api/' }), tagTypes: ['Pool','OrganizationUnit','Crs','FacilityField','Field','Well','OrgUnitType','Asset', 'Facility', 'WellStatusType','WellStatus'],
     endpoints: b => ({
+ getPoolRecords:b.query<Record<string,unknown>[],void>({query:()=>'pools',providesTags:['Pool']}),
+ getPoolLookups:b.query<Record<string,{id:number;label:string}[]>,void>({query:()=>'pools/lookups'}),
+ createPool:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'pools',method:'POST',body}),invalidatesTags:['Pool']}),
+ getOrganizationUnitRecords:b.query<Record<string,unknown>[],void>({query:()=>'organization-units',providesTags:['OrganizationUnit']}),
+ getOrganizationUnitLookups:b.query<Record<string,{id:number;label:string}[]>,void>({query:()=>'organization-units/lookups'}),
+ createOrganizationUnit:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'organization-units',method:'POST',body}),invalidatesTags:['OrganizationUnit']}),
+ getCrsRecords:b.query<Record<string,unknown>[],void>({query:()=>'coordinate-reference-systems',providesTags:['Crs']}),
+ getCrsLookups:b.query<Record<string,{id:number;label:string}[]>,void>({query:()=>'coordinate-reference-systems/lookups'}),
+ createCrs:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'coordinate-reference-systems',method:'POST',body}),invalidatesTags:['Crs']}),
+ getFacilityFields:b.query<Record<string,unknown>[],void>({query:()=>'facility-fields',providesTags:['FacilityField']}),
+ getFacilityFieldLookups:b.query<Record<string,{id:number;label:string}[]>,void>({query:()=>'facility-fields/lookups',providesTags:['Facility','Field']}),
+ createFacilityField:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'facility-fields',method:'POST',body}),invalidatesTags:['FacilityField']}),
+ getFields:b.query<Record<string,unknown>[],void>({query:()=>'fields',providesTags:['Field']}),
+ getFieldLookups:b.query<Record<string,{id:number;label:string}[]>,void>({query:()=>'fields/lookups'}),
+ createField:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'fields',method:'POST',body}),invalidatesTags:['Field']}),
  getWells:b.query<Record<string,unknown>[],void>({query:()=>'wells',providesTags:['Well']}),
  getWellLookups:b.query<Record<string,{id:number;label:string}[]>,void>({query:()=>'wells/lookups'}),
  createWell:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'wells',method:'POST',body}),invalidatesTags:['Well']}),
@@ -46,3 +61,13 @@ export const {useGetWellStatusesQuery,useGetWellStatusTypeOptionsQuery,useCreate
 export const {useGetOrgUnitTypesQuery,useCreateOrgUnitTypeMutation}=assetsApi
 
 export const {useGetWellsQuery,useGetWellLookupsQuery,useCreateWellMutation}=assetsApi
+
+export const {useGetFieldsQuery,useGetFieldLookupsQuery,useCreateFieldMutation}=assetsApi
+
+export const {useGetFacilityFieldsQuery,useGetFacilityFieldLookupsQuery,useCreateFacilityFieldMutation}=assetsApi
+
+export const {useGetCrsRecordsQuery,useGetCrsLookupsQuery,useCreateCrsMutation}=assetsApi
+
+export const {useGetOrganizationUnitRecordsQuery,useGetOrganizationUnitLookupsQuery,useCreateOrganizationUnitMutation}=assetsApi
+
+export const {useGetPoolRecordsQuery,useGetPoolLookupsQuery,useCreatePoolMutation}=assetsApi
