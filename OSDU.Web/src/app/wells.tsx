@@ -1,4 +1,5 @@
 'use client'
+import { OrbitRing } from '@/components/loading-ui/orbit-ring'
 import { useEffect, useState } from 'react'
 import OrgUnitTypeGrid from './org-unit-type-grid'
 import { Alert, Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControlLabel, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
@@ -23,7 +24,7 @@ const fields=[{"key": "uwi", "label": "UWI", "kind": "text", "required": true, "
 const initial:Record<string,string|boolean>=Object.fromEntries(fields.map(f=>[f.key,f.kind==='boolean'?f.key==='isActive':'']))
 const wellColumns=[{key:"wellId",label:"ID"},{key:"uwi",label:"UWI"},{key:"wellName",label:"Well name"},{key:"fieldName",label:"Field"},{key:"isActive",label:"Status"},{key:"rowCreatedBy",label:"Created by"}]
 export default function Wells() {
- const {data:rows=[],error:loadError,isLoading,refetch}=useGetWellsQuery()
+ const {data:rows=[],error:loadError,isLoading,isFetching,refetch}=useGetWellsQuery()
  const {data:lookups={},error:lookupError}=useGetWellLookupsQuery()
  const [create,{isLoading:saving}]=useCreateWellMutation()
  const [open,setOpen]=useState(false),[values,setValues]=useState(initial),[error,setError]=useState(''),[success,setSuccess]=useState('')
@@ -44,7 +45,7 @@ export default function Wells() {
   <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Manage well master data and operational details.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setError('')}}>Add well</Button></Stack>
   {success&&<Alert severity="success" onClose={()=>setSuccess('')}>{success}</Alert>}
   {loadError&&<Alert severity="error">Unable to load records.<Button onClick={()=>refetch()}>Retry</Button></Alert>}
-  <OrgUnitTypeGrid rows={rows} loading={isLoading} idKey="wellId" nameKey="wellName" entityLabel="Wells" customColumns={wellColumns}/>
+  <OrgUnitTypeGrid rows={rows} loading={isLoading||isFetching||saving} idKey="wellId" nameKey="wellName" entityLabel="Wells" customColumns={wellColumns}/>
   <ShadDrawer swipeDirection="right" open={open} onOpenChange={next=>{if(!next)close()}}>
    <DrawerContent>
     <CssVarsProvider theme={joyTheme}>
@@ -59,7 +60,7 @@ export default function Wells() {
        {fields.map(f=><JoyFormControl key={f.key} required={f.required}>{["uwi","spudDate","xCoordinate","deepestDepth","abandonmentDate","operator"].includes(f.key)&&<JoyTypography level="title-md" sx={{mt:1,mb:1}}>{({uwi:"Identification",spudDate:"Lifecycle dates",xCoordinate:"Location",deepestDepth:"Depth and elevation",abandonmentDate:"Additional lifecycle details",operator:"Operations and references"} as Record<string,string>)[f.key]}</JoyTypography>}<JoyFormLabel>{f.label}</JoyFormLabel>{f.kind==='boolean'?<JoyCheckbox checked={!!values[f.key]} disabled={saving} onChange={e=>setValues(v=>({...v,[f.key]:e.target.checked}))}/>:f.kind==='lookup'?<JoyAutocomplete options={lookups[f.key]||[]} getOptionLabel={o=>o.label} isOptionEqualToValue={(a,b)=>a.id===b.id} value={(lookups[f.key]||[]).find(o=>String(o.id)===String(values[f.key]))||null} disabled={saving||!!lookupError} onChange={(_e,o)=>setValues(v=>({...v,[f.key]:o?String(o.id):''}))} placeholder="Select an optional reference"/>:<JoyInput required={f.required} disabled={saving} type={f.kind==='date'?'date':f.kind==='number'?'number':'text'} value={String(values[f.key])} onChange={e=>setValues(v=>({...v,[f.key]:e.target.value}))} slotProps={{input:{maxLength:f.max||undefined,step:f.kind==='number'?'any':undefined}}}/>}</JoyFormControl>)}
        {lookupError&&<JoyAlert color="danger">Reference options could not be loaded. Try reopening this page.</JoyAlert>}
       </JoyBox>
-      <JoyBox sx={{p:3,display:'flex',gap:2,justifyContent:'flex-end',borderTop:'1px solid',borderColor:'divider'}}><JoyButton variant="outlined" color="neutral" disabled={saving} onClick={close}>Cancel</JoyButton><JoyButton type="submit" loading={saving} disabled={!String(values.wellName).trim()||!String(values.uwi).trim()}>Save well</JoyButton></JoyBox>
+      <JoyBox sx={{p:3,display:'flex',gap:2,justifyContent:'flex-end',borderTop:'1px solid',borderColor:'divider'}}><JoyButton variant="outlined" color="neutral" disabled={saving} onClick={close}>Cancel</JoyButton><JoyButton type="submit" loading={saving} loadingIndicator={<OrbitRing className="size-4"/>} disabled={!String(values.wellName).trim()||!String(values.uwi).trim()}>Save well</JoyButton></JoyBox>
      </JoyBox>
     </CssVarsProvider>
    </DrawerContent>

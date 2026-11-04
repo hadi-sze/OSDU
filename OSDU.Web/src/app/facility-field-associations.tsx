@@ -1,4 +1,5 @@
 'use client'
+import { OrbitRing } from '@/components/loading-ui/orbit-ring'
 import { useEffect, useState } from 'react'
 import OrgUnitTypeGrid from './org-unit-type-grid'
 import { Alert, Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControlLabel, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
@@ -23,7 +24,7 @@ const fields=[{"key": "facilityId", "label": "Facility", "kind": "lookup", "requ
 const initial:Record<string,string|boolean>=Object.fromEntries(fields.map(f=>[f.key,f.kind==='boolean'?f.key==='isActive':'']))
 const facilityFieldColumns=[{key:"facilityFieldId",label:"ID"},{key:"facilityName",label:"Facility"},{key:"fieldName",label:"Field"},{key:"effectiveDate",label:"Effective date"},{key:"expiryDate",label:"Expiry date"},{key:"isActive",label:"Status"},{key:"rowCreatedBy",label:"Created by"}]
 export default function FacilityFields() {
- const {data:rows=[],error:loadError,isLoading,refetch}=useGetFacilityFieldsQuery()
+ const {data:rows=[],error:loadError,isLoading,isFetching,refetch}=useGetFacilityFieldsQuery()
  const {data:lookups={},error:lookupError}=useGetFacilityFieldLookupsQuery()
  const [create,{isLoading:saving}]=useCreateFacilityFieldMutation()
  const [open,setOpen]=useState(false),[values,setValues]=useState(initial),[error,setError]=useState(''),[success,setSuccess]=useState('')
@@ -44,7 +45,7 @@ export default function FacilityFields() {
   <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Associate facilities with fields and define their effective dates.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setError('')}}>Add facility field</Button></Stack>
   {success&&<Alert severity="success" onClose={()=>setSuccess('')}>{success}</Alert>}
   {loadError&&<Alert severity="error">Unable to load records.<Button onClick={()=>refetch()}>Retry</Button></Alert>}
-  <OrgUnitTypeGrid rows={rows} loading={isLoading} idKey="facilityFieldId" nameKey="fieldName" entityLabel="Facility fields" customColumns={facilityFieldColumns}/>
+  <OrgUnitTypeGrid rows={rows} loading={isLoading||isFetching||saving} idKey="facilityFieldId" nameKey="fieldName" entityLabel="Facility fields" customColumns={facilityFieldColumns}/>
   <ShadDrawer swipeDirection="right" open={open} onOpenChange={next=>{if(!next)close()}}>
    <DrawerContent>
     <CssVarsProvider theme={joyTheme}>
@@ -59,7 +60,7 @@ export default function FacilityFields() {
        {fields.map(f=><JoyFormControl key={f.key} required={f.required}><JoyFormLabel>{f.label}</JoyFormLabel>{f.kind==='boolean'?<JoyCheckbox checked={!!values[f.key]} disabled={saving} onChange={e=>setValues(v=>({...v,[f.key]:e.target.checked}))}/>:f.kind==='lookup'?<JoyAutocomplete options={lookups[f.key]||[]} getOptionLabel={o=>o.label} isOptionEqualToValue={(a,b)=>a.id===b.id} value={(lookups[f.key]||[]).find(o=>String(o.id)===String(values[f.key]))||null} disabled={saving||!!lookupError} onChange={(_e,o)=>setValues(v=>({...v,[f.key]:o?String(o.id):''}))} placeholder={f.required?"Select "+f.label.toLowerCase():"Optional reference"}/>:f.key==='remark'?<JoyTextarea minRows={3} disabled={saving} value={String(values[f.key])} onChange={e=>setValues(v=>({...v,[f.key]:e.target.value}))} slotProps={{textarea:{maxLength:f.max}}}/>:<JoyInput required={f.required} disabled={saving} type={f.kind==='date'?'date':f.kind==='number'?'number':'text'} value={String(values[f.key])} onChange={e=>setValues(v=>({...v,[f.key]:e.target.value}))} slotProps={{input:{maxLength:f.max||undefined,step:f.kind==='number'?'any':undefined}}}/>}</JoyFormControl>)}
        {lookupError&&<JoyAlert color="danger">Reference options could not be loaded. Try reopening this page.</JoyAlert>}
       </JoyBox>
-      <JoyBox sx={{p:3,display:'flex',gap:2,justifyContent:'flex-end',borderTop:'1px solid',borderColor:'divider'}}><JoyButton variant="outlined" color="neutral" disabled={saving} onClick={close}>Cancel</JoyButton><JoyButton type="submit" loading={saving} disabled={!values.facilityId||!values.fieldId||!!lookupError}>Save facility field</JoyButton></JoyBox>
+      <JoyBox sx={{p:3,display:'flex',gap:2,justifyContent:'flex-end',borderTop:'1px solid',borderColor:'divider'}}><JoyButton variant="outlined" color="neutral" disabled={saving} onClick={close}>Cancel</JoyButton><JoyButton type="submit" loading={saving} loadingIndicator={<OrbitRing className="size-4"/>} disabled={!values.facilityId||!values.fieldId||!!lookupError}>Save facility field</JoyButton></JoyBox>
      </JoyBox>
     </CssVarsProvider>
    </DrawerContent>

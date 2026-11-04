@@ -5,6 +5,8 @@ import FacilityFields from './facility-field-associations'
 import CrsRecords from './coordinate-reference-systems'
 import OrganizationUnitRecords from './organization-units'
 import PoolRecords from './pools'
+import EquipmentRecords from './equipment'
+import FieldTypeRecords from './field-types'
 import Fields from './fields'
 import Wells from './wells'
 import WellStatusTypes from './well-status-types'
@@ -30,6 +32,20 @@ import RefreshIcon from '@mui/icons-material/Refresh'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import { setSearch, type RootState, type Asset, useGetAssetsQuery, useCreateAssetMutation, useUpdateAssetMutation, useDeleteAssetMutation } from '../lib/store'
 const domains = masterDataItems.map(item=>item.label)
+const masterDataPages: Record<string, React.ComponentType> = {
+"Facility Field": FacilityFields,
+"Coordinate Reference Systems": CrsRecords,
+"Organization Unit": OrganizationUnitRecords,
+"Pool / Reservoir": PoolRecords,
+"Equipment": EquipmentRecords,
+"Reference \u00b7 Field Type": FieldTypeRecords,
+"Field": Fields,
+"Well": Wells,
+"Reference \u00b7 Org Unit Type": OrgUnitTypes,
+"Reference \u00b7 Well Status": WellStatuses,
+"Reference \u00b7 Well Status Type": WellStatusTypes,
+"Facilities": Facilities
+}
 export default function Dashboard() {
     const { data: assets = [], isLoading, isFetching, error, refetch } = useGetAssetsQuery()
     const [create, { isLoading: creating }] = useCreateAssetMutation()
@@ -53,6 +69,7 @@ export default function Dashboard() {
     function open(asset: Asset | null) { setEditing(asset); setName(asset?.name || ''); setDescription(asset?.description || ''); setFailure('') }
     async function save() { try { const input = { name: name.trim(), description: description.trim() || null }; if (editing) await update({ id: editing.id, ...input }).unwrap(); else await create(input).unwrap(); setEditing(undefined) } catch { setFailure('Could not save. Check the API connection and try again.') } }
     const filtered = assets.filter(a => (a.name + ' ' + (a.description || '')).toLowerCase().includes(search.toLowerCase()))
+    const MasterDataPage = masterDataPages[view]
     return <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
         <AppBar position="fixed" elevation={0} color="inherit" sx={{borderBottom:1,borderColor:'divider',zIndex:1201}}>
           <Toolbar variant="dense" sx={{minHeight:58,gap:1}}>
@@ -98,7 +115,7 @@ export default function Dashboard() {
             <Typography variant="caption" color="text.secondary">OSDU / {view==='Assets'?'Assets':'Master data / '+view}</Typography>
             <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center',mt:2,mb:1}}><Typography variant="h4" component="h1" sx={{fontWeight:600}}>{view}</Typography>{view==='Assets'&&<Button variant="contained" startIcon={<AddIcon/>} onClick={()=>open(null)}>Add asset</Button>}</Stack>
             <Typography color="text.secondary" sx={{mb:4}}>Manage the data behind your production operations.</Typography>
-                {view === 'Facility Field' ? <FacilityFields/> : view === 'Field' ? <Fields/> : view === 'Well' ? <Wells/> : view === 'Reference · Org Unit Type' ? <OrgUnitTypes/> : view === 'Reference · Well Status' ? <WellStatuses/> : view === 'Reference · Well Status Type' ? <WellStatusTypes/> : view === 'Facilities' ? <Facilities/> : view !== 'Assets' ? <Paper variant="outlined" sx={{ p: 4 }}><Chip label="Database model ready" color="primary" variant="outlined" /><Typography variant="h5" sx={{ mt: 3, mb: 1 }}>{view} master data</Typography><Typography variant="body2" color="primary" sx={{mb:2}}>Table: {masterDataItems.find(item=>item.label===view)?.table}</Typography><Typography color="text.secondary">The SQL Server model and table have been created. Browsing and editing this domain will be available after its backend API endpoints are added.</Typography><Button sx={{ mt: 3 }} onClick={() => setView('Assets')}>Return to assets</Button></Paper> : <>
+                {MasterDataPage ? <MasterDataPage/> : view !== 'Assets' ? <Paper variant="outlined" sx={{ p: 4 }}><Chip label="Database model ready" color="primary" variant="outlined" /><Typography variant="h5" sx={{ mt: 3, mb: 1 }}>{view} master data</Typography><Typography variant="body2" color="primary" sx={{mb:2}}>Table: {masterDataItems.find(item=>item.label===view)?.table}</Typography><Typography color="text.secondary">The SQL Server model and table have been created. Browsing and editing this domain will be available after its backend API endpoints are added.</Typography><Button sx={{ mt: 3 }} onClick={() => setView('Assets')}>Return to assets</Button></Paper> : <>
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 3 }}>{[['Loaded assets', isLoading ? '—' : assets.length], ['Data models', domains.length], ['Backend', '.NET 10']].map(([label, value]) => <Paper key={label} variant="outlined" sx={{ p: 3, flex: 1 }}><Typography color="text.secondary" variant="body2">{label}</Typography><Typography variant="h4" sx={{ mt: 1, fontWeight: 600 }}>{value}</Typography></Paper>)}</Stack>
                     <Paper variant="outlined"><Stack direction="row" spacing={2} sx={{ alignItems: "center", p: 2 }}><TextField size="small" label="Search loaded assets" value={search} onChange={e => dispatch(setSearch(e.target.value))} sx={{ flex: 1, maxWidth: 400 }} /><IconButton aria-label="Refresh assets" onClick={() => refetch()} disabled={isFetching}><RefreshIcon /></IconButton></Stack>{isFetching && <LinearProgress />}{error && <Alert severity="error" sx={{ mx: 2, mb: 2 }}>Unable to load assets. Ensure the .NET API is running on port 5080.<Button onClick={() => refetch()}>Retry</Button></Alert>}
                         <TableContainer><Table><TableHead><TableRow><TableCell>Name</TableCell><TableCell>Description</TableCell><TableCell>Created (UTC)</TableCell><TableCell align="right">Actions</TableCell></TableRow></TableHead><TableBody>{filtered.map(a => <TableRow key={a.id} hover><TableCell sx={{ fontWeight: 500 }}>{a.name}<Typography variant="caption" sx={{ display: "block" }} color="text.secondary">ID {a.id}</Typography></TableCell><TableCell>{a.description || '—'}</TableCell><TableCell>{a.createdUtc.slice(0, 10)}</TableCell><TableCell align="right"><Button onClick={() => open(a)}>Edit</Button><Button color="error" onClick={() => { setTarget(a); setFailure('') }}>Delete</Button></TableCell></TableRow>)}{!isLoading && !error && filtered.length === 0 && <TableRow><TableCell colSpan={4} align="center" sx={{ py: 6 }}>{search ? 'No matching assets.' : 'No assets yet. Add your first asset to get started.'}</TableCell></TableRow>}</TableBody></Table></TableContainer><Typography variant="caption" color="text.secondary" sx={{ display: 'block', p: 2 }}>Showing {filtered.length} of {assets.length} loaded records. API returns up to 100 assets.</Typography></Paper></>}

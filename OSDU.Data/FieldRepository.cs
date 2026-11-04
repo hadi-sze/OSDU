@@ -7,7 +7,7 @@ public class FieldRepository(OsduDbContext db) {
  public async Task<object> Lookups(CancellationToken ct) {
  var result=new Dictionary<string,object>();
  result["crsId"]=await db.Set<Cartoreferencesystem>().AsNoTracking().OrderBy(x=>x.CrsName).Select(x=>new{id=x.CrsId,label=x.CrsName}).ToListAsync(ct);
- result["rFieldTypeId"]=await db.Set<RFieldType>().AsNoTracking().OrderBy(x=>x.DisplayName).Select(x=>new{id=x.RFieldTypeId,label=x.DisplayName}).ToListAsync(ct);
+ result["rFieldTypeId"]=await db.Set<RFieldType>().AsNoTracking().OrderBy(x=>x.FieldTypeName).Select(x=>new{id=x.RFieldTypeId,label=x.FieldTypeName}).ToListAsync(ct);
  result["rDataAccessCategoryId"]=await db.Set<RDataAccessCategory>().AsNoTracking().OrderBy(x=>x.DataAccessCategory).Select(x=>new{id=x.RDataAccessCategoryId,label=x.DataAccessCategory}).ToListAsync(ct);
 return result; }
  public async Task Add(Field row,CancellationToken ct) {
@@ -17,4 +17,5 @@ return result; }
  if(row.RFieldTypeId is int RFieldTypeIdValue&&!await db.Set<RFieldType>().AnyAsync(x=>x.RFieldTypeId==RFieldTypeIdValue,ct))throw new ValidationException("Choose a valid RFieldTypeId.");
  if(row.RDataAccessCategoryId is int RDataAccessCategoryIdValue&&!await db.Set<RDataAccessCategory>().AnyAsync(x=>x.RDataAccessCategoryId==RDataAccessCategoryIdValue,ct))throw new ValidationException("Choose a valid RDataAccessCategoryId.");
 if(row.XCoordinate is decimal x && (x<=-1000000000m||x>=1000000000m) || row.YCoordinate is decimal y && (y<=-1000000000m||y>=1000000000m))throw new ValidationException("Coordinates must be between -999999999.999999999 and 999999999.999999999.");
+ row.CrsName = row.CrsId is int crsId ? await db.Set<Cartoreferencesystem>().Where(x=>x.CrsId==crsId).Select(x=>x.CrsName).SingleAsync(ct) : null;
  db.Add(row);await db.SaveChangesAsync(ct); }}

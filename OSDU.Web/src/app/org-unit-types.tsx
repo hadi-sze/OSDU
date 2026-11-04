@@ -1,4 +1,5 @@
 'use client'
+import { OrbitRing } from '@/components/loading-ui/orbit-ring'
 import { useEffect, useState } from 'react'
 import OrgUnitTypeGrid from './org-unit-type-grid'
 import { Alert, Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControlLabel, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
@@ -21,7 +22,7 @@ import AddIcon from '@mui/icons-material/Add'
 import {useGetOrgUnitTypesQuery,useCreateOrgUnitTypeMutation} from '../lib/store'
 const initial={orgUnitType:'',longName:'',shortName:'',remark:'',isActive:true}
 export default function OrgUnitTypes() {
- const {data:rows=[],error:loadError,isLoading,refetch}=useGetOrgUnitTypesQuery()
+ const {data:rows=[],error:loadError,isLoading,isFetching,refetch}=useGetOrgUnitTypesQuery()
  const [create,{isLoading:saving}]=useCreateOrgUnitTypeMutation()
  const [open,setOpen]=useState(false),[values,setValues]=useState(initial),[error,setError]=useState(''),[success,setSuccess]=useState('')
  const [pending,setPending]=useState<null|(()=>void)>(null)
@@ -41,7 +42,7 @@ export default function OrgUnitTypes() {
   <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Manage geographic and business organization unit types.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setError('')}}>Add organization unit type</Button></Stack>
   {success&&<Alert severity="success" onClose={()=>setSuccess('')}>{success}</Alert>}
   {loadError&&<Alert severity="error">Unable to load records.<Button onClick={()=>refetch()}>Retry</Button></Alert>}
-  <OrgUnitTypeGrid rows={rows} loading={isLoading}/>
+  <OrgUnitTypeGrid rows={rows} loading={isLoading||isFetching||saving}/>
   <ShadDrawer swipeDirection="right" open={open} onOpenChange={next=>{if(!next)close()}}>
    <DrawerContent>
     <CssVarsProvider theme={joyTheme}>
@@ -59,7 +60,7 @@ export default function OrgUnitTypes() {
        <JoyFormControl><JoyFormLabel>Remarks</JoyFormLabel><JoyTextarea minRows={3} disabled={saving} value={values.remark} onChange={e=>setValues(v=>({...v,remark:e.target.value}))} slotProps={{textarea:{maxLength:2000}}}/></JoyFormControl>
        <JoyCheckbox label="Active" checked={values.isActive} disabled={saving} onChange={e=>setValues(v=>({...v,isActive:e.target.checked}))}/>
       </JoyBox>
-      <JoyBox sx={{p:3,display:'flex',gap:2,justifyContent:'flex-end',borderTop:'1px solid',borderColor:'divider'}}><JoyButton variant="outlined" color="neutral" disabled={saving} onClick={close}>Cancel</JoyButton><JoyButton type="submit" loading={saving} disabled={!values.orgUnitType.trim()}>Save organization unit type</JoyButton></JoyBox>
+      <JoyBox sx={{p:3,display:'flex',gap:2,justifyContent:'flex-end',borderTop:'1px solid',borderColor:'divider'}}><JoyButton variant="outlined" color="neutral" disabled={saving} onClick={close}>Cancel</JoyButton><JoyButton type="submit" loading={saving} loadingIndicator={<OrbitRing className="size-4"/>} disabled={!values.orgUnitType.trim()}>Save organization unit type</JoyButton></JoyBox>
      </JoyBox>
     </CssVarsProvider>
    </DrawerContent>

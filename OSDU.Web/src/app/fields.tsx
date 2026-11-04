@@ -1,4 +1,5 @@
 'use client'
+import { OrbitRing } from '@/components/loading-ui/orbit-ring'
 import { useEffect, useState } from 'react'
 import OrgUnitTypeGrid from './org-unit-type-grid'
 import { Alert, Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControlLabel, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
@@ -23,8 +24,8 @@ const fields=[{"key": "fieldName", "label": "Field name", "kind": "text", "requi
 const initial:Record<string,string|boolean>=Object.fromEntries(fields.map(f=>[f.key,f.kind==='boolean'?f.key==='isActive':'']))
 const fieldColumns=[{key:"fieldId",label:"ID"},{key:"fieldName",label:"Field name"},{key:"fieldAbbreviation",label:"Abbreviation"},{key:"fieldTypeName",label:"Type"},{key:"isActive",label:"Status"},{key:"rowCreatedBy",label:"Created by"}]
 export default function Fields() {
- const {data:rows=[],error:loadError,isLoading,refetch}=useGetFieldsQuery()
- const {data:lookups={},error:lookupError}=useGetFieldLookupsQuery()
+ const {data:rows=[],error:loadError,isLoading,isFetching,refetch}=useGetFieldsQuery()
+ const {data:lookups={},error:lookupError,isFetching:loadingLookups,refetch:refreshLookups}=useGetFieldLookupsQuery()
  const [create,{isLoading:saving}]=useCreateFieldMutation()
  const [open,setOpen]=useState(false),[values,setValues]=useState(initial),[error,setError]=useState(''),[success,setSuccess]=useState('')
  const [pending,setPending]=useState<null|(()=>void)>(null)
@@ -41,10 +42,10 @@ export default function Fields() {
   setSuccess('Saved '+result.fieldName+' successfully.');setValues(initial);setOpen(false)
  }catch(e){const err=e as {data?:{message?:string;errors?:Record<string,string[]>}};setError(err.data?.message||Object.values(err.data?.errors||{}).flat().join(' ')||'Unable to save. Please try again.')}}
  return <Stack spacing={2}>
-  <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Manage field master data, classification and location.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setError('')}}>Add field</Button></Stack>
+  <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Manage field master data, classification and location.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setError('');void refreshLookups()}}>Add field</Button></Stack>
   {success&&<Alert severity="success" onClose={()=>setSuccess('')}>{success}</Alert>}
   {loadError&&<Alert severity="error">Unable to load records.<Button onClick={()=>refetch()}>Retry</Button></Alert>}
-  <OrgUnitTypeGrid rows={rows} loading={isLoading} idKey="fieldId" nameKey="fieldName" entityLabel="Fields" customColumns={fieldColumns}/>
+  <OrgUnitTypeGrid rows={rows} loading={isLoading||isFetching||saving} idKey="fieldId" nameKey="fieldName" entityLabel="Fields" customColumns={fieldColumns}/>
   <ShadDrawer swipeDirection="right" open={open} onOpenChange={next=>{if(!next)close()}}>
    <DrawerContent>
     <CssVarsProvider theme={joyTheme}>
@@ -56,10 +57,10 @@ export default function Fields() {
       <JoyBox sx={{p:3,display:'flex',flexDirection:'column',gap:2.5,overflowY:'auto',flex:1}}>
        <DrawerDescription style={{margin:0,fontSize:14}}>Enter field identification, classification and coordinates. ID and audit fields are assigned automatically.</DrawerDescription>
        {error&&<JoyAlert color="danger">{error}</JoyAlert>}
-       {fields.map(f=><JoyFormControl key={f.key} required={f.required}><JoyFormLabel>{f.label}</JoyFormLabel>{f.kind==='boolean'?<JoyCheckbox checked={!!values[f.key]} disabled={saving} onChange={e=>setValues(v=>({...v,[f.key]:e.target.checked}))}/>:f.kind==='lookup'?<JoyAutocomplete options={lookups[f.key]||[]} getOptionLabel={o=>o.label} isOptionEqualToValue={(a,b)=>a.id===b.id} value={(lookups[f.key]||[]).find(o=>String(o.id)===String(values[f.key]))||null} disabled={saving||!!lookupError} onChange={(_e,o)=>setValues(v=>({...v,[f.key]:o?String(o.id):''}))} placeholder="Select an optional reference"/>:f.key==='remark'?<JoyTextarea minRows={3} disabled={saving} value={String(values[f.key])} onChange={e=>setValues(v=>({...v,[f.key]:e.target.value}))} slotProps={{textarea:{maxLength:f.max}}}/>:<JoyInput required={f.required} disabled={saving} type={f.kind==='date'?'date':f.kind==='number'?'number':'text'} value={String(values[f.key])} onChange={e=>setValues(v=>({...v,[f.key]:e.target.value}))} slotProps={{input:{maxLength:f.max||undefined,step:f.kind==='number'?'any':undefined}}}/>}</JoyFormControl>)}
+       {fields.map(f=><JoyFormControl key={f.key} required={f.required}><JoyFormLabel>{f.label}</JoyFormLabel>{f.kind==='boolean'?<JoyCheckbox checked={!!values[f.key]} disabled={saving} onChange={e=>setValues(v=>({...v,[f.key]:e.target.checked}))}/>:f.kind==='lookup'?<JoyAutocomplete options={lookups[f.key]||[]} getOptionLabel={o=>o.label} isOptionEqualToValue={(a,b)=>a.id===b.id} value={(lookups[f.key]||[]).find(o=>String(o.id)===String(values[f.key]))||null} disabled={saving||!!lookupError} loading={loadingLookups} onChange={(_e,o)=>setValues(v=>({...v,[f.key]:o?String(o.id):'',...(f.key==='crsId'?{crsName:o?.label||''}:{})}))} placeholder={f.key==='crsId'?'Select a coordinate reference system':'Select an optional reference'} noOptionsText={f.key==='crsId'?'No coordinate reference systems found. Add one under Master data / Coordinate Reference Systems.':'No reference values found'}/>:f.key==='remark'?<JoyTextarea minRows={3} disabled={saving} value={String(values[f.key])} onChange={e=>setValues(v=>({...v,[f.key]:e.target.value}))} slotProps={{textarea:{maxLength:f.max}}}/>:<JoyInput readOnly={f.key==='crsName'} required={f.required} disabled={saving} type={f.kind==='date'?'date':f.kind==='number'?'number':'text'} value={String(values[f.key])} onChange={e=>setValues(v=>({...v,[f.key]:e.target.value}))} slotProps={{input:{maxLength:f.max||undefined,step:f.kind==='number'?'any':undefined}}}/>}</JoyFormControl>)}
        {lookupError&&<JoyAlert color="danger">Reference options could not be loaded. Try reopening this page.</JoyAlert>}
       </JoyBox>
-      <JoyBox sx={{p:3,display:'flex',gap:2,justifyContent:'flex-end',borderTop:'1px solid',borderColor:'divider'}}><JoyButton variant="outlined" color="neutral" disabled={saving} onClick={close}>Cancel</JoyButton><JoyButton type="submit" loading={saving} disabled={!String(values.fieldName).trim()}>Save field</JoyButton></JoyBox>
+      <JoyBox sx={{p:3,display:'flex',gap:2,justifyContent:'flex-end',borderTop:'1px solid',borderColor:'divider'}}><JoyButton variant="outlined" color="neutral" disabled={saving} onClick={close}>Cancel</JoyButton><JoyButton type="submit" loading={saving} loadingIndicator={<OrbitRing className="size-4"/>} disabled={!String(values.fieldName).trim()}>Save field</JoyButton></JoyBox>
      </JoyBox>
     </CssVarsProvider>
    </DrawerContent>

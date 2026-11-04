@@ -1,4 +1,5 @@
 'use client'
+import { OrbitRing } from '@/components/loading-ui/orbit-ring'
 import { useEffect, useState } from 'react'
 import OrgUnitTypeGrid from './org-unit-type-grid'
 import { Alert, Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControlLabel, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
@@ -21,7 +22,7 @@ import AddIcon from '@mui/icons-material/Add'
 import {useGetWellStatusTypesQuery,useCreateWellStatusTypeMutation,useGetWellStatusSourcesQuery} from '../lib/store'
 const initial={wellStatusType:'',longName:'',shortName:'',remark:'',isActive:true,rSourceId:null as number|null}
 export default function WellStatusTypes() {
- const {data:rows=[],error:loadError,isLoading,refetch}=useGetWellStatusTypesQuery()
+ const {data:rows=[],error:loadError,isLoading,isFetching,refetch}=useGetWellStatusTypesQuery()
  const {data:sources=[],error:sourceError}=useGetWellStatusSourcesQuery()
  const [create,{isLoading:saving}]=useCreateWellStatusTypeMutation()
  const [open,setOpen]=useState(false),[values,setValues]=useState(initial),[error,setError]=useState(''),[success,setSuccess]=useState('')
@@ -42,7 +43,7 @@ export default function WellStatusTypes() {
   <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Manage the categories used to classify well statuses.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setError('')}}>Add well status type</Button></Stack>
   {success&&<Alert severity="success" onClose={()=>setSuccess('')}>{success}</Alert>}
   {loadError&&<Alert severity="error">Unable to load records.<Button onClick={()=>refetch()}>Retry</Button></Alert>}
-  <OrgUnitTypeGrid rows={rows} loading={isLoading} idKey="rWellStatusTypeId" nameKey="wellStatusType" entityLabel="Well status types"/>
+  <OrgUnitTypeGrid rows={rows} loading={isLoading||isFetching||saving} idKey="rWellStatusTypeId" nameKey="wellStatusType" entityLabel="Well status types"/>
   <ShadDrawer swipeDirection="right" open={open} onOpenChange={next=>{if(!next)close()}}>
    <DrawerContent>
     <CssVarsProvider theme={joyTheme}>
@@ -61,7 +62,7 @@ export default function WellStatusTypes() {
        <JoyFormControl><JoyFormLabel>Remarks</JoyFormLabel><JoyTextarea minRows={3} disabled={saving} value={values.remark} onChange={e=>setValues(v=>({...v,remark:e.target.value}))} slotProps={{textarea:{maxLength:2000}}}/></JoyFormControl>
        <JoyCheckbox label="Active" checked={values.isActive} disabled={saving} onChange={e=>setValues(v=>({...v,isActive:e.target.checked}))}/>
       </JoyBox>
-      <JoyBox sx={{p:3,display:'flex',gap:2,justifyContent:'flex-end',borderTop:'1px solid',borderColor:'divider'}}><JoyButton variant="outlined" color="neutral" disabled={saving} onClick={close}>Cancel</JoyButton><JoyButton type="submit" loading={saving} disabled={!values.wellStatusType.trim()}>Save well status type</JoyButton></JoyBox>
+      <JoyBox sx={{p:3,display:'flex',gap:2,justifyContent:'flex-end',borderTop:'1px solid',borderColor:'divider'}}><JoyButton variant="outlined" color="neutral" disabled={saving} onClick={close}>Cancel</JoyButton><JoyButton type="submit" loading={saving} loadingIndicator={<OrbitRing className="size-4"/>} disabled={!values.wellStatusType.trim()}>Save well status type</JoyButton></JoyBox>
      </JoyBox>
     </CssVarsProvider>
    </DrawerContent>

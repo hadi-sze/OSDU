@@ -3,36 +3,44 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export interface Asset { id: number; name: string; description: string | null; createdUtc: string }
 export type AssetInput = Pick<Asset, 'name' | 'description'>
 export const assetsApi = createApi({
-    reducerPath: 'assetsApi', baseQuery: fetchBaseQuery({ baseUrl: '/api/' }), tagTypes: ['Pool','OrganizationUnit','Crs','FacilityField','Field','Well','OrgUnitType','Asset', 'Facility', 'WellStatusType','WellStatus'],
+    reducerPath: 'assetsApi', baseQuery: fetchBaseQuery({ baseUrl: '/api/' }), tagTypes: ['FieldType','Equipment', 'Pool', 'OrganizationUnit', 'Crs', 'FacilityField', 'Field', 'Well', 'OrgUnitType', 'Asset', 'Facility', 'WellStatusType', 'WellStatus'],
     endpoints: b => ({
- getPoolRecords:b.query<Record<string,unknown>[],void>({query:()=>'pools',providesTags:['Pool']}),
- getPoolLookups:b.query<Record<string,{id:number;label:string}[]>,void>({query:()=>'pools/lookups'}),
- createPool:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'pools',method:'POST',body}),invalidatesTags:['Pool']}),
- getOrganizationUnitRecords:b.query<Record<string,unknown>[],void>({query:()=>'organization-units',providesTags:['OrganizationUnit']}),
- getOrganizationUnitLookups:b.query<Record<string,{id:number;label:string}[]>,void>({query:()=>'organization-units/lookups'}),
- createOrganizationUnit:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'organization-units',method:'POST',body}),invalidatesTags:['OrganizationUnit']}),
- getCrsRecords:b.query<Record<string,unknown>[],void>({query:()=>'coordinate-reference-systems',providesTags:['Crs']}),
- getCrsLookups:b.query<Record<string,{id:number;label:string}[]>,void>({query:()=>'coordinate-reference-systems/lookups'}),
- createCrs:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'coordinate-reference-systems',method:'POST',body}),invalidatesTags:['Crs']}),
- getFacilityFields:b.query<Record<string,unknown>[],void>({query:()=>'facility-fields',providesTags:['FacilityField']}),
- getFacilityFieldLookups:b.query<Record<string,{id:number;label:string}[]>,void>({query:()=>'facility-fields/lookups',providesTags:['Facility','Field']}),
- createFacilityField:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'facility-fields',method:'POST',body}),invalidatesTags:['FacilityField']}),
- getFields:b.query<Record<string,unknown>[],void>({query:()=>'fields',providesTags:['Field']}),
- getFieldLookups:b.query<Record<string,{id:number;label:string}[]>,void>({query:()=>'fields/lookups'}),
- createField:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'fields',method:'POST',body}),invalidatesTags:['Field']}),
- getWells:b.query<Record<string,unknown>[],void>({query:()=>'wells',providesTags:['Well']}),
- getWellLookups:b.query<Record<string,{id:number;label:string}[]>,void>({query:()=>'wells/lookups'}),
- createWell:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'wells',method:'POST',body}),invalidatesTags:['Well']}),
-  getOrgUnitTypes:b.query<Record<string,unknown>[],void>({query:()=>'reference/org-unit-types',providesTags:['OrgUnitType']}),
-  createOrgUnitType:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'reference/org-unit-types',method:'POST',body}),invalidatesTags:['OrgUnitType']}),
+ updateOrganizationUnit:b.mutation<Record<string,unknown>,{id:number;body:Record<string,unknown>}>({query:({id,body})=>({url:'organization-units/'+id,method:'PUT',body}),invalidatesTags:['OrganizationUnit']}),
+ deleteOrganizationUnit:b.mutation<void,number>({query:id=>({url:'organization-units/'+id,method:'DELETE'}),invalidatesTags:['OrganizationUnit']}),
+ getFieldTypeRecords:b.query<Record<string,unknown>[],void>({query:()=>'reference/field-types',providesTags:['FieldType']}),
+ getFieldTypeLookups:b.query<Record<string,{id:number;label:string}[]>,void>({query:()=>'reference/field-types/lookups'}),
+ createFieldType:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'reference/field-types',method:'POST',body}),invalidatesTags:['FieldType']}),
+        getEquipmentRecords: b.query<Record<string, unknown>[], void>({ query: () => 'equipment', providesTags: ['Equipment'] }),
+        getEquipmentLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'equipment/lookups' }),
+        createEquipment: b.mutation<Record<string, unknown>, Record<string, unknown>>({ query: body => ({ url: 'equipment', method: 'POST', body }), invalidatesTags: ['Equipment'] }),
+        getPoolRecords: b.query<Record<string, unknown>[], void>({ query: () => 'pools', providesTags: ['Pool'] }),
+        getPoolLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'pools/lookups' }),
+        createPool: b.mutation<Record<string, unknown>, Record<string, unknown>>({ query: body => ({ url: 'pools', method: 'POST', body }), invalidatesTags: ['Pool'] }),
+        getOrganizationUnitRecords: b.query<Record<string, unknown>[], void>({ query: () => 'organization-units', providesTags: ['OrganizationUnit'] }),
+        getOrganizationUnitLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'organization-units/lookups', providesTags: ['OrgUnitType'] }),
+        createOrganizationUnit: b.mutation<Record<string, unknown>, Record<string, unknown>>({ query: body => ({ url: 'organization-units', method: 'POST', body }), invalidatesTags: ['OrganizationUnit'] }),
+        getCrsRecords: b.query<Record<string, unknown>[], void>({ query: () => 'coordinate-reference-systems', providesTags: ['Crs'] }),
+        getCrsLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'coordinate-reference-systems/lookups' }),
+        createCrs: b.mutation<Record<string, unknown>, Record<string, unknown>>({ query: body => ({ url: 'coordinate-reference-systems', method: 'POST', body }), invalidatesTags: ['Crs'] }),
+        getFacilityFields: b.query<Record<string, unknown>[], void>({ query: () => 'facility-fields', providesTags: ['FacilityField'] }),
+        getFacilityFieldLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'facility-fields/lookups', providesTags: ['Facility', 'Field'] }),
+        createFacilityField: b.mutation<Record<string, unknown>, Record<string, unknown>>({ query: body => ({ url: 'facility-fields', method: 'POST', body }), invalidatesTags: ['FacilityField'] }),
+        getFields: b.query<Record<string, unknown>[], void>({ query: () => 'fields', providesTags: ['Field'] }),
+        getFieldLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'fields/lookups', providesTags: ['Crs', 'FieldType'] }),
+        createField: b.mutation<Record<string, unknown>, Record<string, unknown>>({ query: body => ({ url: 'fields', method: 'POST', body }), invalidatesTags: ['Field'] }),
+        getWells: b.query<Record<string, unknown>[], void>({ query: () => 'wells', providesTags: ['Well'] }),
+        getWellLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'wells/lookups' }),
+        createWell: b.mutation<Record<string, unknown>, Record<string, unknown>>({ query: body => ({ url: 'wells', method: 'POST', body }), invalidatesTags: ['Well'] }),
+        getOrgUnitTypes: b.query<Record<string, unknown>[], void>({ query: () => 'reference/org-unit-types', providesTags: ['OrgUnitType'] }),
+        createOrgUnitType: b.mutation<Record<string, unknown>, Record<string, unknown>>({ query: body => ({ url: 'reference/org-unit-types', method: 'POST', body }), invalidatesTags: ['OrgUnitType'] }),
 
-  getWellStatuses:b.query<Record<string,unknown>[],void>({query:()=>'reference/well-statuses',providesTags:['WellStatus']}),
-  getWellStatusTypeOptions:b.query<{id:number;label:string}[],void>({query:()=>'reference/well-statuses/types'}),
-  createWellStatus:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'reference/well-statuses',method:'POST',body}),invalidatesTags:['WellStatus']}),
+        getWellStatuses: b.query<Record<string, unknown>[], void>({ query: () => 'reference/well-statuses', providesTags: ['WellStatus'] }),
+        getWellStatusTypeOptions: b.query<{ id: number; label: string }[], void>({ query: () => 'reference/well-statuses/types' }),
+        createWellStatus: b.mutation<Record<string, unknown>, Record<string, unknown>>({ query: body => ({ url: 'reference/well-statuses', method: 'POST', body }), invalidatesTags: ['WellStatus'] }),
 
-  getWellStatusTypes:b.query<Record<string,unknown>[],void>({query:()=>'reference/well-status-types',providesTags:['WellStatusType','WellStatus']}),
-  getWellStatusSources:b.query<{id:number;label:string}[],void>({query:()=>'reference/well-status-types/sources'}),
-  createWellStatusType:b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'reference/well-status-types',method:'POST',body}),invalidatesTags:['WellStatusType','WellStatus']}),
+        getWellStatusTypes: b.query<Record<string, unknown>[], void>({ query: () => 'reference/well-status-types', providesTags: ['WellStatusType', 'WellStatus'] }),
+        getWellStatusSources: b.query<{ id: number; label: string }[], void>({ query: () => 'reference/well-status-types/sources' }),
+        createWellStatusType: b.mutation<Record<string, unknown>, Record<string, unknown>>({ query: body => ({ url: 'reference/well-status-types', method: 'POST', body }), invalidatesTags: ['WellStatusType', 'WellStatus'] }),
 
         getFacilities: b.query<Record<string, unknown>[], void>({ query: () => 'facilities', providesTags: ['Facility'] }),
         getFacilityLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'facilities/lookups' }),
@@ -53,21 +61,27 @@ export const { useGetAssetsQuery, useCreateAssetMutation, useUpdateAssetMutation
 
 export const { useGetFacilitiesQuery, useGetFacilityLookupsQuery, useCreateFacilityMutation } = assetsApi
 
-export const {useGetWellStatusTypesQuery,useGetWellStatusSourcesQuery,useCreateWellStatusTypeMutation}=assetsApi
+export const { useGetWellStatusTypesQuery, useGetWellStatusSourcesQuery, useCreateWellStatusTypeMutation } = assetsApi
 
 
-export const {useGetWellStatusesQuery,useGetWellStatusTypeOptionsQuery,useCreateWellStatusMutation}=assetsApi
+export const { useGetWellStatusesQuery, useGetWellStatusTypeOptionsQuery, useCreateWellStatusMutation } = assetsApi
 
-export const {useGetOrgUnitTypesQuery,useCreateOrgUnitTypeMutation}=assetsApi
+export const { useGetOrgUnitTypesQuery, useCreateOrgUnitTypeMutation } = assetsApi
 
-export const {useGetWellsQuery,useGetWellLookupsQuery,useCreateWellMutation}=assetsApi
+export const { useGetWellsQuery, useGetWellLookupsQuery, useCreateWellMutation } = assetsApi
 
-export const {useGetFieldsQuery,useGetFieldLookupsQuery,useCreateFieldMutation}=assetsApi
+export const { useGetFieldsQuery, useGetFieldLookupsQuery, useCreateFieldMutation } = assetsApi
 
-export const {useGetFacilityFieldsQuery,useGetFacilityFieldLookupsQuery,useCreateFacilityFieldMutation}=assetsApi
+export const { useGetFacilityFieldsQuery, useGetFacilityFieldLookupsQuery, useCreateFacilityFieldMutation } = assetsApi
 
-export const {useGetCrsRecordsQuery,useGetCrsLookupsQuery,useCreateCrsMutation}=assetsApi
+export const { useGetCrsRecordsQuery, useGetCrsLookupsQuery, useCreateCrsMutation } = assetsApi
 
-export const {useGetOrganizationUnitRecordsQuery,useGetOrganizationUnitLookupsQuery,useCreateOrganizationUnitMutation}=assetsApi
+export const { useGetOrganizationUnitRecordsQuery, useGetOrganizationUnitLookupsQuery, useCreateOrganizationUnitMutation } = assetsApi
 
-export const {useGetPoolRecordsQuery,useGetPoolLookupsQuery,useCreatePoolMutation}=assetsApi
+export const { useGetPoolRecordsQuery, useGetPoolLookupsQuery, useCreatePoolMutation } = assetsApi
+
+export const { useGetEquipmentRecordsQuery, useGetEquipmentLookupsQuery, useCreateEquipmentMutation } = assetsApi
+
+export const {useGetFieldTypeRecordsQuery,useGetFieldTypeLookupsQuery,useCreateFieldTypeMutation}=assetsApi
+
+export const {useUpdateOrganizationUnitMutation,useDeleteOrganizationUnitMutation}=assetsApi

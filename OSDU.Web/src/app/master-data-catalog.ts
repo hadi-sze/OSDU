@@ -16,7 +16,7 @@ export const masterDataGroups = [
       {
         "label": "Organization Unit",
         "table": "ORG_UNIT",
-        "form": false
+        "form": true
       },
       {
         "label": "Well Org Unit",
@@ -32,12 +32,12 @@ export const masterDataGroups = [
       {
         "label": "Coordinate Reference Systems",
         "table": "CARTOREFERENCESYSTEM",
-        "form": false
+        "form": true
       },
       {
         "label": "Field",
         "table": "FIELD",
-        "form": false
+        "form": true
       },
       {
         "label": "Field Component",
@@ -52,7 +52,7 @@ export const masterDataGroups = [
       {
         "label": "Pool / Reservoir",
         "table": "POOL",
-        "form": false
+        "form": true
       },
       {
         "label": "Pool Component",
@@ -78,7 +78,7 @@ export const masterDataGroups = [
       {
         "label": "Well",
         "table": "WELL",
-        "form": false
+        "form": true
       },
       {
         "label": "Wellbore",
@@ -144,7 +144,7 @@ export const masterDataGroups = [
       {
         "label": "Equipment",
         "table": "EQUIPMENT",
-        "form": false
+        "form": true
       },
       {
         "label": "Equipment Measurement Tags",
@@ -164,7 +164,7 @@ export const masterDataGroups = [
       {
         "label": "Facility Field",
         "table": "FACILITY_FIELD",
-        "form": false
+        "form": true
       }
     ]
   },
@@ -342,7 +342,7 @@ export const masterDataGroups = [
       {
         "label": "Reference \u00b7 Field Type",
         "table": "R_FIELD_TYPE",
-        "form": false
+        "form": true
       },
       {
         "label": "Reference \u00b7 Fluid Type",
@@ -362,7 +362,7 @@ export const masterDataGroups = [
       {
         "label": "Reference \u00b7 Org Unit Type",
         "table": "R_ORG_UNIT_TYPE",
-        "form": false
+        "form": true
       },
       {
         "label": "Reference \u00b7 Perforation Method",
@@ -447,12 +447,12 @@ export const masterDataGroups = [
       {
         "label": "Reference \u00b7 Well Status",
         "table": "R_WELL_STATUS",
-        "form": false
+        "form": true
       },
       {
         "label": "Reference \u00b7 Well Status Type",
         "table": "R_WELL_STATUS_TYPE",
-        "form": false
+        "form": true
       }
     ]
   }
