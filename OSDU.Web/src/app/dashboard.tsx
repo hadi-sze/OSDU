@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import OrganizationView from './organization-view'
 import Facilities from './facilities'
 import FacilityFields from './facility-field-associations'
 import CrsRecords from './coordinate-reference-systems'
@@ -33,6 +34,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode'
 import { setSearch, type RootState, type Asset, useGetAssetsQuery, useCreateAssetMutation, useUpdateAssetMutation, useDeleteAssetMutation } from '../lib/store'
 const domains = masterDataItems.map(item=>item.label)
 const masterDataPages: Record<string, React.ComponentType> = {
+"Organization View": OrganizationView,
 "Facility Field": FacilityFields,
 "Coordinate Reference Systems": CrsRecords,
 "Organization Unit": OrganizationUnitRecords,

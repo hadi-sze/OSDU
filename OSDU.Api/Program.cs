@@ -4,6 +4,8 @@ using OSDU.Business;
 using OSDU.Data;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
+builder.Services.AddScoped<OrganizationViewRepository>();
+builder.Services.AddScoped<OrganizationViewService>();
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
 builder.Services.AddDbContext<OsduDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("OSDU")).UseOsduSeeding());
