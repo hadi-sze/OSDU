@@ -1,10 +1,11 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { Box, Stack, Button, IconButton, Alert, Paper, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
+import { Box, Stack, Button, Alert, Paper, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView'
 import { TreeItem } from '@mui/x-tree-view/TreeItem'
 import { CssVarsProvider } from '@mui/joy/styles'
+import { Alert as JoyAlert, Box as JoyBox, Button as JoyButton, IconButton as JoyIconButton, Stack as JoyStack } from '@mui/joy'
 import Input from '@mui/joy/Input'
 import Autocomplete from '@mui/joy/Autocomplete'
 import Checkbox from '@mui/joy/Checkbox'
@@ -24,9 +25,9 @@ const kinds:Kind[] = ['fields','wells','facilities']
 const keys = {fields:['fieldId','fieldName'],wells:['wellId','wellName'],facilities:['facilityId','facilityName']}
 const blank:Data = {organizations:[],fields:[],wells:[],facilities:[],links:[]}
 
-const fieldOrgColumns = [
+const associationColumns = (label: string) => [
     { key: 'id', label: 'ID' },
-    { key: 'fieldName', label: 'Field' },
+    { key: 'targetName', label },
     { key: 'organizationName', label: 'Organization unit' },
     { key: 'effectiveDate', label: 'Effective date' },
     { key: 'expiryDate', label: 'Expiry date' },
@@ -35,10 +36,22 @@ const fieldOrgColumns = [
 ]
 
 export function FieldOrgUnits() {
-    return <OrganizationView fieldTable />
+    return <OrganizationView associationKind="fields" />
 }
 
-export default function OrganizationView({ fieldTable = false, organizationId }: { fieldTable?: boolean; organizationId?: number }) {
+export function WellOrgUnits() {
+    return <OrganizationView associationKind="wells" />
+}
+
+export function FacilityOrgUnits() {
+    return <OrganizationView associationKind="facilities" />
+}
+
+export default function OrganizationView({ associationKind, organizationId }: { associationKind?: Kind; organizationId?: number }) {
+    const associationLabel = { fields: 'Field', wells: 'Well', facilities: 'Facility' }[associationKind ?? 'fields']
+    const associationTitle = associationLabel + ' Org Unit'
+    const columns = associationColumns(associationLabel)
+    const [viewed,setViewed] = useState<Row>()
     const [data,setData] = useState<Data>(blank)
     const [loading,setLoading] = useState(true)
     const [error,setError] = useState('')
@@ -109,32 +122,33 @@ export default function OrganizationView({ fieldTable = false, organizationId }:
     const target=link?data[link.kind].find(row=>Number(row[keys[link.kind][0]])===link.targetId):selected?.org
     return <Stack spacing={2}>
         {error&&<Alert severity="error" onClose={()=>setError('')}>{error}</Alert>}
-        {fieldTable ? <>
+        {associationKind ? <>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
-                <Typography>Manage associations between fields and organization units.</Typography>
+                <Typography>Manage associations between {associationKind} and organization units.</Typography>
                 <Button disabled={loading || saving} onClick={()=>{setError('');void load()}}>Refresh</Button>
                 <Button variant="contained" disabled={saving}
-                    onClick={()=>edit({ id:0, kind:'fields', orgUnitId:0, targetId:0, effectiveDate:null, expiryDate:null, remark:null, isActive:true })}>
-                    Add Field Org Unit
+                    onClick={()=>edit({ id:0, kind:associationKind, orgUnitId:0, targetId:0, effectiveDate:null, expiryDate:null, remark:null, isActive:true })}>
+                    Add {associationTitle}
                 </Button>
             </Stack>
-            {!loading && (!data.fields.length || !data.organizations.length) && !error &&
-                <Alert severity="info">Add at least one field and one organization unit before creating an association.</Alert>}
-            <OrgUnitTypeGrid recordTable="field-org-units"
-                rows={data.links.filter(item=>item.kind==='fields').map(item=>({
+            {!loading && (!data[associationKind].length || !data.organizations.length) && !error &&
+                <Alert severity="info">Add at least one {associationLabel.toLowerCase()} and one organization unit before creating an association.</Alert>}
+            <OrgUnitTypeGrid
+                rows={data.links.filter(item=>item.kind===associationKind).map(item=>({
                     ...item,
-                    fieldName: data.fields.find(row=>row.fieldId===item.targetId)?.fieldName ?? item.targetId,
+                    targetName: data[associationKind].find(row=>row[keys[associationKind][0]]===item.targetId)?.[keys[associationKind][1]] ?? item.targetId,
                     organizationName: data.organizations.find(row=>row.orgUnitId===item.orgUnitId)?.orgUnitName ?? item.orgUnitId,
                     effectiveDate: item.effectiveDate?.slice(0,10),
                     expiryDate: item.expiryDate?.slice(0,10),
                 }))}
                 loading={loading || saving}
                 idKey="id"
-                nameKey="fieldName"
-                entityLabel="Field organization units"
-                customColumns={fieldOrgColumns}
-                onEdit={row=>{const item=data.links.find(item=>item.kind==='fields' && item.id===row.id);if(item)edit(item)}}
-                onDelete={row=>{setError('');setRemove(data.links.find(item=>item.kind==='fields' && item.id===row.id))}}
+                nameKey="targetName"
+                entityLabel={associationTitle}
+                customColumns={columns}
+                onView={setViewed}
+                onEdit={row=>{const item=data.links.find(item=>item.kind===associationKind && item.id===row.id);if(item)edit(item)}}
+                onDelete={row=>{setError('');setRemove(data.links.find(item=>item.kind===associationKind && item.id===row.id))}}
             />
         </> : <>
         <Stack direction="row" spacing={2} sx={{alignItems:"center"}}><Typography>Explore organizations and their dated relationships.</Typography><Button disabled={loading} onClick={()=>{setError('');void load()}}>Refresh</Button>{loading&&<OrbitRing className="size-5"/>}</Stack>
@@ -170,15 +184,15 @@ export default function OrganizationView({ fieldTable = false, organizationId }:
         </Box>
         </>}
         <Drawer swipeDirection="right" open={!!draft} onOpenChange={open=>{if(!open)close()}}><DrawerContent><CssVarsProvider theme={joyTheme}>
-            {draft&&<Box component="form" onSubmit={e=>{e.preventDefault();void submit()}} sx={{p:3,height:'100%',boxSizing:'border-box',overflowY:'auto',bgcolor:'background.paper'}}>
-                <Stack direction="row" sx={{ alignItems:'center', justifyContent:'space-between' }}>
-                    <DrawerTitle>{draft.id?'Edit':'Add'} {fieldTable ? 'Field Org Unit' : draft.kind+' relationship'}</DrawerTitle>
-                    <IconButton aria-label="Close form" disabled={saving} onClick={close}><CloseIcon /></IconButton>
-                </Stack>
-                <DrawerDescription>{fieldTable ? 'Select an organization unit and a field to link them.' : 'Choose a record and the dates this association applies.'}</DrawerDescription>
-                <Stack spacing={2} sx={{mt:3}}>
-                    {error&&<Alert severity="error">{error}</Alert>}
-                    {fieldTable && <FormControl required>
+            {draft&&<JoyBox component="form" onSubmit={e=>{e.preventDefault();void submit()}} sx={{p:3,height:'100%',boxSizing:'border-box',overflowY:'auto',bgcolor:'background.surface'}}>
+                <JoyStack direction="row" sx={{ alignItems:'center', justifyContent:'space-between' }}>
+                    <DrawerTitle>{draft.id?'Edit':'Add'} {associationKind ? associationTitle : draft.kind+' relationship'}</DrawerTitle>
+                    <JoyIconButton aria-label="Close form" disabled={saving} onClick={close}><CloseIcon /></JoyIconButton>
+                </JoyStack>
+                <DrawerDescription>{associationKind ? 'Select an organization unit and a ' + associationLabel.toLowerCase() + ' to link them.' : 'Choose a record and the dates this association applies.'}</DrawerDescription>
+                <JoyStack spacing={2} sx={{mt:3}}>
+                    {error&&<JoyAlert color="danger">{error}</JoyAlert>}
+                    {associationKind && <FormControl required>
                         <FormLabel>Organization unit</FormLabel>
                         <Autocomplete<Row> disabled={saving || !!draft.id}
                             options={data.organizations}
@@ -192,18 +206,32 @@ export default function OrganizationView({ fieldTable = false, organizationId }:
                             slotProps={{listbox:{sx:{zIndex:1400}}}}
                         />
                     </FormControl>}
-                    <FormControl required><FormLabel>{fieldTable ? 'Field' : 'Related record'}</FormLabel><Autocomplete<Row> disabled={saving} loading={loading}
-                        placeholder={fieldTable ? 'Select a field' : 'Select a related record'}
-                        noOptionsText={fieldTable ? 'No matching fields. Add one in Master data / Field.' : 'No matching records'}
+                    <FormControl required><FormLabel>{associationKind ? associationLabel : 'Related record'}</FormLabel><Autocomplete<Row> disabled={saving} loading={loading}
+                        placeholder={associationKind ? 'Select a ' + associationLabel.toLowerCase() : 'Select a related record'}
+                        noOptionsText={associationKind ? 'No matching records. Add one in Master data / ' + associationLabel + '.' : 'No matching records'}
                         options={data[draft.kind]} getOptionLabel={row=>String(row[keys[draft.kind][1]])} isOptionEqualToValue={(a,b)=>a[keys[draft.kind][0]]===b[keys[draft.kind][0]]} value={data[draft.kind].find(row=>Number(row[keys[draft.kind][0]])===draft.targetId)||null} onChange={(_e,row)=>setDraft({...draft,targetId:Number(row?.[keys[draft.kind][0]]||0)})} slotProps={{listbox:{sx:{zIndex:1400}}}}/></FormControl>
                     <FormControl><FormLabel>Effective date</FormLabel><Input type="date" disabled={saving} value={draft.effectiveDate||''} onChange={e=>setDraft({...draft,effectiveDate:e.target.value||null})}/></FormControl>
                     <FormControl><FormLabel>Expiry date</FormLabel><Input type="date" disabled={saving} value={draft.expiryDate||''} onChange={e=>setDraft({...draft,expiryDate:e.target.value||null})} slotProps={{input:{min:draft.effectiveDate||undefined}}}/></FormControl>
                     <FormControl><FormLabel>Remarks</FormLabel><Textarea disabled={saving} minRows={3} value={draft.remark||''} onChange={e=>setDraft({...draft,remark:e.target.value||null})} slotProps={{textarea:{maxLength:2000}}}/></FormControl>
                     <Checkbox disabled={saving} label="Active" checked={draft.isActive} onChange={e=>setDraft({...draft,isActive:e.target.checked})}/>
-                    <Stack direction="row" spacing={2}><Button disabled={saving} onClick={close}>Cancel</Button><Button type="submit" variant="contained" disabled={!canSave}>{saving?<OrbitRing className="size-5"/>:'Save relationship'}</Button></Stack>
-                </Stack>
-            </Box>}
+                    <JoyStack direction="row" spacing={2}><JoyButton disabled={saving} onClick={close}>Cancel</JoyButton><JoyButton type="submit" variant="solid" disabled={!canSave}>{saving?<OrbitRing className="size-5"/>:'Save relationship'}</JoyButton></JoyStack>
+                </JoyStack>
+            </JoyBox>}
         </CssVarsProvider></DrawerContent></Drawer>
+        <Dialog open={!!viewed} onClose={()=>setViewed(undefined)} fullWidth maxWidth="xs">
+            <DialogTitle>{associationTitle} details</DialogTitle>
+            <DialogContent>
+                <Box component="dl" sx={{ m:0, display:'grid', gridTemplateColumns:'1fr 2fr', gap:1, overflowWrap:'anywhere' }}>
+                    {viewed && columns.map(column=><Box key={column.key} sx={{display:'contents'}}>
+                        <Typography component="dt" color="text.secondary">{column.label}</Typography>
+                        <Typography component="dd" sx={{m:0}}>{column.key === 'isActive'
+                            ? (viewed.isActive ? 'Active' : 'Inactive')
+                            : String(viewed[column.key] ?? '—')}</Typography>
+                    </Box>)}
+                </Box>
+            </DialogContent>
+            <DialogActions><Button onClick={()=>setViewed(undefined)}>Close</Button></DialogActions>
+        </Dialog>
         <Dialog open={!!remove} onClose={()=>{if(!saving)setRemove(undefined)}}><DialogTitle>Remove relationship?</DialogTitle><DialogContent>{error&&<Alert severity="error">{error}</Alert>}Remove this association from the organization? The related field, well, or facility remains available.</DialogContent><DialogActions><Button disabled={saving} onClick={()=>setRemove(undefined)}>Cancel</Button><Button color="error" disabled={saving} onClick={()=>void deleteLink()}>{saving?'Removing…':'Remove'}</Button></DialogActions></Dialog>
         <Dialog open={!!pending} onClose={()=>setPending(null)}><DialogTitle>Discard unsaved changes?</DialogTitle><DialogActions><Button onClick={()=>setPending(null)}>Keep editing</Button><Button color="error" onClick={()=>{const action=pending;setPending(null);action?.()}}>Discard</Button></DialogActions></Dialog>
     </Stack>

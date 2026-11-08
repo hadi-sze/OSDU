@@ -6,7 +6,7 @@ export const masterDataGroups = [
       {
         "label": "Facility Org Unit",
         "table": "FACILITY_ORG_UNIT",
-        "form": false
+        "form": true
       },
       {
         "label": "Field Org Unit",
@@ -21,7 +21,7 @@ export const masterDataGroups = [
       {
         "label": "Well Org Unit",
         "table": "WELL_ORG_UNIT",
-        "form": false
+        "form": true
       }
     ]
   },

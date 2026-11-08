@@ -3,7 +3,7 @@ import WellRecords, { wellRecordPages } from './well-records'
 import { useState } from 'react'
 import PoolStatusRecords from './pool-statuses'
 import PoolTypeRecords from './pool-types'
-import OrganizationView, { FieldOrgUnits } from './organization-view'
+import OrganizationView, { FacilityOrgUnits, FieldOrgUnits, WellOrgUnits } from './organization-view'
 import Facilities from './facilities'
 import FacilityFields from './facility-field-associations'
 import CrsRecords from './coordinate-reference-systems'
@@ -42,7 +42,9 @@ const masterDataPages: Record<string, React.ComponentType> = {
   "All Organizations": OrganizationUnitRecords,
   "Reference · Pool Status": PoolStatusRecords,
   "Reference · Pool Type": PoolTypeRecords,
+  "Facility Org Unit": FacilityOrgUnits,
   "Field Org Unit": FieldOrgUnits,
+  "Well Org Unit": WellOrgUnits,
   "Facility Field": FacilityFields,
   "Coordinate Reference Systems": CrsRecords,
   "Organization Unit": OrganizationUnitRecords,
