@@ -34,7 +34,8 @@ import DarkModeIcon from '@mui/icons-material/DarkMode'
 import { setSearch, type RootState, type Asset, useGetAssetsQuery, useCreateAssetMutation, useUpdateAssetMutation, useDeleteAssetMutation } from '../lib/store'
 const domains = masterDataItems.map(item=>item.label)
 const masterDataPages: Record<string, React.ComponentType> = {
-"Organization View": OrganizationView,
+"Organization Relationships": OrganizationView,
+"All Organizations": OrganizationUnitRecords,
 "Facility Field": FacilityFields,
 "Coordinate Reference Systems": CrsRecords,
 "Organization Unit": OrganizationUnitRecords,
