@@ -11,7 +11,7 @@ export const masterDataGroups = [
       {
         "label": "Field Org Unit",
         "table": "FIELD_ORG_UNIT",
-        "form": false
+        "form": true
       },
       {
         "label": "Organization Unit",

@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import OrganizationView from './organization-view'
+import OrganizationView, { FieldOrgUnits } from './organization-view'
 import Facilities from './facilities'
 import FacilityFields from './facility-field-associations'
 import CrsRecords from './coordinate-reference-systems'
@@ -36,6 +36,7 @@ const domains = masterDataItems.map(item => item.label)
 const masterDataPages: Record<string, React.ComponentType> = {
   "Organization Relationships": OrganizationView,
   "All Organizations": OrganizationUnitRecords,
+  "Field Org Unit": FieldOrgUnits,
   "Facility Field": FacilityFields,
   "Coordinate Reference Systems": CrsRecords,
   "Organization Unit": OrganizationUnitRecords,
