@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export interface Asset { id: number; name: string; description: string | null; createdUtc: string }
 export type AssetInput = Pick<Asset, 'name' | 'description'>
 export const assetsApi = createApi({
-    reducerPath: 'assetsApi', baseQuery: fetchBaseQuery({ baseUrl: '/api/' }), tagTypes: ['FieldType','Equipment', 'Pool', 'OrganizationUnit', 'Crs', 'FacilityField', 'Field', 'Well', 'OrgUnitType', 'Asset', 'Facility', 'WellStatusType', 'WellStatus'],
+    reducerPath: 'assetsApi', baseQuery: fetchBaseQuery({ baseUrl: '/api/' }), tagTypes: ['PoolType','PoolStatus','FieldType','Equipment', 'Pool', 'OrganizationUnit', 'Crs', 'FacilityField', 'Field', 'Well', 'OrgUnitType', 'Asset', 'Facility', 'WellStatusType', 'WellStatus'],
     endpoints: b => ({
  updateOrganizationUnit:b.mutation<Record<string,unknown>,{id:number;body:Record<string,unknown>}>({query:({id,body})=>({url:'organization-units/'+id,method:'PUT',body}),invalidatesTags:['OrganizationUnit']}),
  deleteOrganizationUnit:b.mutation<void,number>({query:id=>({url:'organization-units/'+id,method:'DELETE'}),invalidatesTags:['OrganizationUnit']}),
@@ -14,7 +14,11 @@ export const assetsApi = createApi({
         getEquipmentLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'equipment/lookups' }),
         createEquipment: b.mutation<Record<string, unknown>, Record<string, unknown>>({ query: body => ({ url: 'equipment', method: 'POST', body }), invalidatesTags: ['Equipment'] }),
         getPoolRecords: b.query<Record<string, unknown>[], void>({ query: () => 'pools', providesTags: ['Pool'] }),
-        getPoolLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'pools/lookups' }),
+        getPoolStatusRecords: b.query<Record<string,unknown>[],void>({query:()=>'reference/pool-statuses',providesTags:['PoolStatus']}),
+        getPoolTypeRecords: b.query<Record<string,unknown>[],void>({query:()=>'reference/pool-types',providesTags:['PoolType']}),
+        createPoolStatus: b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'reference/pool-statuses',method:'POST',body}),invalidatesTags:['PoolStatus']}),
+        createPoolType: b.mutation<Record<string,unknown>,Record<string,unknown>>({query:body=>({url:'reference/pool-types',method:'POST',body}),invalidatesTags:['PoolType']}),
+        getPoolLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'pools/lookups', providesTags: ['Field','PoolStatus','PoolType'] }),
         createPool: b.mutation<Record<string, unknown>, Record<string, unknown>>({ query: body => ({ url: 'pools', method: 'POST', body }), invalidatesTags: ['Pool'] }),
         getOrganizationUnitRecords: b.query<Record<string, unknown>[], void>({ query: () => 'organization-units', providesTags: ['OrganizationUnit'] }),
         getOrganizationUnitLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'organization-units/lookups', providesTags: ['OrgUnitType'] }),
@@ -85,3 +89,6 @@ export const { useGetEquipmentRecordsQuery, useGetEquipmentLookupsQuery, useCrea
 export const {useGetFieldTypeRecordsQuery,useGetFieldTypeLookupsQuery,useCreateFieldTypeMutation}=assetsApi
 
 export const {useUpdateOrganizationUnitMutation,useDeleteOrganizationUnitMutation}=assetsApi
+
+export const {useGetPoolStatusRecordsQuery,useCreatePoolStatusMutation}=assetsApi
+export const {useGetPoolTypeRecordsQuery,useCreatePoolTypeMutation}=assetsApi

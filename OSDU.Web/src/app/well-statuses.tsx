@@ -1,4 +1,5 @@
 'use client'
+import OrgUnitTypeGrid from './org-unit-type-grid'
 import { useEffect, useState } from 'react'
 import { Alert, Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControlLabel, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
 import { Drawer as ShadDrawer, DrawerContent, DrawerTitle, DrawerDescription } from '../components/ui/drawer'
@@ -42,7 +43,10 @@ export default function WellStatuses() {
   <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Manage the categories used to classify well statuses.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setError('')}}>Add well status</Button></Stack>
   {success&&<Alert severity="success" onClose={()=>setSuccess('')}>{success}</Alert>}
   {loadError&&<Alert severity="error">Unable to load records.<Button onClick={()=>refetch()}>Retry</Button></Alert>}
-  <Paper variant="outlined"><TableContainer><Table><TableHead><TableRow>{['Name','Short name','Long name','Active','Created by'].map(h=><TableCell key={h}>{h}</TableCell>)}</TableRow></TableHead><TableBody>{rows.map(r=><TableRow key={String(r.rWellStatusId)}>{['wellStatus','shortName','longName','isActive','rowCreatedBy'].map(k=><TableCell key={k}>{typeof r[k]==='boolean'?(r[k]?'Yes':'No'):String(r[k]??'—')}</TableCell>)}</TableRow>)}{!rows.length&&<TableRow><TableCell colSpan={5}>{isLoading?'Loading…':'No well statuss yet.'}</TableCell></TableRow>}</TableBody></Table></TableContainer></Paper>
+  <OrgUnitTypeGrid rows={rows} loading={isLoading || saving} idKey="rWellStatusId" nameKey="wellStatus"
+   entityLabel="Well statuses" recordTable="well-statuses" onRecordChange={()=>void refetch()}
+   customColumns={[{key:'wellStatus',label:'Name'},{key:'shortName',label:'Short name'},{key:'longName',label:'Long name'},
+    {key:'isActive',label:'Status'},{key:'rowCreatedBy',label:'Created by'}]} />
   <ShadDrawer swipeDirection="right" open={open} onOpenChange={next=>{if(!next)close()}}>
    <DrawerContent>
     <CssVarsProvider theme={joyTheme}>

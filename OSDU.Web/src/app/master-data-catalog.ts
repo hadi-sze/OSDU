@@ -83,57 +83,57 @@ export const masterDataGroups = [
       {
         "label": "Wellbore",
         "table": "WELLBORE",
-        "form": false
+        "form": true
       },
       {
         "label": "Well Completion",
         "table": "WELL_COMPLETION",
-        "form": false
+        "form": true
       },
       {
         "label": "Well Dir Srvy",
         "table": "WELL_DIR_SRVY",
-        "form": false
+        "form": true
       },
       {
         "label": "Well Equipment",
         "table": "WELL_EQUIPMENT",
-        "form": false
+        "form": true
       },
       {
         "label": "Perforation",
         "table": "WELL_PERFORATION",
-        "form": false
+        "form": true
       },
       {
         "label": "Well Pool",
         "table": "WELL_POOL",
-        "form": false
+        "form": true
       },
       {
         "label": "Well Prod Method History",
         "table": "WELL_PROD_METHOD_HISTORY",
-        "form": false
+        "form": true
       },
       {
         "label": "Well Status",
         "table": "WELL_STATUS",
-        "form": false
+        "form": true
       },
       {
         "label": "Well Tubing Tally",
         "table": "WELL_TUBING_TALLY",
-        "form": false
+        "form": true
       },
       {
         "label": "Well Tubular",
         "table": "WELL_TUBULAR",
-        "form": false
+        "form": true
       },
       {
         "label": "Well Zone",
         "table": "WELL_ZONE",
-        "form": false
+        "form": true
       }
     ]
   },
@@ -382,12 +382,12 @@ export const masterDataGroups = [
       {
         "label": "Reference \u00b7 Pool Status",
         "table": "R_POOL_STATUS",
-        "form": false
+        "form": true
       },
       {
         "label": "Reference \u00b7 Pool Type",
         "table": "R_POOL_TYPE",
-        "form": false
+        "form": true
       },
       {
         "label": "Reference \u00b7 Production Method",

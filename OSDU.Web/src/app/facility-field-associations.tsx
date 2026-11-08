@@ -45,7 +45,7 @@ export default function FacilityFields() {
   <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Associate facilities with fields and define their effective dates.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setError('')}}>Add facility field</Button></Stack>
   {success&&<Alert severity="success" onClose={()=>setSuccess('')}>{success}</Alert>}
   {loadError&&<Alert severity="error">Unable to load records.<Button onClick={()=>refetch()}>Retry</Button></Alert>}
-  <OrgUnitTypeGrid rows={rows} loading={isLoading||isFetching||saving} idKey="facilityFieldId" nameKey="fieldName" entityLabel="Facility fields" customColumns={facilityFieldColumns}/>
+  <OrgUnitTypeGrid recordTable="facility-fields" onRecordChange={()=>void refetch()} rows={rows} loading={isLoading||isFetching||saving} idKey="facilityFieldId" nameKey="fieldName" entityLabel="Facility fields" customColumns={facilityFieldColumns}/>
   <ShadDrawer swipeDirection="right" open={open} onOpenChange={next=>{if(!next)close()}}>
    <DrawerContent>
     <CssVarsProvider theme={joyTheme}>

@@ -38,11 +38,15 @@ export function FieldOrgUnits() {
     return <OrganizationView fieldTable />
 }
 
-export default function OrganizationView({ fieldTable = false }: { fieldTable?: boolean }) {
+export default function OrganizationView({ fieldTable = false, organizationId }: { fieldTable?: boolean; organizationId?: number }) {
     const [data,setData] = useState<Data>(blank)
     const [loading,setLoading] = useState(true)
     const [error,setError] = useState('')
-    const [selected,setSelected] = useState<{org:Row;link?:Link}>()
+    const [selection,setSelected] = useState<{org:Row;link?:Link}>()
+    const visibleOrganizations = organizationId === undefined
+        ? data.organizations : data.organizations.filter(org => org.orgUnitId === organizationId)
+    const initialOrganization = organizationId === undefined ? undefined : visibleOrganizations[0]
+    const selected = selection ?? (initialOrganization ? { org: initialOrganization } : undefined)
     const [draft,setDraft] = useState<Link>()
     const [baseline,setBaseline] = useState('')
     const [saving,setSaving] = useState(false)
@@ -116,7 +120,7 @@ export default function OrganizationView({ fieldTable = false }: { fieldTable?: 
             </Stack>
             {!loading && (!data.fields.length || !data.organizations.length) && !error &&
                 <Alert severity="info">Add at least one field and one organization unit before creating an association.</Alert>}
-            <OrgUnitTypeGrid
+            <OrgUnitTypeGrid recordTable="field-org-units"
                 rows={data.links.filter(item=>item.kind==='fields').map(item=>({
                     ...item,
                     fieldName: data.fields.find(row=>row.fieldId===item.targetId)?.fieldName ?? item.targetId,
@@ -136,9 +140,11 @@ export default function OrganizationView({ fieldTable = false }: { fieldTable?: 
         <Stack direction="row" spacing={2} sx={{alignItems:"center"}}><Typography>Explore organizations and their dated relationships.</Typography><Button disabled={loading} onClick={()=>{setError('');void load()}}>Refresh</Button>{loading&&<OrbitRing className="size-5"/>}</Stack>
         <Box sx={{display:'grid',gridTemplateColumns:{xs:'1fr',md:'minmax(260px,1fr) 2fr'},gap:2}}>
             <Paper variant="outlined" sx={{p:2}}>
-                {!loading&&!data.organizations.length&&<Typography>No organization units yet. Add one in Master data / Organization Unit.</Typography>}
-                <SimpleTreeView>
-                    {data.organizations.map(org=><TreeItem key={String(org.orgUnitId)} itemId={'org-'+org.orgUnitId} label={String(org.orgUnitName)} onClick={()=>setSelected({org})}>
+                {!loading&&!visibleOrganizations.length&&<Typography>{organizationId === undefined
+                    ? 'No organization units yet. Add one in Master data / Organization Unit.'
+                    : 'This organization is no longer available.'}</Typography>}
+                <SimpleTreeView selectedItems={selected?.link ? selected.link.kind+'-'+selected.link.id : selected ? 'org-'+selected.org.orgUnitId : null}>
+                    {visibleOrganizations.map(org=><TreeItem key={String(org.orgUnitId)} itemId={'org-'+org.orgUnitId} label={String(org.orgUnitName)} onClick={()=>setSelected({org})}>
                         {kinds.map(kind=>{
                             const links=data.links.filter(item=>item.orgUnitId===org.orgUnitId&&item.kind===kind)
                             return <TreeItem key={kind} itemId={'org-'+org.orgUnitId+'-'+kind} label={kind[0].toUpperCase()+kind.slice(1)+' ('+links.length+')'}>

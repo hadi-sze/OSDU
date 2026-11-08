@@ -49,7 +49,7 @@ export default function Fields() {
   </Alert>
   {success&&<Alert severity="success" onClose={()=>setSuccess('')}>{success}</Alert>}
   {loadError&&<Alert severity="error">Unable to load records.<Button onClick={()=>refetch()}>Retry</Button></Alert>}
-  <OrgUnitTypeGrid rows={rows} loading={isLoading||isFetching||saving} idKey="fieldId" nameKey="fieldName" entityLabel="Fields" customColumns={fieldColumns}/>
+  <OrgUnitTypeGrid recordTable="field-records" onRecordChange={()=>void refetch()} rows={rows} loading={isLoading||isFetching||saving} idKey="fieldId" nameKey="fieldName" entityLabel="Fields" customColumns={fieldColumns}/>
   <ShadDrawer swipeDirection="right" open={open} onOpenChange={next=>{if(!next)close()}}>
    <DrawerContent>
     <CssVarsProvider theme={joyTheme}>

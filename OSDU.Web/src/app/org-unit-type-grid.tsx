@@ -3,7 +3,7 @@
 import { OrbitRing } from '@/components/loading-ui/orbit-ring'
 import { useMemo, useState, useRef, useEffect } from 'react'
 import { Box, Button, Checkbox, Chip, Divider, FormControlLabel, IconButton, InputAdornment, Menu, MenuItem, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, LinearProgress } from '@mui/material'
-import {Trash2 as DeleteOutlineIcon,Eye as VisibilityOutlinedIcon,Pencil as EditOutlinedIcon} from 'lucide-react'
+import RecordEditor, { RowActions, type RecordAction } from './record-editor'
 import SearchIcon from '@mui/icons-material/Search'
 import FilterIcon from '@mui/icons-material/Tune'
 import SortIcon from '@mui/icons-material/UnfoldMore'
@@ -12,13 +12,17 @@ import LastIcon from '@mui/icons-material/LastPage'
 import PrevIcon from '@mui/icons-material/ChevronLeft'
 import NextIcon from '@mui/icons-material/ChevronRight'
 const defaultColumns=[{key:'rOrgUnitTypeId',label:'ID'},{key:'orgUnitType',label:'Name'},{key:'shortName',label:'Short name'},{key:'longName',label:'Long name'},{key:'isActive',label:'Status'},{key:'rowCreatedBy',label:'Created by'}]
-export default function OrgUnitTypeGrid({rows,loading,idKey='rOrgUnitTypeId',nameKey='orgUnitType',entityLabel='Organization unit types',customColumns,onView,onEdit,onDelete}:{rows:Record<string,unknown>[];loading:boolean;idKey?:string;nameKey?:string;entityLabel?:string;customColumns?:{key:string;label:string}[];onView?:(row:Record<string,unknown>)=>void;onEdit?:(row:Record<string,unknown>)=>void;onDelete?:(row:Record<string,unknown>)=>void}) {
+export default function OrgUnitTypeGrid({rows,loading,idKey='rOrgUnitTypeId',nameKey='orgUnitType',entityLabel='Organization unit types',customColumns,onView,onEdit,onDelete,recordTable,onRecordChange}:{rows:Record<string,unknown>[];loading:boolean;idKey?:string;nameKey?:string;entityLabel?:string;customColumns?:{key:string;label:string}[];onView?:(row:Record<string,unknown>)=>void;onEdit?:(row:Record<string,unknown>)=>void;onDelete?:(row:Record<string,unknown>)=>void;recordTable?:string;onRecordChange?:()=>void}) {
  const [transitioning,setTransitioning]=useState(false)
  const activityTimer=useRef<ReturnType<typeof setTimeout>|null>(null)
  useEffect(()=>()=>{if(activityTimer.current)clearTimeout(activityTimer.current)},[])
  function showActivity(){setTransitioning(true);if(activityTimer.current)clearTimeout(activityTimer.current);activityTimer.current=setTimeout(()=>setTransitioning(false),350)}
  const busy=loading||transitioning
- const hasActions=!!(onView||onEdit||onDelete)
+ const [recordAction,setRecordAction]=useState<RecordAction>()
+ const hasActions=!!(onView||onEdit||onDelete||recordTable)
+ const showRecord=(mode:RecordAction['mode'],row:Record<string,unknown>)=>{
+  setRecordAction({mode,id:Number(row[idKey]),name:String(row[nameKey]??row[idKey])})
+ }
  const columns=useMemo(()=>customColumns??defaultColumns.map(c=>({...c,key:c.key==='rOrgUnitTypeId'?idKey:c.key==='orgUnitType'?nameKey:c.key})),[idKey,nameKey,customColumns])
 
  const [status,setStatus]=useState('All'),[query,setQuery]=useState(''),[hidden,setHidden]=useState<string[]>([])
@@ -52,7 +56,11 @@ export default function OrgUnitTypeGrid({rows,loading,idKey='rOrgUnitTypeId',nam
    {busy&&<Box sx={{position:'absolute',inset:0,zIndex:2,display:'flex',alignItems:'center',justifyContent:'center',bgcolor:'background.paper',opacity:.92,pointerEvents:'none'}}><Box sx={{display:'flex',alignItems:'center',gap:1.5}}><OrbitRing className="size-7"/><Typography variant="body2">Loading {entityLabel.toLowerCase()}…</Typography></Box></Box>}
    <TableContainer><Table size="small" sx={{minWidth:650}}><TableHead><TableRow>{visible.map(c=><TableCell key={c.key} aria-sort={sort.key===c.key?(sort.direction===1?'ascending':'descending'):'none'} sx={{fontWeight:400,py:.5,whiteSpace:'nowrap'}}><Button color="inherit" size="small" endIcon={<SortIcon sx={{fontSize:14}}/>} onClick={()=>setSort(s=>({key:c.key,direction:s.key===c.key&&s.direction===1?-1:1}))} sx={{fontWeight:400,fontSize:13,px:0}}>{c.label}</Button></TableCell>)}{hasActions&&<TableCell align="center">Actions</TableCell>}</TableRow></TableHead>
    <TableBody key={JSON.stringify([status,query,creator,current,size,sort,hidden])} sx={{animation:'osdu-grid-in 180ms ease','@keyframes osdu-grid-in':{from:{opacity:0,transform:'translateY(4px)'},to:{opacity:1,transform:'translateY(0)'}},'@media(prefers-reduced-motion:reduce)':{animation:'none'}}}>
-    {filtered.slice(current*size,(current+1)*size).map(r=><TableRow hover key={String(r[idKey])}>{visible.map(c=><TableCell key={c.key} sx={{fontSize:13,py:1.25}}>{c.key==='isActive'?<Chip size="small" variant={r.isActive?'filled':'outlined'} color={r.isActive?'success':'neutral'} label={r.isActive?'Active':'Inactive'} sx={{height:23,fontSize:11}}/>:String(r[c.key]??'—')}</TableCell>)}{hasActions&&<TableCell align="center" sx={{whiteSpace:'nowrap'}}>{[{action:onDelete,Icon:DeleteOutlineIcon,label:'Delete'},{action:onView,Icon:VisibilityOutlinedIcon,label:'View'},{action:onEdit,Icon:EditOutlinedIcon,label:'Edit'}].map(({action,Icon,label})=>action&&<IconButton key={label} size="small" aria-label={label+' '+String(r[nameKey]??r[idKey])} title={label} onClick={()=>action(r)}><Icon size={17} strokeWidth={1.6}/></IconButton>)}</TableCell>}</TableRow>)}
+    {filtered.slice(current*size,(current+1)*size).map(r=><TableRow hover key={String(r[idKey])}>{visible.map(c=><TableCell key={c.key} sx={{fontSize:13,py:1.25}}>{c.key==='isActive'?<Chip size="small" variant={r.isActive?'filled':'outlined'} color={r.isActive?'success':'neutral'} label={r.isActive?'Active':'Inactive'} sx={{height:23,fontSize:11}}/>:String(r[c.key]??'—')}</TableCell>)}{hasActions&&<TableCell align="center" sx={{whiteSpace:'nowrap'}}><RowActions name={String(r[nameKey]??r[idKey])}
+     onDelete={onDelete ? ()=>onDelete(r) : recordTable ? ()=>showRecord('delete',r) : undefined}
+     onView={onView ? ()=>onView(r) : recordTable ? ()=>showRecord('view',r) : undefined}
+     onEdit={onEdit ? ()=>onEdit(r) : recordTable ? ()=>showRecord('edit',r) : undefined}
+    /></TableCell>}</TableRow>)}
     {!filtered.length&&<TableRow><TableCell colSpan={visible.length+Number(hasActions)} align="center" sx={{py:6}}>{loading?'Loading '+entityLabel.toLowerCase()+'…':'No records found. Try changing your search or filters.'}</TableCell></TableRow>}
    </TableBody></Table></TableContainer>
   </Paper>
@@ -62,6 +70,8 @@ export default function OrgUnitTypeGrid({rows,loading,idKey='rOrgUnitTypeId',nam
     <Stack direction="row" spacing={.5}>{[{label:'First page',Icon:FirstIcon,target:0,disabled:current===0},{label:'Previous page',Icon:PrevIcon,target:current-1,disabled:current===0},{label:'Next page',Icon:NextIcon,target:current+1,disabled:current===pages-1},{label:'Last page',Icon:LastIcon,target:pages-1,disabled:current===pages-1}].map(({label,Icon,target,disabled})=><IconButton key={label} aria-label={label} disabled={disabled||loading} onClick={()=>setPage(target)} size="small" sx={{border:1,borderColor:'divider'}}><Icon fontSize="small"/></IconButton>)}</Stack>
    </Stack>
   </Stack>
+  {recordTable&&recordAction&&<RecordEditor table={recordTable} action={recordAction}
+   onClose={()=>setRecordAction(undefined)} onChanged={()=>onRecordChange?.()} />}
  </Box>
 }
 

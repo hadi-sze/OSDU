@@ -45,7 +45,7 @@ export default function EquipmentRecords() {
   <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Manage equipment master data.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setError('')}}>Add equipment</Button></Stack>
   {success&&<Alert severity="success" onClose={()=>setSuccess('')}>{success}</Alert>}
   {loadError&&<Alert severity="error">Unable to load records.<Button onClick={()=>refetch()}>Retry</Button></Alert>}
-  <OrgUnitTypeGrid rows={rows} loading={isLoading||isFetching||saving} idKey="equipmentId" nameKey="equipmentName" entityLabel="Equipment" customColumns={recordColumns}/>
+  <OrgUnitTypeGrid recordTable="equipment-master" onRecordChange={()=>void refetch()} rows={rows} loading={isLoading||isFetching||saving} idKey="equipmentId" nameKey="equipmentName" entityLabel="Equipment" customColumns={recordColumns}/>
   <ShadDrawer swipeDirection="right" open={open} onOpenChange={next=>{if(!next)close()}}>
    <DrawerContent>
     <CssVarsProvider theme={joyTheme}>

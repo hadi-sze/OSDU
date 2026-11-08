@@ -45,7 +45,7 @@ export default function CrsRecords() {
   <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Manage coordinate reference systems master data.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setError('')}}>Add coordinate reference systems</Button></Stack>
   {success&&<Alert severity="success" onClose={()=>setSuccess('')}>{success}</Alert>}
   {loadError&&<Alert severity="error">Unable to load records.<Button onClick={()=>refetch()}>Retry</Button></Alert>}
-  <OrgUnitTypeGrid rows={rows} loading={isLoading||isFetching||saving} idKey="crsId" nameKey="crsName" entityLabel="Coordinate Reference Systems" customColumns={recordColumns}/>
+  <OrgUnitTypeGrid recordTable="coordinate-reference-systems" onRecordChange={()=>void refetch()} rows={rows} loading={isLoading||isFetching||saving} idKey="crsId" nameKey="crsName" entityLabel="Coordinate Reference Systems" customColumns={recordColumns}/>
   <ShadDrawer swipeDirection="right" open={open} onOpenChange={next=>{if(!next)close()}}>
    <DrawerContent>
     <CssVarsProvider theme={joyTheme}>

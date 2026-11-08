@@ -43,7 +43,7 @@ export default function WellStatusTypes() {
   <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Manage the categories used to classify well statuses.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setError('')}}>Add well status type</Button></Stack>
   {success&&<Alert severity="success" onClose={()=>setSuccess('')}>{success}</Alert>}
   {loadError&&<Alert severity="error">Unable to load records.<Button onClick={()=>refetch()}>Retry</Button></Alert>}
-  <OrgUnitTypeGrid rows={rows} loading={isLoading||isFetching||saving} idKey="rWellStatusTypeId" nameKey="wellStatusType" entityLabel="Well status types"/>
+  <OrgUnitTypeGrid recordTable="well-status-types" onRecordChange={()=>void refetch()} rows={rows} loading={isLoading||isFetching||saving} idKey="rWellStatusTypeId" nameKey="wellStatusType" entityLabel="Well status types"/>
   <ShadDrawer swipeDirection="right" open={open} onOpenChange={next=>{if(!next)close()}}>
    <DrawerContent>
     <CssVarsProvider theme={joyTheme}>

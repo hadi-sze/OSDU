@@ -69,7 +69,7 @@ export default function Facilities() {
         {success && <Alert severity="success">{success}</Alert>}
         {error && <Alert severity="error">Unable to load facilities.<Button onClick={() => refetch()}>Retry</Button></Alert>}
         <Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography color="text.secondary">Manage facility details, location and operations.</Typography><Button variant="contained" startIcon={<AddIcon/>} onClick={()=>{setOpen(true);setMessage('')}}>Add facility</Button></Stack>
-        <OrgUnitTypeGrid rows={rows} loading={isLoading||isFetching||saving} idKey="facilityId" nameKey="facilityName" entityLabel="Facilities" customColumns={facilityColumns}/>
+        <OrgUnitTypeGrid recordTable="facilities" onRecordChange={()=>void refetch()} rows={rows} loading={isLoading||isFetching||saving} idKey="facilityId" nameKey="facilityName" entityLabel="Facilities" customColumns={facilityColumns}/>
         <Typography variant="caption" color="text.secondary">Up to 100 most recent facilities.</Typography>
         <ShadDrawer swipeDirection="right" open={open} onOpenChange={next=>{if(!next)close()}}><DrawerContent><CssVarsProvider theme={joyTheme}>
         <JoyBox component="form" onSubmit={submit} sx={{height:'100dvh',display:'flex',flexDirection:'column',bgcolor:'background.surface',color:'text.primary'}}>

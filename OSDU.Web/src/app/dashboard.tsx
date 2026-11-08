@@ -1,5 +1,8 @@
 'use client'
+import WellRecords, { wellRecordPages } from './well-records'
 import { useState } from 'react'
+import PoolStatusRecords from './pool-statuses'
+import PoolTypeRecords from './pool-types'
 import OrganizationView, { FieldOrgUnits } from './organization-view'
 import Facilities from './facilities'
 import FacilityFields from './facility-field-associations'
@@ -19,6 +22,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useDispatch, useSelector } from 'react-redux'
 import { Alert, AppBar, Box, Button, Chip, Container, Drawer, InputAdornment, Menu, MenuItem, ListItemIcon, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, LinearProgress, ListItemButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Toolbar, Typography, useColorScheme } from '@mui/material'
+import { RowActions } from './record-editor'
 import WorkspaceNavigation from './workspace-navigation'
 
 import MenuIcon from '@mui/icons-material/Menu'
@@ -31,11 +35,13 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import AddIcon from '@mui/icons-material/Add'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
-import { setSearch, type RootState, type Asset, useGetAssetsQuery, useCreateAssetMutation, useUpdateAssetMutation, useDeleteAssetMutation } from '../lib/store'
+import { setSearch, type RootState, type Asset, useGetOrganizationUnitRecordsQuery, useGetAssetsQuery, useCreateAssetMutation, useUpdateAssetMutation, useDeleteAssetMutation } from '../lib/store'
 const domains = masterDataItems.map(item => item.label)
 const masterDataPages: Record<string, React.ComponentType> = {
   "Organization Relationships": OrganizationView,
   "All Organizations": OrganizationUnitRecords,
+  "Reference · Pool Status": PoolStatusRecords,
+  "Reference · Pool Type": PoolTypeRecords,
   "Field Org Unit": FieldOrgUnits,
   "Facility Field": FacilityFields,
   "Coordinate Reference Systems": CrsRecords,
@@ -58,8 +64,13 @@ export default function Dashboard() {
   const search = useSelector((s: RootState) => s.ui.search); const dispatch = useDispatch()
   const [editing, setEditing] = useState<Asset | null | undefined>(undefined)
   const [name, setName] = useState(''); const [description, setDescription] = useState('')
+  const [viewAsset, setViewAsset] = useState<Asset | null>(null)
   const [failure, setFailure] = useState(''); const [target, setTarget] = useState<Asset | null>(null)
   const [view, setView] = useState('Overview')
+  const organizationId = view.startsWith('organization:') ? Number(view.slice('organization:'.length)) : undefined
+  const { data: organizations = [] } = useGetOrganizationUnitRecordsQuery(undefined, { skip: organizationId === undefined })
+  const organization = organizations.find(row => row.orgUnitId === organizationId)
+  const viewTitle = organizationId === undefined ? view : String(organization?.orgUnitName ?? 'Organization')
   const { mode, setMode } = useColorScheme()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [accountAnchor, setAccountAnchor] = useState<HTMLElement | null>(null)
@@ -116,17 +127,25 @@ export default function Dashboard() {
           </Box>
           <Paper variant="outlined" sx={{ mt: 3, p: 2.5 }}><Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ justifyContent: 'space-between', alignItems: { sm: 'center' } }}><Box><Typography variant="subtitle2">Continue with your data</Typography><Typography variant="body2" color="text.secondary">Asset changes are saved to the OSDU SQL Server database.</Typography></Box><Button startIcon={<AddIcon />} onClick={() => { navigate('Assets'); open(null) }}>Add an asset</Button></Stack></Paper>
         </> : <>
-          <Typography variant="caption" color="text.secondary">OSDU / {view === 'Assets' ? 'Assets' : 'Master data / ' + view}</Typography>
-          <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', mt: 2, mb: 1 }}><Typography variant="h4" component="h1" sx={{ fontWeight: 600 }}>{view}</Typography>{view === 'Assets' && <Button variant="contained" startIcon={<AddIcon />} onClick={() => open(null)}>Add asset</Button>}</Stack>
+          <Typography variant="caption" color="text.secondary">OSDU / {view === 'Assets' ? 'Assets' : 'Master data / ' + (organizationId === undefined ? viewTitle : 'All Organizations / ' + viewTitle)}</Typography>
+          <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', mt: 2, mb: 1 }}><Typography variant="h4" component="h1" sx={{ fontWeight: 600 }}>{viewTitle}</Typography>{view === 'Assets' && <Button variant="contained" startIcon={<AddIcon />} onClick={() => open(null)}>Add asset</Button>}</Stack>
           <Typography color="text.secondary" sx={{ mb: 4 }}>Manage the data behind your production operations.</Typography>
-          {MasterDataPage ? <MasterDataPage /> : view !== 'Assets' ? <Paper variant="outlined" sx={{ p: 4 }}><Chip label="Database model ready" color="primary" variant="outlined" /><Typography variant="h5" sx={{ mt: 3, mb: 1 }}>{view} master data</Typography><Typography variant="body2" color="primary" sx={{ mb: 2 }}>Table: {masterDataItems.find(item => item.label === view)?.table}</Typography><Typography color="text.secondary">The SQL Server model and table have been created. Browsing and editing this domain will be available after its backend API endpoints are added.</Typography><Button sx={{ mt: 3 }} onClick={() => setView('Assets')}>Return to assets</Button></Paper> : <>
+          {organizationId !== undefined ? <OrganizationView key={view} organizationId={organizationId} /> : MasterDataPage ? <MasterDataPage /> : wellRecordPages[view] ? <WellRecords key={view} title={view} table={wellRecordPages[view]} /> : view !== 'Assets' ? <Paper variant="outlined" sx={{ p: 4 }}><Chip label="Database model ready" color="primary" variant="outlined" /><Typography variant="h5" sx={{ mt: 3, mb: 1 }}>{view} master data</Typography><Typography variant="body2" color="primary" sx={{ mb: 2 }}>Table: {masterDataItems.find(item => item.label === view)?.table}</Typography><Typography color="text.secondary">The SQL Server model and table have been created. Browsing and editing this domain will be available after its backend API endpoints are added.</Typography><Button sx={{ mt: 3 }} onClick={() => setView('Assets')}>Return to assets</Button></Paper> : <>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 3 }}>{[['Loaded assets', isLoading ? '—' : assets.length], ['Data models', domains.length], ['Backend', '.NET 10']].map(([label, value]) => <Paper key={label} variant="outlined" sx={{ p: 3, flex: 1 }}><Typography color="text.secondary" variant="body2">{label}</Typography><Typography variant="h4" sx={{ mt: 1, fontWeight: 600 }}>{value}</Typography></Paper>)}</Stack>
             <Paper variant="outlined"><Stack direction="row" spacing={2} sx={{ alignItems: "center", p: 2 }}><TextField size="small" label="Search loaded assets" value={search} onChange={e => dispatch(setSearch(e.target.value))} sx={{ flex: 1, maxWidth: 400 }} /><IconButton aria-label="Refresh assets" onClick={() => refetch()} disabled={isFetching}><RefreshIcon /></IconButton></Stack>{isFetching && <LinearProgress />}{error && <Alert severity="error" sx={{ mx: 2, mb: 2 }}>Unable to load assets. Ensure the .NET API is running on port 5080.<Button onClick={() => refetch()}>Retry</Button></Alert>}
-              <TableContainer><Table><TableHead><TableRow><TableCell>Name</TableCell><TableCell>Description</TableCell><TableCell>Created (UTC)</TableCell><TableCell align="right">Actions</TableCell></TableRow></TableHead><TableBody>{filtered.map(a => <TableRow key={a.id} hover><TableCell sx={{ fontWeight: 500 }}>{a.name}<Typography variant="caption" sx={{ display: "block" }} color="text.secondary">ID {a.id}</Typography></TableCell><TableCell>{a.description || '—'}</TableCell><TableCell>{a.createdUtc.slice(0, 10)}</TableCell><TableCell align="right"><Button onClick={() => open(a)}>Edit</Button><Button color="error" onClick={() => { setTarget(a); setFailure('') }}>Delete</Button></TableCell></TableRow>)}{!isLoading && !error && filtered.length === 0 && <TableRow><TableCell colSpan={4} align="center" sx={{ py: 6 }}>{search ? 'No matching assets.' : 'No assets yet. Add your first asset to get started.'}</TableCell></TableRow>}</TableBody></Table></TableContainer><Typography variant="caption" color="text.secondary" sx={{ display: 'block', p: 2 }}>Showing {filtered.length} of {assets.length} loaded records. API returns up to 100 assets.</Typography></Paper></>}
+              <TableContainer><Table><TableHead><TableRow><TableCell>Name</TableCell><TableCell>Description</TableCell><TableCell>Created (UTC)</TableCell><TableCell align="right">Actions</TableCell></TableRow></TableHead><TableBody>{filtered.map(a => <TableRow key={a.id} hover><TableCell sx={{ fontWeight: 500 }}>{a.name}<Typography variant="caption" sx={{ display: "block" }} color="text.secondary">ID {a.id}</Typography></TableCell><TableCell>{a.description || '—'}</TableCell><TableCell>{a.createdUtc.slice(0, 10)}</TableCell><TableCell align="right"><RowActions name={a.name} onEdit={() => open(a)} onView={() => setViewAsset(a)} onDelete={() => { setTarget(a); setFailure('') }} /></TableCell></TableRow>)}{!isLoading && !error && filtered.length === 0 && <TableRow><TableCell colSpan={4} align="center" sx={{ py: 6 }}>{search ? 'No matching assets.' : 'No assets yet. Add your first asset to get started.'}</TableCell></TableRow>}</TableBody></Table></TableContainer><Typography variant="caption" color="text.secondary" sx={{ display: 'block', p: 2 }}>Showing {filtered.length} of {assets.length} loaded records. API returns up to 100 assets.</Typography></Paper></>}
         </>}
       </Container>
       <Box component="footer" sx={{ borderTop: 1, borderColor: 'divider', py: 2, px: 3, display: 'flex', gap: 3, flexWrap: 'wrap' }}><Typography variant="caption" color="text.secondary">OSDU · Production data workspace</Typography><Typography variant="caption" color="text.secondary">.NET 10 + SQL Server</Typography><Typography variant="caption" color="text.secondary" sx={{ ml: 'auto' }}>© {new Date().getFullYear()} OSDU</Typography></Box>
     </Box>
+    <Dialog open={!!viewAsset} onClose={() => setViewAsset(null)} fullWidth maxWidth="sm">
+      <DialogTitle>{viewAsset?.name}</DialogTitle>
+      <DialogContent>
+        <Typography variant="body2" color="text.secondary">ID {viewAsset?.id} · Created {viewAsset?.createdUtc.slice(0, 10)} UTC</Typography>
+        <Typography sx={{ mt: 2, whiteSpace: 'pre-wrap' }}>{viewAsset?.description || 'No description.'}</Typography>
+      </DialogContent>
+      <DialogActions><Button onClick={() => setViewAsset(null)}>Close</Button></DialogActions>
+    </Dialog>
     <Dialog open={editing !== undefined} onClose={() => !busy && setEditing(undefined)} fullWidth maxWidth="sm"><DialogTitle>{editing ? 'Edit asset' : 'Add asset'}</DialogTitle><DialogContent><Stack spacing={3} sx={{ pt: 1 }}>{failure && <Alert severity="error">{failure}</Alert>}<TextField autoFocus label="Name" value={name} onChange={e => setName(e.target.value)} required slotProps={{ htmlInput: { maxLength: 200 } }} /><TextField label="Description" value={description} onChange={e => setDescription(e.target.value)} multiline rows={3} slotProps={{ htmlInput: { maxLength: 2000 } }} /></Stack></DialogContent><DialogActions sx={{ p: 3 }}><Button disabled={busy} onClick={() => setEditing(undefined)}>Cancel</Button><Button variant="contained" disabled={busy || !name.trim()} onClick={save}>{busy ? 'Saving…' : 'Save asset'}</Button></DialogActions></Dialog>
     <Dialog open={!!target} onClose={() => !deleting && setTarget(null)}><DialogTitle>Delete asset?</DialogTitle><DialogContent>{failure && <Alert severity="error">{failure}</Alert>}<Typography>Delete “{target?.name}”? This removes the record from SQL Server.</Typography></DialogContent><DialogActions><Button disabled={deleting} onClick={() => setTarget(null)}>Cancel</Button><Button color="error" disabled={deleting} onClick={async () => { try { await remove(target!.id).unwrap(); setTarget(null) } catch { setFailure('Could not delete the asset. Try again.') } }}>Delete</Button></DialogActions></Dialog>
   </Box>

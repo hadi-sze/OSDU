@@ -21,10 +21,16 @@ builder.Services.AddScoped<EquipmentRepository>();
 builder.Services.AddScoped<EquipmentService>();
 builder.Services.AddScoped<FieldTypeRepository>();
 builder.Services.AddScoped<FieldTypeService>();
+builder.Services.AddScoped<PoolStatusRepository>();
+builder.Services.AddScoped<PoolStatusService>();
+builder.Services.AddScoped<PoolTypeRepository>();
+builder.Services.AddScoped<PoolTypeService>();
 builder.Services.AddScoped<FieldRepository>();
 builder.Services.AddScoped<FieldService>();
 builder.Services.AddScoped<WellRepository>();
 builder.Services.AddScoped<WellService>();
+builder.Services.AddScoped<WellRecordsRepository>();
+builder.Services.AddScoped<WellRecordsService>();
 builder.Services.AddScoped<AssetRepository>();
 builder.Services.AddScoped<AssetService>();
 builder.Services.AddScoped<FacilityRepository>();
@@ -74,4 +80,5 @@ if (app.Environment.IsDevelopment()) app.MapOpenApi();
 app.MapGet("/", () => Results.Ok(new { application="OSDU", api="/api/assets" }));
 app.MapControllers().RequireAuthorization();
 app.Run();
+
 
