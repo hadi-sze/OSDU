@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { Box, Stack, Button, Alert, Paper, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
+import { Box, Stack, Button, IconButton, Alert, Paper, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView'
 import { TreeItem } from '@mui/x-tree-view/TreeItem'
 import { CssVarsProvider } from '@mui/joy/styles'
@@ -76,8 +77,10 @@ export default function OrganizationView({ fieldTable = false }: { fieldTable?: 
         if(dirty)setPending(()=>()=>setDraft(undefined))
         else setDraft(undefined)
     }
+    const canSave = !!draft && !saving && !!draft.orgUnitId && !!draft.targetId &&
+        !(draft.effectiveDate && draft.expiryDate && draft.expiryDate < draft.effectiveDate)
     async function submit() {
-        if(!draft)return
+        if(!draft || !canSave)return
         setSaving(true);setError('')
         try {
             const response=await fetch('/api/organization-view/links',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(draft)})
@@ -106,7 +109,7 @@ export default function OrganizationView({ fieldTable = false }: { fieldTable?: 
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
                 <Typography>Manage associations between fields and organization units.</Typography>
                 <Button disabled={loading || saving} onClick={()=>{setError('');void load()}}>Refresh</Button>
-                <Button variant="contained" disabled={loading || saving || !data.fields.length || !data.organizations.length}
+                <Button variant="contained" disabled={saving}
                     onClick={()=>edit({ id:0, kind:'fields', orgUnitId:0, targetId:0, effectiveDate:null, expiryDate:null, remark:null, isActive:true })}>
                     Add Field Org Unit
                 </Button>
@@ -161,15 +164,21 @@ export default function OrganizationView({ fieldTable = false }: { fieldTable?: 
         </Box>
         </>}
         <Drawer swipeDirection="right" open={!!draft} onOpenChange={open=>{if(!open)close()}}><DrawerContent><CssVarsProvider theme={joyTheme}>
-            {draft&&<Box component="form" onSubmit={e=>{e.preventDefault();void submit()}} sx={{p:3,height:'100dvh',overflowY:'auto',bgcolor:'background.paper'}}>
-                <DrawerTitle>{draft.id?'Edit':'Add'} {fieldTable ? 'Field Org Unit' : draft.kind+' relationship'}</DrawerTitle>
-                <DrawerDescription>Choose a record and the dates this association applies.</DrawerDescription>
+            {draft&&<Box component="form" onSubmit={e=>{e.preventDefault();void submit()}} sx={{p:3,height:'100%',boxSizing:'border-box',overflowY:'auto',bgcolor:'background.paper'}}>
+                <Stack direction="row" sx={{ alignItems:'center', justifyContent:'space-between' }}>
+                    <DrawerTitle>{draft.id?'Edit':'Add'} {fieldTable ? 'Field Org Unit' : draft.kind+' relationship'}</DrawerTitle>
+                    <IconButton aria-label="Close form" disabled={saving} onClick={close}><CloseIcon /></IconButton>
+                </Stack>
+                <DrawerDescription>{fieldTable ? 'Select an organization unit and a field to link them.' : 'Choose a record and the dates this association applies.'}</DrawerDescription>
                 <Stack spacing={2} sx={{mt:3}}>
                     {error&&<Alert severity="error">{error}</Alert>}
                     {fieldTable && <FormControl required>
                         <FormLabel>Organization unit</FormLabel>
                         <Autocomplete<Row> disabled={saving || !!draft.id}
                             options={data.organizations}
+                            loading={loading}
+                            placeholder="Select an organization unit"
+                            noOptionsText="No matching organization units. Add one in Master data / Organization Unit."
                             getOptionLabel={row=>String(row.orgUnitName)}
                             isOptionEqualToValue={(a,b)=>a.orgUnitId===b.orgUnitId}
                             value={data.organizations.find(row=>row.orgUnitId===draft.orgUnitId) || null}
@@ -177,12 +186,15 @@ export default function OrganizationView({ fieldTable = false }: { fieldTable?: 
                             slotProps={{listbox:{sx:{zIndex:1400}}}}
                         />
                     </FormControl>}
-                    <FormControl required><FormLabel>{fieldTable ? 'Field' : 'Related record'}</FormLabel><Autocomplete<Row> disabled={saving} options={data[draft.kind]} getOptionLabel={row=>String(row[keys[draft.kind][1]])} isOptionEqualToValue={(a,b)=>a[keys[draft.kind][0]]===b[keys[draft.kind][0]]} value={data[draft.kind].find(row=>Number(row[keys[draft.kind][0]])===draft.targetId)||null} onChange={(_e,row)=>setDraft({...draft,targetId:Number(row?.[keys[draft.kind][0]]||0)})} slotProps={{listbox:{sx:{zIndex:1400}}}}/></FormControl>
+                    <FormControl required><FormLabel>{fieldTable ? 'Field' : 'Related record'}</FormLabel><Autocomplete<Row> disabled={saving} loading={loading}
+                        placeholder={fieldTable ? 'Select a field' : 'Select a related record'}
+                        noOptionsText={fieldTable ? 'No matching fields. Add one in Master data / Field.' : 'No matching records'}
+                        options={data[draft.kind]} getOptionLabel={row=>String(row[keys[draft.kind][1]])} isOptionEqualToValue={(a,b)=>a[keys[draft.kind][0]]===b[keys[draft.kind][0]]} value={data[draft.kind].find(row=>Number(row[keys[draft.kind][0]])===draft.targetId)||null} onChange={(_e,row)=>setDraft({...draft,targetId:Number(row?.[keys[draft.kind][0]]||0)})} slotProps={{listbox:{sx:{zIndex:1400}}}}/></FormControl>
                     <FormControl><FormLabel>Effective date</FormLabel><Input type="date" disabled={saving} value={draft.effectiveDate||''} onChange={e=>setDraft({...draft,effectiveDate:e.target.value||null})}/></FormControl>
                     <FormControl><FormLabel>Expiry date</FormLabel><Input type="date" disabled={saving} value={draft.expiryDate||''} onChange={e=>setDraft({...draft,expiryDate:e.target.value||null})} slotProps={{input:{min:draft.effectiveDate||undefined}}}/></FormControl>
                     <FormControl><FormLabel>Remarks</FormLabel><Textarea disabled={saving} minRows={3} value={draft.remark||''} onChange={e=>setDraft({...draft,remark:e.target.value||null})} slotProps={{textarea:{maxLength:2000}}}/></FormControl>
                     <Checkbox disabled={saving} label="Active" checked={draft.isActive} onChange={e=>setDraft({...draft,isActive:e.target.checked})}/>
-                    <Stack direction="row" spacing={2}><Button disabled={saving} onClick={close}>Cancel</Button><Button type="submit" variant="contained" disabled={saving||!draft.targetId||!draft.orgUnitId||!!(draft.effectiveDate&&draft.expiryDate&&draft.expiryDate<draft.effectiveDate)}>{saving?<OrbitRing className="size-5"/>:'Save relationship'}</Button></Stack>
+                    <Stack direction="row" spacing={2}><Button disabled={saving} onClick={close}>Cancel</Button><Button type="submit" variant="contained" disabled={!canSave}>{saving?<OrbitRing className="size-5"/>:'Save relationship'}</Button></Stack>
                 </Stack>
             </Box>}
         </CssVarsProvider></DrawerContent></Drawer>
