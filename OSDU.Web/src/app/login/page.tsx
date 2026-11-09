@@ -8,7 +8,6 @@ import CssBaseline from '@mui/joy/CssBaseline';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Checkbox from '@mui/joy/Checkbox';
-import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import IconButton, { IconButtonProps } from '@mui/joy/IconButton';
@@ -19,7 +18,6 @@ import Stack from '@mui/joy/Stack';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import Image from 'next/image';
-import GoogleIcon from '@mui/icons-material/Google';
 import Alert from '@mui/joy/Alert';
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -143,25 +141,7 @@ export default function JoySignInSideTemplate() {
                   </Link>
                 </Typography>
               </Stack>
-              <Button
-                variant="soft"
-                color="neutral"
-                fullWidth
-                startDecorator={<GoogleIcon />}
-                onClick={() => setMessage("Google sign-in is not configured. Contact your OSDU administrator.")}
-              >
-                Continue with Google
-              </Button>
             </Stack>
-            <Divider
-              sx={(theme) => ({
-                [theme.getColorSchemeSelector('light')]: {
-                  color: { xs: '#FFF', md: 'text.tertiary' },
-                },
-              })}
-            >
-              or
-            </Divider>
             {message && <Alert role="status" color="neutral">{message}</Alert>}
             <Stack sx={{ gap: 4, mt: 2 }}>
               <form
