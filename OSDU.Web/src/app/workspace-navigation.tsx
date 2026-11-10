@@ -74,7 +74,7 @@ export default function WorkspaceNavigation({ view, onNavigate, collapsed = fals
                 { label: 'All Organizations', table: 'ORG_UNIT', icon: BusinessOutlined },
                 { label: 'Organization Relationships', table: '', icon: AccountTreeOutlined },
             ],
-        })}{leaf('Account home', HomeOutlined)}{leaf('Assets', StorageOutlined)}
+        })}{leaf('Account home', HomeOutlined)}{leaf('Assets', StorageOutlined)}{leaf('Data Catalog', SearchOutlined)}
         <Divider sx={{ my: 1.5 }} />
         {!collapsed && <Typography variant="caption" color="text.secondary" sx={{ px: 1.25, mb: 1, fontSize: 11 }}>Production & reservoir</Typography>}
         {groups.map(renderGroup)}

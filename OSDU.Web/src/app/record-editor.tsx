@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack } from '@mui/material'
-import { Autocomplete, Box, Checkbox, FormControl, FormLabel, Input, Textarea } from '@mui/joy'
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material'
+import { Stack as JoyStack, Button as JoyButton, Alert as JoyAlert, Autocomplete, Box, Checkbox, FormControl, FormLabel, Input, Textarea } from '@mui/joy'
 import { CssVarsProvider } from '@mui/joy/styles'
 import { Eye, Pencil, Trash2 } from 'lucide-react'
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '../components/ui/drawer'
@@ -150,16 +150,18 @@ export default function RecordEditor({ table, action, onClose, onChanged }: {
                         <Box sx={{ px: 3, py: 2, borderBottom: 1, borderColor: 'divider' }}>
                             <DrawerTitle>{readonly ? 'View' : 'Edit'} {action.name}</DrawerTitle>
                         </Box>
-                        <Stack spacing={2} sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 3 }}>
+                        <JoyStack spacing={2} sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 3 }}>
                             <DrawerDescription>Record ID {action.id}</DrawerDescription>
                             {loading && <OrbitRing className="size-6" />}
-                            {error && <Alert severity="error">{error}</Alert>}
+                            {error && <JoyAlert color="danger">{error}</JoyAlert>}
                             {detail?.fields.map(field => {
                                 const options = detail.lookups[field.key] ?? []
                                 const value = values[field.key]
                                 const copied = detail.fields.some(source => source.copyTo === field.key && values[source.key])
                                 return <FormControl key={field.key} required={field.required && !readonly}>
-                                    <FormLabel>{field.label}</FormLabel>
+                                    <FormLabel>{table === 'well-master' && field.key === 'xCoordinate' ? 'X Coordinate (WGS 84 latitude)'
+                                        : table === 'well-master' && field.key === 'yCoordinate' ? 'Y Coordinate (WGS 84 longitude)'
+                                        : field.label}</FormLabel>
                                     {field.kind === 'boolean' ? <Checkbox disabled={saving || readonly} checked={value === true}
                                         onChange={event => setValue(field.key, event.target.checked)} />
                                         : field.kind === 'lookup' ? <Autocomplete
@@ -180,13 +182,13 @@ export default function RecordEditor({ table, action, onClose, onChanged }: {
                                                     step: field.kind === 'integer' ? 1 : field.kind === 'decimal' ? 'any' : undefined } }} />}
                                 </FormControl>
                             })}
-                        </Stack>
-                        <Stack direction="row" spacing={1} sx={{ justifyContent: 'flex-end', p: 2, borderTop: 1, borderColor: 'divider' }}>
-                            <Button disabled={saving} onClick={close}>{readonly ? 'Close' : 'Cancel'}</Button>
-                            {!readonly && <Button variant="contained" type="submit" disabled={saving || !dirty || !complete}>
+                        </JoyStack>
+                        <JoyStack direction="row" spacing={1} sx={{ justifyContent: 'flex-end', p: 2, borderTop: 1, borderColor: 'divider' }}>
+                            <JoyButton disabled={saving} onClick={close}>{readonly ? 'Close' : 'Cancel'}</JoyButton>
+                            {!readonly && <JoyButton variant="solid" type="submit" disabled={saving || !dirty || !complete}>
                                 {saving ? 'Saving…' : 'Save changes'}
-                            </Button>}
-                        </Stack>
+                            </JoyButton>}
+                        </JoyStack>
                     </Box>
                 </CssVarsProvider>
             </DrawerContent>
