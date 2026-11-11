@@ -76,6 +76,7 @@ export default function DataCatalog() {
         const timeout = setTimeout(() => { setSearch(query.trim()); setPage(0) }, 250)
         return () => clearTimeout(timeout)
     }, [query])
+    
     const params = useMemo(() => ({ ...filters, dataset: tab === 'All datasets' ? '' : tab, search }),
         [filters, tab, search])
     const [loadPage, result] = assetsApi.useLazyGetCatalogPageQuery()
