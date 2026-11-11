@@ -19,6 +19,11 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import Image from 'next/image';
 import Alert from '@mui/joy/Alert';
+import Logo2 from './NIOC_logo.svg';
+import Logo from "./NIOC_logo.png";
+import Chip from '@mui/joy/Chip';
+import Divider from '@mui/joy/Divider';
+import back2 from './back2.jpg';
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -129,6 +134,30 @@ export default function JoySignInSideTemplate() {
               },
             }}
           >
+
+            <Stack sx={{ gap: 4, mb: 2 }} spacing={1}>
+              <center>
+                <Image src="/nioclogo.png" alt="NIOC logo" width={150} height={150} style={{ objectFit: "contain" }} />
+
+                <Stack sx={{ gap: 1 }}>
+
+                  <Typography component="h1" level="h3">
+                    National Iranian Oil Company OSDU Platform
+                  </Typography>
+                  {/* <Typography level="body-sm">
+                    Monitoring Office
+                  </Typography> */}
+
+                </Stack>
+                <Divider >
+                  <Chip sx={{ gap: 1 }}
+                  color="primary"
+                  size="lg"
+                > Monitoring Office</Chip>
+                </Divider>
+               
+              </center>
+            </Stack>
             <Stack sx={{ gap: 4, mb: 2 }}>
               <Stack sx={{ gap: 1 }}>
                 <Typography component="h1" level="h3">
@@ -186,7 +215,7 @@ export default function JoySignInSideTemplate() {
             </Stack>
           </Box>
           <Box component="footer" sx={{ py: 3 }}>
-            
+
             <Typography level="body-xs" sx={{ textAlign: 'center' }}>
               © OSDU {new Date().getFullYear()}
             </Typography>
@@ -212,7 +241,7 @@ export default function JoySignInSideTemplate() {
             'url(https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&w=1000&dpr=2)',
           [theme.getColorSchemeSelector('dark')]: {
             backgroundImage:
-              'url(https://images.unsplash.com/photo-1572072393749-3ca9c8ea0831?auto=format&w=1000&dpr=2)',
+              `url("${back2.src}")`,
           },
         })}
       />

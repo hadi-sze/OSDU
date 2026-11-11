@@ -1,22 +1,24 @@
 'use client'
-import DataCatalog from './data-catalog'
+import dynamic from 'next/dynamic'
+import FormLoading from '@/components/loading-ui/form-loading'
+const DataCatalog = dynamic(() => import('./data-catalog'), { loading: () => <FormLoading /> })
 import WellRecords, { wellRecordPages } from './well-records'
 import { useState } from 'react'
-import PoolStatusRecords from './pool-statuses'
-import PoolTypeRecords from './pool-types'
+const PoolStatusRecords = dynamic(() => import('./pool-statuses'), { loading: () => <FormLoading /> })
+const PoolTypeRecords = dynamic(() => import('./pool-types'), { loading: () => <FormLoading /> })
 import OrganizationView, { FacilityOrgUnits, FieldOrgUnits, WellOrgUnits } from './organization-view'
-import Facilities from './facilities'
-import FacilityFields from './facility-field-associations'
-import CrsRecords from './coordinate-reference-systems'
-import OrganizationUnitRecords from './organization-units'
-import PoolRecords from './pools'
-import EquipmentRecords from './equipment'
-import FieldTypeRecords from './field-types'
-import Fields from './fields'
-import Wells from './wells'
-import WellStatusTypes from './well-status-types'
-import WellStatuses from './well-statuses'
-import OrgUnitTypes from './org-unit-types'
+const Facilities = dynamic(() => import('./facilities'), { loading: () => <FormLoading /> })
+const FacilityFields = dynamic(() => import('./facility-field-associations'), { loading: () => <FormLoading /> })
+const CrsRecords = dynamic(() => import('./coordinate-reference-systems'), { loading: () => <FormLoading /> })
+const OrganizationUnitRecords = dynamic(() => import('./organization-units'), { loading: () => <FormLoading /> })
+const PoolRecords = dynamic(() => import('./pools'), { loading: () => <FormLoading /> })
+const EquipmentRecords = dynamic(() => import('./equipment'), { loading: () => <FormLoading /> })
+const FieldTypeRecords = dynamic(() => import('./field-types'), { loading: () => <FormLoading /> })
+const Fields = dynamic(() => import('./fields'), { loading: () => <FormLoading /> })
+const Wells = dynamic(() => import('./wells'), { loading: () => <FormLoading /> })
+const WellStatusTypes = dynamic(() => import('./well-status-types'), { loading: () => <FormLoading /> })
+const WellStatuses = dynamic(() => import('./well-statuses'), { loading: () => <FormLoading /> })
+const OrgUnitTypes = dynamic(() => import('./org-unit-types'), { loading: () => <FormLoading /> })
 import { masterDataItems } from './master-data-catalog'
 import Image from 'next/image'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'

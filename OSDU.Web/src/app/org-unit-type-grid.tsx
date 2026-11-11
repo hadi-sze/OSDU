@@ -1,4 +1,5 @@
 'use client'
+import FormLoading from '@/components/loading-ui/form-loading'
 // Adapted from the local port-4174 table: tab filters, sorting, column visibility, pagination.
 import { OrbitRing } from '@/components/loading-ui/orbit-ring'
 import { useMemo, useState, useRef, useEffect } from 'react'
@@ -53,7 +54,7 @@ export default function OrgUnitTypeGrid({rows,loading,idKey='rOrgUnitTypeId',nam
    <Divider/><MenuItem onClick={()=>{reset();setAnchor(null)}}>Reset filters and columns</MenuItem>
   </Menu>
   <Paper variant="outlined" sx={{borderRadius:3,overflow:'hidden',position:'relative',minHeight:100}} role="region" aria-label={entityLabel+" table"} aria-busy={busy}>
-   {busy&&<Box sx={{position:'absolute',inset:0,zIndex:2,display:'flex',alignItems:'center',justifyContent:'center',bgcolor:'background.paper',opacity:.92,pointerEvents:'none'}}><Box sx={{display:'flex',alignItems:'center',gap:1.5}}><OrbitRing className="size-7"/><Typography variant="body2">Loading {entityLabel.toLowerCase()}…</Typography></Box></Box>}
+   {busy&&<Box sx={{position:'absolute',inset:0,zIndex:2,display:'flex',alignItems:'center',justifyContent:'center',bgcolor:'background.paper',opacity:.92,pointerEvents:'none'}}><FormLoading label={'Loading ' + entityLabel.toLowerCase() + '…'} /></Box>}
    <TableContainer><Table size="small" sx={{minWidth:650}}><TableHead><TableRow>{visible.map(c=><TableCell key={c.key} aria-sort={sort.key===c.key?(sort.direction===1?'ascending':'descending'):'none'} sx={{fontWeight:400,py:.5,whiteSpace:'nowrap'}}><Button color="inherit" size="small" endIcon={<SortIcon sx={{fontSize:14}}/>} onClick={()=>setSort(s=>({key:c.key,direction:s.key===c.key&&s.direction===1?-1:1}))} sx={{fontWeight:400,fontSize:13,px:0}}>{c.label}</Button></TableCell>)}{hasActions&&<TableCell align="center">Actions</TableCell>}</TableRow></TableHead>
    <TableBody key={JSON.stringify([status,query,creator,current,size,sort,hidden])} sx={{animation:'osdu-grid-in 180ms ease','@keyframes osdu-grid-in':{from:{opacity:0,transform:'translateY(4px)'},to:{opacity:1,transform:'translateY(0)'}},'@media(prefers-reduced-motion:reduce)':{animation:'none'}}}>
     {filtered.slice(current*size,(current+1)*size).map(r=><TableRow hover key={String(r[idKey])}>{visible.map(c=><TableCell key={c.key} sx={{fontSize:13,py:1.25}}>{c.key==='isActive'?<Chip size="small" variant={r.isActive?'filled':'outlined'} color={r.isActive?'success':'neutral'} label={r.isActive?'Active':'Inactive'} sx={{height:23,fontSize:11}}/>:String(r[c.key]??'—')}</TableCell>)}{hasActions&&<TableCell align="center" sx={{whiteSpace:'nowrap'}}><RowActions name={String(r[nameKey]??r[idKey])}

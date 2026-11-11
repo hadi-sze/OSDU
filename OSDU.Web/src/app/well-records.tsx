@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { assetsApi } from '../lib/store'
 import { Alert, Button, Dialog, DialogActions, DialogTitle, Stack, Typography } from '@mui/material'
-import { Autocomplete, Box, Checkbox, FormControl, FormLabel, Input, Textarea } from '@mui/joy'
+import { Alert as JoyAlert, Autocomplete, Box, Button as JoyButton, Checkbox, FormControl, FormLabel, Input, Stack as JoyStack, Textarea } from '@mui/joy'
 import { CssVarsProvider } from '@mui/joy/styles'
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '../components/ui/drawer'
 import { OrbitRing } from '@/components/loading-ui/orbit-ring'
@@ -43,6 +45,7 @@ function initialValues(fields: Field[]): Values {
 
 export default function WellRecords({ title, table }: { title: string; table: string }) {
     const url = '/api/well-records/' + table
+    const dispatch = useDispatch()
     const [data, setData] = useState<Data>()
     const [loading, setLoading] = useState(true)
     const [loadError, setLoadError] = useState('')
@@ -134,6 +137,7 @@ export default function WellRecords({ title, table }: { title: string; table: st
                 const result = await response.json().catch(() => null)
                 throw new Error(result?.message || 'Unable to save the record.')
             }
+            if (table === 'wellbores') dispatch(assetsApi.util.invalidateTags(['Wellbore']))
             setValues(undefined)
             setSuccess(true)
             await load()
@@ -184,10 +188,10 @@ export default function WellRecords({ title, table }: { title: string; table: st
                         <Box sx={{ px: 3, py: 2, borderBottom: 1, borderColor: 'divider' }}>
                             <DrawerTitle>Add {title}</DrawerTitle>
                         </Box>
-                        <Stack spacing={2} sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 3 }}>
+                        <JoyStack spacing={2} sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 3 }}>
                             <DrawerDescription>Enter record details. The ID and audit fields are assigned automatically.</DrawerDescription>
-                            {error && <Alert severity="error">{error}</Alert>}
-                            {loadError && <Alert severity="error">{loadError}</Alert>}
+                            {error && <JoyAlert color="danger">{error}</JoyAlert>}
+                            {loadError && <JoyAlert color="danger">{loadError}</JoyAlert>}
                             {data.fields.map(field => {
                                 const options = data.lookups[field.key] ?? []
                                 const copied = data.fields.some(source => source.copyTo === field.key && values[source.key])
@@ -213,13 +217,13 @@ export default function WellRecords({ title, table }: { title: string; table: st
                                                     step: field.kind === 'integer' ? 1 : field.kind === 'decimal' ? 'any' : undefined } }} />}
                                 </FormControl>
                             })}
-                        </Stack>
-                        <Stack direction="row" spacing={1} sx={{ justifyContent: 'flex-end', p: 2, borderTop: 1, borderColor: 'divider' }}>
-                            <Button disabled={saving} onClick={close}>Cancel</Button>
-                            <Button variant="contained" type="submit" disabled={!canSave}>
+                        </JoyStack>
+                        <JoyStack direction="row" spacing={1} sx={{ justifyContent: 'flex-end', p: 2, borderTop: 1, borderColor: 'divider' }}>
+                            <JoyButton variant="plain" disabled={saving} onClick={close}>Cancel</JoyButton>
+                            <JoyButton variant="solid" type="submit" disabled={!canSave}>
                                 {saving ? <OrbitRing className="size-5" /> : 'Save record'}
-                            </Button>
-                        </Stack>
+                            </JoyButton>
+                        </JoyStack>
                     </Box>}
                 </CssVarsProvider>
             </DrawerContent>

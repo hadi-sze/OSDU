@@ -1,10 +1,28 @@
 import { configureStore, createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import type { CatalogFacets, CatalogMapData, CatalogPage, CatalogParams } from './catalog-types'
 export interface Asset { id: number; name: string; description: string | null; createdUtc: string }
 export type AssetInput = Pick<Asset, 'name' | 'description'>
+function catalogTags(dataset: string) {
+    const tags = { Wells: 'Well', Wellbores: 'Wellbore', Fields: 'Field', Facilities: 'Facility' } as const
+    const tag = tags[dataset as keyof typeof tags]
+    return tag ? [tag] : Object.values(tags)
+}
 export const assetsApi = createApi({
-    reducerPath: 'assetsApi', baseQuery: fetchBaseQuery({ baseUrl: '/api/' }), tagTypes: ['PoolType','PoolStatus','FieldType','Equipment', 'Pool', 'OrganizationUnit', 'Crs', 'FacilityField', 'Field', 'Well', 'OrgUnitType', 'Asset', 'Facility', 'WellStatusType', 'WellStatus'],
+    reducerPath: 'assetsApi', baseQuery: fetchBaseQuery({ baseUrl: '/api/' }), tagTypes: ['PoolType','PoolStatus','FieldType','Equipment', 'Pool', 'OrganizationUnit', 'Crs', 'FacilityField', 'Field', 'Well', 'Wellbore', 'OrgUnitType', 'Asset', 'Facility', 'WellStatusType', 'WellStatus'],
     endpoints: b => ({
+        getCatalogPage: b.query<CatalogPage, CatalogParams & { page: number; size: number; sort: string; desc: boolean }>({
+            query: params => ({ url: 'catalog', params }), providesTags: (_result, _error, { dataset, hasLocation }) =>
+                [...catalogTags(dataset), ...(hasLocation ? ['Crs' as const] : [])],
+        }),
+        getCatalogFacets: b.query<CatalogFacets, CatalogParams>({
+            query: params => ({ url: 'catalog/facets', params }), providesTags: (_result, _error, { dataset, hasLocation }) =>
+                [...catalogTags(dataset), ...(hasLocation ? ['Crs' as const] : [])],
+        }),
+        getCatalogMap: b.query<CatalogMapData, Omit<CatalogParams, 'hasLocation'>>({
+            query: params => ({ url: 'catalog/map', params }),
+            providesTags: (_result, _error, { dataset }) => [...catalogTags(dataset), 'Crs'],
+        }),
  updateOrganizationUnit:b.mutation<Record<string,unknown>,{id:number;body:Record<string,unknown>}>({query:({id,body})=>({url:'organization-units/'+id,method:'PUT',body}),invalidatesTags:['OrganizationUnit']}),
  deleteOrganizationUnit:b.mutation<void,number>({query:id=>({url:'organization-units/'+id,method:'DELETE'}),invalidatesTags:['OrganizationUnit']}),
  getFieldTypeRecords:b.query<Record<string,unknown>[],void>({query:()=>'reference/field-types',providesTags:['FieldType']}),
@@ -23,7 +41,7 @@ export const assetsApi = createApi({
         getOrganizationUnitRecords: b.query<Record<string, unknown>[], void>({ query: () => 'organization-units', providesTags: ['OrganizationUnit'] }),
         getOrganizationUnitLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'organization-units/lookups', providesTags: ['OrgUnitType'] }),
         createOrganizationUnit: b.mutation<Record<string, unknown>, Record<string, unknown>>({ query: body => ({ url: 'organization-units', method: 'POST', body }), invalidatesTags: ['OrganizationUnit'] }),
-        getCrsRecords: b.query<Record<string, unknown>[], void>({ query: () => 'coordinate-reference-systems', providesTags: ['Crs'] }),
+        getCrsRecords: b.query<Record<string, unknown>[], void>({ query: () => 'coordinate-reference-systems', providesTags: ['Crs'], keepUnusedDataFor: 300 }),
         getCrsLookups: b.query<Record<string, { id: number; label: string }[]>, void>({ query: () => 'coordinate-reference-systems/lookups' }),
         createCrs: b.mutation<Record<string, unknown>, Record<string, unknown>>({ query: body => ({ url: 'coordinate-reference-systems', method: 'POST', body }), invalidatesTags: ['Crs'] }),
         getFacilityFields: b.query<Record<string, unknown>[], void>({ query: () => 'facility-fields', providesTags: ['FacilityField'] }),

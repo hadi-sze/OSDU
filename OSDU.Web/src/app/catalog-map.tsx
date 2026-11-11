@@ -4,16 +4,19 @@ import { useEffect, useRef } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
-export type CatalogPoint = { id: string; name: string; dataset: string; x: number; y: number }
+import { catalogKey, type CatalogIdentity, type CatalogPoint } from '../lib/catalog-types'
 
-export default function CatalogMap({ points, selected, onSelect }: {
-    points: CatalogPoint[]; selected: string; onSelect: (id: string) => void
+const emptyPoints: CatalogPoint[] = []
+
+export default function CatalogMap({ points = emptyPoints, selected, onSelect }: {
+    points?: CatalogPoint[]; selected: string; onSelect: (point: CatalogIdentity) => void
 }) {
     const container = useRef<HTMLDivElement>(null)
     const map = useRef<L.Map | null>(null)
     const markers = useRef<L.LayerGroup | null>(null)
 
-    const circles = useRef(new Map<string, L.CircleMarker>())
+    const onSelectRef = useRef(onSelect)
+    useEffect(() => { onSelectRef.current = onSelect }, [onSelect])
 
     useEffect(() => {
         if (!container.current) return
@@ -36,34 +39,73 @@ export default function CatalogMap({ points, selected, onSelect }: {
 
     useEffect(() => {
         const instance = map.current
-        const layer = markers.current
-        if (!instance || !layer) return
-        layer.clearLayers()
-        circles.current.clear()
-        for (const point of points) {
-            const label = document.createElement('span')
-            label.textContent = point.name + ' · ' + point.dataset + ' · ' + point.y.toFixed(6) + ', ' + point.x.toFixed(6)
-            const circle = L.circleMarker([point.y, point.x], { radius: 6, fillOpacity: 0.8 })
-                .bindTooltip(label).on('click', () => onSelect(point.id)).addTo(layer)
-            circles.current.set(point.id, circle)
-        }
-        if (points.length) instance.fitBounds(points.map(({x, y}) => [y, x] as L.LatLngTuple), {
+        if (instance && points.length) instance.fitBounds(points.map(({ x, y }) => [y, x] as L.LatLngTuple), {
             padding: [25, 25], maxZoom: 12,
         })
-    }, [points, onSelect])
+    }, [points])
 
     useEffect(() => {
-        const point = points.find(point => point.id === selected)
-        circles.current.forEach((circle, id) => {
-            circle.setStyle({ color: id === selected ? '#d97706' : '#1676be' })
-            circle.setRadius(id === selected ? 9 : 6)
-        })
-        if (point && map.current) {
-            map.current.panTo([point.y, point.x])
-            circles.current.get(point.id)?.bringToFront().openTooltip()
+        const instance = map.current
+        const layer = markers.current
+        if (!instance || !layer) return
+        const active = points.find(point => catalogKey(point) === selected)
+        function draw() {
+            if (!instance || !layer) return
+            layer.clearLayers()
+            const buckets = new Map<string, CatalogPoint[]>()
+            for (const point of points) {
+                const pixel = instance.project([point.y, point.x])
+                const key = point === active ? 'selected' : Math.floor(pixel.x / 44) + ':' + Math.floor(pixel.y / 44)
+                const bucket = buckets.get(key)
+                if (bucket) bucket.push(point)
+                else buckets.set(key, [point])
+            }
+            for (const bucket of buckets.values()) {
+                const point = bucket[0]
+                if (bucket.length > 1) {
+                    const positions = bucket.map(({ x, y }) => [y, x] as L.LatLngTuple)
+                    const bounds = L.latLngBounds(positions)
+                    const label = document.createElement('span')
+                    label.textContent = String(bucket.length)
+                    const cluster = L.marker(bounds.getCenter(), {
+                        title: bucket.length + ' records',
+                        icon: L.divIcon({ html: label, className: 'osdu-map-cluster', iconSize: [34, 34] }),
+                    }).addTo(layer)
+                    cluster.on('click', () => {
+                        if (instance.getZoom() < 19 && !bounds.getSouthWest().equals(bounds.getNorthEast())) {
+                            instance.fitBounds(bounds, { padding: [48, 48], maxZoom: 19 })
+                            return
+                        }
+                        const list = document.createElement('div')
+                        list.style.maxHeight = '220px'
+                        list.style.overflowY = 'auto'
+                        for (const record of bucket) {
+                            const button = document.createElement('button')
+                            button.type = 'button'
+                            button.style.display = 'block'
+                            button.textContent = record.name + ' · ' + record.dataset
+                            button.onclick = () => onSelectRef.current(record)
+                            list.append(button)
+                        }
+                        cluster.bindPopup(list).openPopup()
+                    })
+                    continue
+                }
+                const label = document.createElement('span')
+                label.textContent = point.name + ' · ' + point.dataset + ' · ' + point.y.toFixed(6) + ', ' + point.x.toFixed(6)
+                const circle = L.circleMarker([point.y, point.x], {
+                    radius: point === active ? 9 : 6, color: point === active ? '#d97706' : '#1676be', fillOpacity: 0.8,
+                }).bindTooltip(label).on('click', () => onSelectRef.current(point)).addTo(layer)
+                if (point === active) circle.bringToFront().openTooltip()
+            }
         }
+        draw()
+        if (active) instance.panTo([active.y, active.x])
+        instance.on('zoomend', draw)
+        return () => { instance.off('zoomend', draw) }
     }, [points, selected])
 
-    return <div ref={container} role="region" aria-label="OpenStreetMap catalog map"
-        style={{ height: 'clamp(380px, calc(100dvh - 270px), 880px)', width: '100%', position: 'relative', zIndex: 0 }} />
+    return <><style>{`.osdu-map-cluster { display: grid; place-items: center; border-radius: 50%;
+        background: #1369a8; border: 2px solid white; color: white; font-weight: 700; }`}</style><div ref={container} role="region" aria-label="OpenStreetMap catalog map"
+        style={{ height: 'clamp(380px, calc(100dvh - 270px), 880px)', width: '100%', position: 'relative', zIndex: 0 }} /></>
 }

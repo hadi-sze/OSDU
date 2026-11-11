@@ -4,6 +4,8 @@ using OSDU.Business;
 using OSDU.Data;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
+builder.Services.AddScoped<CatalogRepository>();
+builder.Services.AddScoped<CatalogService>();
 builder.Services.AddScoped<OrganizationViewRepository>();
 builder.Services.AddScoped<OrganizationViewService>();
 builder.Services.AddOpenApi();

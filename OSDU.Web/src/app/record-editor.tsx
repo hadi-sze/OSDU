@@ -1,6 +1,9 @@
 'use client'
+import FormLoading from '@/components/loading-ui/form-loading'
 
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { assetsApi } from '../lib/store'
 import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material'
 import { Stack as JoyStack, Button as JoyButton, Alert as JoyAlert, Autocomplete, Box, Checkbox, FormControl, FormLabel, Input, Textarea } from '@mui/joy'
 import { CssVarsProvider } from '@mui/joy/styles'
@@ -41,6 +44,7 @@ export default function RecordEditor({ table, action, onClose, onChanged }: {
     table: string; action: RecordAction; onClose: () => void; onChanged: () => void
 }) {
     const url = '/api/well-records/' + table + '/' + action.id
+    const dispatch = useDispatch()
     const [detail, setDetail] = useState<Detail>()
     const [values, setValues] = useState<Record<string, Value>>({})
     const [saving, setSaving] = useState(false)
@@ -124,6 +128,10 @@ export default function RecordEditor({ table, action, onClose, onChanged }: {
                 const result = await response.json().catch(() => null)
                 throw new Error(result?.message || (response.status === 404 ? 'This record no longer exists.' : 'Unable to save the change.'))
             }
+            const tags = { 'well-master': 'Well', wellbores: 'Wellbore', 'field-records': 'Field',
+                facilities: 'Facility', 'coordinate-reference-systems': 'Crs' } as const
+            const tag = tags[table as keyof typeof tags]
+            if (tag) dispatch(assetsApi.util.invalidateTags([tag]))
             onChanged()
             onClose()
         } catch (failure) {
@@ -152,15 +160,15 @@ export default function RecordEditor({ table, action, onClose, onChanged }: {
                         </Box>
                         <JoyStack spacing={2} sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 3 }}>
                             <DrawerDescription>Record ID {action.id}</DrawerDescription>
-                            {loading && <OrbitRing className="size-6" />}
+                            {loading && <FormLoading />}
                             {error && <JoyAlert color="danger">{error}</JoyAlert>}
                             {detail?.fields.map(field => {
                                 const options = detail.lookups[field.key] ?? []
                                 const value = values[field.key]
                                 const copied = detail.fields.some(source => source.copyTo === field.key && values[source.key])
                                 return <FormControl key={field.key} required={field.required && !readonly}>
-                                    <FormLabel>{table === 'well-master' && field.key === 'xCoordinate' ? 'X Coordinate (WGS 84 latitude)'
-                                        : table === 'well-master' && field.key === 'yCoordinate' ? 'Y Coordinate (WGS 84 longitude)'
+                                    <FormLabel>{(table === 'well-master' || table === 'field-records') && field.key === 'xCoordinate' ? 'X Coordinate (WGS 84 latitude)'
+                                        : (table === 'well-master' || table === 'field-records') && field.key === 'yCoordinate' ? 'Y Coordinate (WGS 84 longitude)'
                                         : field.label}</FormLabel>
                                     {field.kind === 'boolean' ? <Checkbox disabled={saving || readonly} checked={value === true}
                                         onChange={event => setValue(field.key, event.target.checked)} />

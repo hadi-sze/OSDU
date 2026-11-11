@@ -1,0 +1,44 @@
+.loading {
+    width: 100%;
+    padding: 16px;
+}
+
+.caption {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.fields {
+    display: grid;
+    gap: 16px;
+}
+
+.label,
+.input {
+    border-radius: 6px;
+    background: currentColor;
+    opacity: .12;
+}
+
+.label {
+    width: 32%;
+    height: 12px;
+    margin-bottom: 8px;
+}
+
+.input {
+    height: 38px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .label,
+    .input {
+        animation: pulse 1.4s ease-in-out infinite;
+    }
+}
+
+@keyframes pulse {
+    50% { opacity: .06; }
+}
