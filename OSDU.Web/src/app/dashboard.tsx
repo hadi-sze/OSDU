@@ -129,7 +129,7 @@ export default function Dashboard() {
       <Box sx={{ mt: 'auto', borderTop: 1, borderColor: 'divider', p: 1 }}><IconButton aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'} onClick={() => setCollapsed(!collapsed)}>{collapsed ? <MenuIcon fontSize="small" /> : <ChevronLeftIcon fontSize="small" />}</IconButton></Box>
     </Box>
     <Box component="main" sx={{ ml: { md: collapsed ? '56px' : '260px' }, transition: 'margin-left 240ms cubic-bezier(.2,0,0,1)', '@media(prefers-reduced-motion: reduce)': { transition: 'none' }, pt: '58px', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Container maxWidth={view === 'Data Catalog' ? false : 'lg'}
+      <Container maxWidth={view === 'Data Catalog' || view === 'Well' ? false : 'lg'}
         sx={{ py: view === 'Data Catalog' ? 2 : { xs: 3, md: 6 }, flex: 1, minWidth: 0 }}>{logoutError && <Alert severity="error" onClose={() => setLogoutError('')}>{logoutError}</Alert>}
         {view === 'Overview' ? <>
           <Box sx={{ textAlign: 'center', mt: 1, mb: 4 }}>
