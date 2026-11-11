@@ -106,7 +106,7 @@ public class WellRecordsRepository(OsduDbContext db)
             : null;
     }
 
-    public async Task<object> Read(string table, CancellationToken ct, int? recordId = null)
+    public async Task<object> Read(string table, CancellationToken ct, int? recordId = null, bool templateOnly = false)
     {
         var entity = Entity(table);
         var id = entity.FindPrimaryKey()!.Properties.Single().Name;
@@ -137,19 +137,39 @@ public class WellRecordsRepository(OsduDbContext db)
                 copyTo = copy is { } pair ? Key(pair.Destination) : null;
                 label = (label.StartsWith('R') && label.Length > 1 && char.IsUpper(label[1]) ? label[1..] : label)
                     .Replace("Id", "");
-                lookups[Key(property.Name)] = await Lookup(principal, copy?.Source, ct);
+                if (table != "well-master") lookups[Key(property.Name)] = await Lookup(principal, copy?.Source, ct);
             }
             fields.Add(new(Key(property.Name), Label(label), kind, !property.IsNullable && kind != "boolean",
                 property.GetMaxLength(), property.GetScale(), copyTo));
         }
+        if (templateOnly) return new { idKey = Key(id), fields, lookups, record = new { isActive = true } };
         if (recordId is int key)
         {
             var record = await db.FindAsync(entity.ClrType, [key], ct) ?? throw new KeyNotFoundException();
+            if (record is Well)
+            {
+                var bores = db.Set<Wellbore>().AsNoTracking().Where(bore => bore.WellId == key);
+                var wellbores = await bores.OrderBy(bore => bore.WellboreUwi)
+                    .Select(bore => new { id = bore.WellboreId, name = bore.WellboreName ?? bore.WellboreUwi }).ToListAsync(ct);
+                var completions = await db.Set<WellCompletion>().AsNoTracking()
+                    .Where(completion => bores.Any(bore => bore.WellboreId == completion.WellboreId))
+                    .OrderBy(completion => completion.WellCompletionName)
+                    .Select(completion => new { id = completion.WellCompletionId, name = completion.WellCompletionName }).ToListAsync(ct);
+                return new { idKey = Key(id), fields, lookups, record, related = new { wellbores, completions } };
+            }
             return new { idKey = Key(id), fields, lookups, record };
         }
         var method = typeof(WellRecordsRepository).GetMethod(nameof(List), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
         var rows = await (Task<object>)method.MakeGenericMethod(entity.ClrType).Invoke(this, [id, ct])!;
         return new { idKey = Key(id), fields, lookups, rows };
+    }
+
+    public Task<IReadOnlyList<WellReferenceOption>> WellLookup(string key, CancellationToken ct)
+    {
+        var property = Entity("well-master").GetProperties().FirstOrDefault(p => Key(p.Name) == key);
+        var reference = property == null ? null : Reference(property);
+        if (property == null || reference == null) throw new KeyNotFoundException();
+        return Lookup(reference.PrincipalEntityType, Copy(property, reference)?.Source, ct);
     }
 
     private async Task<object> List<T>(string id, CancellationToken ct) where T : class =>

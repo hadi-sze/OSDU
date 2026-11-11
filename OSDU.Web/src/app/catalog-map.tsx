@@ -8,8 +8,8 @@ import { catalogKey, type CatalogIdentity, type CatalogPoint } from '../lib/cata
 
 const emptyPoints: CatalogPoint[] = []
 
-export default function CatalogMap({ points = emptyPoints, selected, onSelect }: {
-    points?: CatalogPoint[]; selected: string; onSelect: (point: CatalogIdentity) => void
+export default function CatalogMap({ points = emptyPoints, selected, onSelect, height, label }: {
+    height?: number; label?: string; points?: CatalogPoint[]; selected: string; onSelect: (point: CatalogIdentity) => void
 }) {
     const container = useRef<HTMLDivElement>(null)
     const map = useRef<L.Map | null>(null)
@@ -106,6 +106,6 @@ export default function CatalogMap({ points = emptyPoints, selected, onSelect }:
     }, [points, selected])
 
     return <><style>{`.osdu-map-cluster { display: grid; place-items: center; border-radius: 50%;
-        background: #1369a8; border: 2px solid white; color: white; font-weight: 700; }`}</style><div ref={container} role="region" aria-label="OpenStreetMap catalog map"
-        style={{ height: 'clamp(380px, calc(100dvh - 270px), 880px)', width: '100%', position: 'relative', zIndex: 0 }} /></>
+        background: #1369a8; border: 2px solid white; color: white; font-weight: 700; }`}</style><div ref={container} role="region" aria-label={label ?? "OpenStreetMap catalog map"}
+        style={{ height: height ?? 'clamp(380px, calc(100dvh - 270px), 880px)', width: '100%', position: 'relative', zIndex: 0 }} /></>
 }

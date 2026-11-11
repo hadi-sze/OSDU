@@ -4,6 +4,30 @@ using System.ComponentModel.DataAnnotations;
 namespace OSDU.Data;
 public class WellRepository(OsduDbContext db) {
  public Task<List<Well>> List(CancellationToken ct)=>db.Set<Well>().AsNoTracking().OrderBy(x=>x.WellName).ToListAsync(ct);
+ public async Task<object> Page(int page, int size, string? search, string? status, string? sort, bool desc, CancellationToken ct) {
+ size=Math.Clamp(size,5,100);
+ var all=db.Set<Well>().AsNoTracking();
+ var active=await all.CountAsync(x=>x.IsActive,ct);
+ var totalAll=await all.CountAsync(ct);
+ var query=all;
+ if(status=="Active")query=query.Where(x=>x.IsActive);
+ if(status=="Inactive")query=query.Where(x=>!x.IsActive);
+ if(!string.IsNullOrWhiteSpace(search)) {
+  var text=search.Trim();
+  query=query.Where(x=>x.WellName.Contains(text)||x.Uwi.Contains(text)||(x.FieldName!=null&&x.FieldName.Contains(text)));
+ }
+ var total=await query.CountAsync(ct);
+ page=Math.Clamp(page,0,Math.Max(0,(total-1)/size));
+ var ordered=sort switch {
+  "uwi"=>desc?query.OrderByDescending(x=>x.Uwi):query.OrderBy(x=>x.Uwi),
+  "fieldName"=>desc?query.OrderByDescending(x=>x.FieldName):query.OrderBy(x=>x.FieldName),
+  "isActive"=>desc?query.OrderByDescending(x=>x.IsActive):query.OrderBy(x=>x.IsActive),
+  _=>desc?query.OrderByDescending(x=>x.WellName):query.OrderBy(x=>x.WellName)
+ };
+ var rows=await ordered.ThenBy(x=>x.WellId).Skip(page*size).Take(size)
+  .Select(x=>new{x.WellId,x.WellName,x.Uwi,x.FieldName,x.IsActive}).ToListAsync(ct);
+ return new{rows,total,page,size,counts=new{all=totalAll,active,inactive=totalAll-active}};
+ }
  public async Task<object> Lookups(CancellationToken ct) {
  var result=new Dictionary<string,object>();
  result["fieldId"]=await db.Set<Field>().AsNoTracking().OrderBy(x=>x.FieldName).Select(x=>new{id=x.FieldId,label=x.FieldName}).ToListAsync(ct);

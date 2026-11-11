@@ -20,6 +20,16 @@ public class WellRecordsController(WellRecordsService service) : ControllerBase
         catch (ValidationException e) { return BadRequest(new { message = e.Message }); }
     }
 
+    [HttpGet("/api/wells/references/{key}")]
+    public async Task<IActionResult> WellLookup(string key, CancellationToken ct)
+    {
+        try { return Ok(await service.WellLookup(key, ct)); }
+        catch (KeyNotFoundException) { return NotFound(); }
+    }
+
+    [HttpGet("/api/wells/form")]
+    public async Task<IActionResult> WellTemplate(CancellationToken ct) => Ok(await service.ReadWellTemplate(ct));
+
     [HttpGet("{id:int}")]
     public async Task<IActionResult> ReadRecord(string table, int id, CancellationToken ct)
     {

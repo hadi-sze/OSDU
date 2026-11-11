@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Alert, AppBar, Box, Button, Chip, Container, Drawer, InputAdornment, Menu, MenuItem, ListItemIcon, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, LinearProgress, ListItemButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Toolbar, Typography, useColorScheme } from '@mui/material'
 import { RowActions } from './record-editor'
 import WorkspaceNavigation from './workspace-navigation'
+import useScrollTrigger from '@mui/material/useScrollTrigger'
 
 import MenuIcon from '@mui/icons-material/Menu'
 import StorageIcon from '@mui/icons-material/StorageOutlined'
@@ -77,6 +78,7 @@ export default function Dashboard() {
   const organization = organizations.find(row => row.orgUnitId === organizationId)
   const viewTitle = organizationId === undefined ? view : String(organization?.orgUnitName ?? 'Organization')
   const { mode, setMode } = useColorScheme()
+  const scrolled = useScrollTrigger({ threshold: 0, disableHysteresis: true })
   const [mobileOpen, setMobileOpen] = useState(false)
   const [accountAnchor, setAccountAnchor] = useState<HTMLElement | null>(null)
   const [logoutError, setLogoutError] = useState('')
@@ -91,7 +93,20 @@ export default function Dashboard() {
   const filtered = assets.filter(a => (a.name + ' ' + (a.description || '')).toLowerCase().includes(search.toLowerCase()))
   const MasterDataPage = masterDataPages[view]
   return <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-    <AppBar position="fixed" elevation={0} color="inherit" sx={{ borderBottom: 1, borderColor: 'divider', zIndex: 1201 }}>
+    <AppBar position="fixed" elevation={0} color="inherit" sx={theme => ({
+      borderBottom: 1,
+      borderColor: 'divider',
+      bgcolor: 'background.paper',
+      zIndex: 1201,
+      transition: 'background-color 180ms ease, backdrop-filter 180ms ease',
+      '@supports (backdrop-filter: blur(1px)) and (color: color-mix(in srgb, white, transparent))': {
+        backgroundColor: scrolled
+          ? `color-mix(in srgb, ${(theme.vars || theme).palette.background.paper} 78%, transparent)`
+          : undefined,
+        backdropFilter: scrolled ? 'blur(14px)' : 'blur(0px)',
+      },
+      '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+    })}>
       <Toolbar variant="dense" sx={{ minHeight: 58, gap: 1 }}>
         <IconButton aria-label="Open navigation" onClick={() => setMobileOpen(true)} sx={{ display: { md: 'none' } }}><MenuIcon /></IconButton>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, mr: 1, flexShrink: 0 }}><Image src="/nioclogo.png" alt="NIOC logo" width={32} height={36} style={{ objectFit: "contain" }} priority /><Box component="span" sx={{ color: "primary.main", fontWeight: 900, fontSize: 22, letterSpacing: -1 }}>OSDU</Box></Box>

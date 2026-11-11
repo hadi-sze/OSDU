@@ -50,6 +50,7 @@ public class WellInput {
   public int? RDataAccessCategoryId {get;set;}
 }
 public class WellService(WellRepository repository) {
+ public Task<object> Page(int page,int size,string? search,string? status,string? sort,bool desc,CancellationToken ct)=>repository.Page(page,size,search,status,sort,desc,ct);
  public Task<List<Well>> List(CancellationToken ct)=>repository.List(ct);
  public Task<object> Lookups(CancellationToken ct)=>repository.Lookups(ct);
  public async Task<Well> Create(WellInput input,string actor,CancellationToken ct) {

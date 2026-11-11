@@ -6,11 +6,15 @@ namespace OSDU.Business;
 
 public class WellRecordsService(WellRecordsRepository repository)
 {
+    public Task<IReadOnlyList<WellReferenceOption>> WellLookup(string key, CancellationToken ct) => repository.WellLookup(key, ct);
+
     public bool SupportsCreate(string table) => WellRecordsRepository.SupportsCreate(table);
 
     public bool Supports(string table) => WellRecordsRepository.Supports(table);
 
     public Task<object> Read(string table, CancellationToken ct) => repository.Read(table, ct);
+
+    public Task<object> ReadWellTemplate(CancellationToken ct) => repository.Read("well-master", ct, templateOnly: true);
 
     public Task<object> Create(string table, JsonElement input, string actor, CancellationToken ct)
     {

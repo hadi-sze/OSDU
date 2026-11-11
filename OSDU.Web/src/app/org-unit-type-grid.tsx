@@ -1,8 +1,7 @@
 'use client'
 import FormLoading from '@/components/loading-ui/form-loading'
 // Adapted from the local port-4174 table: tab filters, sorting, column visibility, pagination.
-import { OrbitRing } from '@/components/loading-ui/orbit-ring'
-import { useMemo, useState, useRef, useEffect } from 'react'
+import { useMemo, useState } from 'react'
 import { Box, Button, Checkbox, Chip, Divider, FormControlLabel, IconButton, InputAdornment, Menu, MenuItem, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, LinearProgress } from '@mui/material'
 import RecordEditor, { RowActions, type RecordAction } from './record-editor'
 import SearchIcon from '@mui/icons-material/Search'
@@ -14,11 +13,7 @@ import PrevIcon from '@mui/icons-material/ChevronLeft'
 import NextIcon from '@mui/icons-material/ChevronRight'
 const defaultColumns=[{key:'rOrgUnitTypeId',label:'ID'},{key:'orgUnitType',label:'Name'},{key:'shortName',label:'Short name'},{key:'longName',label:'Long name'},{key:'isActive',label:'Status'},{key:'rowCreatedBy',label:'Created by'}]
 export default function OrgUnitTypeGrid({rows,loading,idKey='rOrgUnitTypeId',nameKey='orgUnitType',entityLabel='Organization unit types',customColumns,onView,onEdit,onDelete,recordTable,onRecordChange}:{rows:Record<string,unknown>[];loading:boolean;idKey?:string;nameKey?:string;entityLabel?:string;customColumns?:{key:string;label:string}[];onView?:(row:Record<string,unknown>)=>void;onEdit?:(row:Record<string,unknown>)=>void;onDelete?:(row:Record<string,unknown>)=>void;recordTable?:string;onRecordChange?:()=>void}) {
- const [transitioning,setTransitioning]=useState(false)
- const activityTimer=useRef<ReturnType<typeof setTimeout>|null>(null)
- useEffect(()=>()=>{if(activityTimer.current)clearTimeout(activityTimer.current)},[])
- function showActivity(){setTransitioning(true);if(activityTimer.current)clearTimeout(activityTimer.current);activityTimer.current=setTimeout(()=>setTransitioning(false),350)}
- const busy=loading||transitioning
+ const busy=loading
  const [recordAction,setRecordAction]=useState<RecordAction>()
  const hasActions=!!(onView||onEdit||onDelete||recordTable)
  const showRecord=(mode:RecordAction['mode'],row:Record<string,unknown>)=>{
@@ -38,7 +33,7 @@ export default function OrgUnitTypeGrid({rows,loading,idKey='rOrgUnitTypeId',nam
  const visible=columns.filter(c=>!hidden.includes(c.key))
  const creators=Array.from(new Set(rows.map(r=>String(r.rowCreatedBy??'')).filter(Boolean)))
  function reset(){setStatus('All');setQuery('');setCreator('');setHidden([]);setPage(0)}
- return <Box onClickCapture={e=>{if((e.target as Element).closest('button,[role="menuitem"],[role="option"]'))showActivity()}} onChangeCapture={showActivity} component="section" aria-label={entityLabel+" grid"}>
+ return <Box component="section" aria-label={entityLabel+" grid"}>
   <Stack direction={{xs:'column',lg:'row'}} spacing={2} sx={{justifyContent:'space-between',alignItems:{lg:'center'},mb:2}}>
    <Box role="tablist" aria-label={entityLabel+" status"} sx={{display:'flex',p:.5,bgcolor:'action.hover',borderRadius:8,alignSelf:'flex-start'}}>
     {['All','Active','Inactive'].map(s=><Button key={s} role="tab" aria-selected={status===s} onClick={()=>{setStatus(s);setPage(0)}} color="inherit" sx={{borderRadius:8,minWidth:0,px:1.5,fontWeight:400,fontSize:12,bgcolor:status===s?'background.paper':'transparent',boxShadow:status===s?'0 2px 8px #0001':'none',transition:'background-color 180ms ease'}}>{s}<Box component="span" sx={{ml:1,color:'text.secondary'}}>{s==='All'?rows.length:rows.filter(r=>r.isActive===(s==='Active')).length}</Box></Button>)}
@@ -54,7 +49,8 @@ export default function OrgUnitTypeGrid({rows,loading,idKey='rOrgUnitTypeId',nam
    <Divider/><MenuItem onClick={()=>{reset();setAnchor(null)}}>Reset filters and columns</MenuItem>
   </Menu>
   <Paper variant="outlined" sx={{borderRadius:3,overflow:'hidden',position:'relative',minHeight:100}} role="region" aria-label={entityLabel+" table"} aria-busy={busy}>
-   {busy&&<Box sx={{position:'absolute',inset:0,zIndex:2,display:'flex',alignItems:'center',justifyContent:'center',bgcolor:'background.paper',opacity:.92,pointerEvents:'none'}}><FormLoading label={'Loading ' + entityLabel.toLowerCase() + '…'} /></Box>}
+   {busy&&rows.length>0&&<LinearProgress aria-label="Refreshing records" />}
+   {busy&&!rows.length&&<Box sx={{position:'absolute',inset:0,zIndex:2,display:'flex',alignItems:'center',justifyContent:'center',bgcolor:'background.paper',opacity:.92,pointerEvents:'none'}}><FormLoading label={'Loading ' + entityLabel.toLowerCase() + '…'} /></Box>}
    <TableContainer><Table size="small" sx={{minWidth:650}}><TableHead><TableRow>{visible.map(c=><TableCell key={c.key} aria-sort={sort.key===c.key?(sort.direction===1?'ascending':'descending'):'none'} sx={{fontWeight:400,py:.5,whiteSpace:'nowrap'}}><Button color="inherit" size="small" endIcon={<SortIcon sx={{fontSize:14}}/>} onClick={()=>setSort(s=>({key:c.key,direction:s.key===c.key&&s.direction===1?-1:1}))} sx={{fontWeight:400,fontSize:13,px:0}}>{c.label}</Button></TableCell>)}{hasActions&&<TableCell align="center">Actions</TableCell>}</TableRow></TableHead>
    <TableBody key={JSON.stringify([status,query,creator,current,size,sort,hidden])} sx={{animation:'osdu-grid-in 180ms ease','@keyframes osdu-grid-in':{from:{opacity:0,transform:'translateY(4px)'},to:{opacity:1,transform:'translateY(0)'}},'@media(prefers-reduced-motion:reduce)':{animation:'none'}}}>
     {filtered.slice(current*size,(current+1)*size).map(r=><TableRow hover key={String(r[idKey])}>{visible.map(c=><TableCell key={c.key} sx={{fontSize:13,py:1.25}}>{c.key==='isActive'?<Chip size="small" variant={r.isActive?'filled':'outlined'} color={r.isActive?'success':'neutral'} label={r.isActive?'Active':'Inactive'} sx={{height:23,fontSize:11}}/>:String(r[c.key]??'—')}</TableCell>)}{hasActions&&<TableCell align="center" sx={{whiteSpace:'nowrap'}}><RowActions name={String(r[nameKey]??r[idKey])}
