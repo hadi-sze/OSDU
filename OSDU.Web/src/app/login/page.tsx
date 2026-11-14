@@ -23,6 +23,7 @@ import Logo2 from './NIOC_logo.svg';
 import Logo from "./NIOC_logo.png";
 import Chip from '@mui/joy/Chip';
 import Divider from '@mui/joy/Divider';
+import back1 from './back1.jpg';
 import back2 from './back2.jpg';
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -237,11 +238,13 @@ export default function JoySignInSideTemplate() {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
+          backgroundClip
           backgroundImage:
-            'url(https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&w=1000&dpr=2)',
+            `url("${back2.src}")`,
           [theme.getColorSchemeSelector('dark')]: {
             backgroundImage:
-              `url("${back2.src}")`,
+              `url("${back1.src}")`,
+
           },
         })}
       />
