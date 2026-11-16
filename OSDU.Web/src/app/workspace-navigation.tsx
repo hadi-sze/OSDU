@@ -78,6 +78,7 @@ export default function WorkspaceNavigation({ view, onNavigate, collapsed = fals
             {leaf('Account home', HomeOutlined)}
             {leaf('Assets', StorageOutlined)}
             {leaf('Work sheet', SearchOutlined, 'Data Catalog')}
+            {'wellbore'.includes(query) && leaf('Wellbore', AccountTreeOutlined)}
             {renderGroup({
             id: 'organization-view',
             label: 'Organization View',

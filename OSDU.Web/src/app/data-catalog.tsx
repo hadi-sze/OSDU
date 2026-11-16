@@ -79,12 +79,9 @@ export default function DataCatalog() {
     
     const params = useMemo(() => ({ ...filters, dataset: tab === 'All datasets' ? '' : tab, search }),
         [filters, tab, search])
-    const [loadPage, result] = assetsApi.useLazyGetCatalogPageQuery()
-    const activeRequest = useRef<ReturnType<typeof loadPage>>(null)
-    useEffect(() => {
-        activeRequest.current = loadPage({ ...params, hasLocation, page, size, sort: sort.key, desc: sort.desc }, true)
-        return () => activeRequest.current?.abort()
-    }, [params, hasLocation, page, size, sort, loadPage])
+    const result = assetsApi.useGetCatalogPageQuery({
+        ...params, hasLocation, page, size, sort: sort.key, desc: sort.desc,
+    })
     const facets = assetsApi.useGetCatalogFacetsQuery({ ...params, hasLocation }, { skip: !filtersOpen || mapExpanded })
     useEffect(() => {
         if (!mapOpen || mapVisible || !mapPanel.current) return
@@ -174,7 +171,7 @@ export default function DataCatalog() {
             </Tabs>
         </Paper>
         {result.isError && <Alert severity="error" action={<Button onClick={() => {
-            if (result.originalArgs) activeRequest.current = loadPage(result.originalArgs)
+            void result.refetch()
         }}>Retry</Button>}>Could not load catalog results.</Alert>}
         <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
             <Button variant="outlined" size="small" aria-expanded={showFilters} aria-controls="catalog-filters" disabled={mapExpanded}

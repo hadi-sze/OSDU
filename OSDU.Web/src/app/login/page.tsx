@@ -238,7 +238,6 @@ export default function JoySignInSideTemplate() {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          backgroundClip
           backgroundImage:
             `url("${back2.src}")`,
           [theme.getColorSchemeSelector('dark')]: {
