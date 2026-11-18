@@ -19,6 +19,9 @@ import JoyTypography from '@mui/joy/Typography'
 import JoyIconButton from '@mui/joy/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import AddIcon from '@mui/icons-material/Add'
+
+
+
 import { useGetEquipmentRecordsQuery, useCreateEquipmentMutation, useGetEquipmentLookupsQuery } from '../lib/store'
 const fields = [{ "key": "commissionDate", "label": "Commission Date", "kind": "date", "required": false, "max": 0 }, { "key": "decommissionDate", "label": "Decommission Date", "kind": "date", "required": false, "max": 0 }, { "key": "equipmentName", "label": "Equipment Name", "kind": "text", "required": true, "max": 40 }, { "key": "equipmentSubType", "label": "Equipment Sub Type", "kind": "text", "required": false, "max": 40 }, { "key": "equipmentType", "label": "Equipment Type", "kind": "text", "required": false, "max": 40 }, { "key": "isActive", "label": "Active", "kind": "boolean", "required": false, "max": 0 }, { "key": "rEquipmentSubTypeId", "label": "Equipment subtype", "kind": "lookup", "required": false, "max": 0 }, { "key": "rEquipmentTypeId", "label": "Equipment type", "kind": "lookup", "required": false, "max": 0 }, { "key": "remark", "label": "Remark", "kind": "text", "required": false, "max": 2000 }, { "key": "equipmentAliasName", "label": "Equipment Alias Name", "kind": "text", "required": false, "max": 40 }, { "key": "serialNum", "label": "Serial number", "kind": "number", "required": false, "max": 0 }, { "key": "manufacturerBaId", "label": "Manufacturer organization", "kind": "lookup", "required": false, "max": 0 }, { "key": "rDataAccessCategoryId", "label": "Data access category", "kind": "lookup", "required": false, "max": 0 }]
 const initial: Record<string, string | boolean> = Object.fromEntries(fields.map(f => [f.key, f.kind === 'boolean' ? f.key === 'isActive' : '']))
@@ -26,6 +29,8 @@ const recordColumns = [{ "key": "equipmentId", "label": "ID" }, { "key": "equipm
 export default function EquipmentRecords() {
     const { data: rows = [], error: loadError, isLoading, isFetching, refetch } = useGetEquipmentRecordsQuery()
     const { data: lookups = {}, error: lookupError } = useGetEquipmentLookupsQuery()
+    const { data: lookups1 = {}, error: lookupError2 } = useGetEquipmentLookupsQuery()
+    const { data: lookups2 = {}, error: lookupError3 } = useGetEquipmentLookupsQuery()
     const [create, { isLoading: saving }] = useCreateEquipmentMutation()
     const [open, setOpen] = useState(false), [values, setValues] = useState(initial), [error, setError] = useState(''), [success, setSuccess] = useState('')
     const [pending, setPending] = useState<null | (() => void)>(null)
