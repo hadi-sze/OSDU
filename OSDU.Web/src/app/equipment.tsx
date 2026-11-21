@@ -70,6 +70,7 @@ export default function EquipmentRecords() {
                         <JoyBox sx={{ p: 3, display: 'flex', gap: 2, justifyContent: 'flex-end', borderTop: '1px solid', borderColor: 'divider' }}><JoyButton variant="outlined" color="neutral" disabled={saving} onClick={close}>Cancel</JoyButton><JoyButton type="submit" loading={saving} loadingIndicator={<OrbitRing className="size-4" />} disabled={!String(values.equipmentName).trim()}>Save record</JoyButton></JoyBox>
                     </JoyBox>
                 </CssVarsProvider>
+           
             </DrawerContent>
         </ShadDrawer>
         <Dialog open={!!pending} onClose={() => setPending(null)}><DialogTitle>Discard unsaved changes?</DialogTitle><DialogContent>Your record has not been saved.</DialogContent><DialogActions><Button onClick={() => setPending(null)}>Keep editing</Button><Button color="error" onClick={() => { const action = pending; setPending(null); action?.() }}>Discard changes</Button></DialogActions></Dialog>
