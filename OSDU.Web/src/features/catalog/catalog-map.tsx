@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
-import { catalogKey, type CatalogIdentity, type CatalogPoint } from '../lib/catalog-types'
+import { catalogKey, type CatalogIdentity, type CatalogPoint } from '@/lib/catalog-types'
 
 const emptyPoints: CatalogPoint[] = []
 

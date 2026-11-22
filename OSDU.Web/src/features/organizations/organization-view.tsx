@@ -12,9 +12,9 @@ import Checkbox from '@mui/joy/Checkbox'
 import FormControl from '@mui/joy/FormControl'
 import FormLabel from '@mui/joy/FormLabel'
 import Textarea from '@mui/joy/Textarea'
-import OrgUnitTypeGrid from './org-unit-type-grid'
-import { joyTheme } from './theme'
-import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from '../components/ui/drawer'
+import OrgUnitTypeGrid from '@/features/master-data/org-unit-type-grid'
+import { joyTheme } from '@/theme/theme'
+import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from '@/components/ui/drawer'
 import { OrbitRing } from '@/components/loading-ui/orbit-ring'
 
 type Row = Record<string, unknown>

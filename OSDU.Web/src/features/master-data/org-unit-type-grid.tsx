@@ -3,7 +3,7 @@ import FormLoading from '@/components/loading-ui/form-loading'
 // Adapted from the local port-4174 table: tab filters, sorting, column visibility, pagination.
 import { useMemo, useState } from 'react'
 import { Box, Button, Checkbox, Chip, Divider, FormControlLabel, IconButton, InputAdornment, Menu, MenuItem, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, LinearProgress } from '@mui/material'
-import RecordEditor, { RowActions, type RecordAction } from './record-editor'
+import RecordEditor, { RowActions, type RecordAction } from '@/features/master-data/record-editor'
 import SearchIcon from '@mui/icons-material/Search'
 import FilterIcon from '@mui/icons-material/Tune'
 import SortIcon from '@mui/icons-material/UnfoldMore'

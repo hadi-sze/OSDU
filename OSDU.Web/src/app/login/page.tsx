@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { joyTheme } from '../theme';
+import { joyTheme } from '@/theme/theme';
 import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import CssBaseline from '@mui/joy/CssBaseline';

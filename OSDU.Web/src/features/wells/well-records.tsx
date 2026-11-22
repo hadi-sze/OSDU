@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { assetsApi } from '../lib/store'
+import { assetsApi } from '@/lib/store'
 import { Alert, Button, Dialog, DialogActions, DialogTitle, Stack, Typography } from '@mui/material'
 import { Alert as JoyAlert, Autocomplete, Box, Button as JoyButton, Checkbox, FormControl, FormLabel, Input, Stack as JoyStack, Textarea } from '@mui/joy'
 import { CssVarsProvider } from '@mui/joy/styles'
-import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '../components/ui/drawer'
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/ui/drawer'
 import { OrbitRing } from '@/components/loading-ui/orbit-ring'
-import OrgUnitTypeGrid from './org-unit-type-grid'
-import { joyTheme } from './theme'
+import OrgUnitTypeGrid from '@/features/master-data/org-unit-type-grid'
+import { joyTheme } from '@/theme/theme'
 
 export const wellRecordPages: Record<string, string> = {
     Wellbore: 'wellbores',

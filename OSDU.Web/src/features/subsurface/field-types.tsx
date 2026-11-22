@@ -1,11 +1,11 @@
 'use client'
 import { OrbitRing } from '@/components/loading-ui/orbit-ring'
 import { useEffect, useState } from 'react'
-import OrgUnitTypeGrid from './org-unit-type-grid'
+import OrgUnitTypeGrid from '@/features/master-data/org-unit-type-grid'
 import { Alert, Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControlLabel, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
-import { Drawer as ShadDrawer, DrawerContent, DrawerTitle, DrawerDescription } from '../components/ui/drawer'
+import { Drawer as ShadDrawer, DrawerContent, DrawerTitle, DrawerDescription } from '@/components/ui/drawer'
 import { CssVarsProvider } from '@mui/joy/styles'
-import { joyTheme } from './theme'
+import { joyTheme } from '@/theme/theme'
 import JoyBox from '@mui/joy/Box'
 import JoyButton from '@mui/joy/Button'
 import JoyInput from '@mui/joy/Input'
@@ -19,7 +19,7 @@ import JoyTypography from '@mui/joy/Typography'
 import JoyIconButton from '@mui/joy/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import AddIcon from '@mui/icons-material/Add'
-import {useGetFieldTypeRecordsQuery,useCreateFieldTypeMutation,useGetFieldTypeLookupsQuery} from '../lib/store'
+import {useGetFieldTypeRecordsQuery,useCreateFieldTypeMutation,useGetFieldTypeLookupsQuery} from '@/lib/store'
 const fields=[{"key": "displayName", "label": "Display Name", "kind": "text", "required": false, "max": 50}, {"key": "longName", "label": "Long Name", "kind": "text", "required": false, "max": 255}, {"key": "shortName", "label": "Short Name", "kind": "text", "required": false, "max": 30}, {"key": "abbreviation", "label": "Abbreviation", "kind": "text", "required": false, "max": 15}, {"key": "colorCode", "label": "Color Code", "kind": "text", "required": false, "max": 15}, {"key": "remark", "label": "Remark", "kind": "text", "required": false, "max": 2000}, {"key": "isActive", "label": "Active", "kind": "boolean", "required": false, "max": 0}, {"key": "effectiveDate", "label": "Effective Date", "kind": "date", "required": false, "max": 0}, {"key": "expiryDate", "label": "Expiry Date", "kind": "date", "required": false, "max": 0}, {"key": "sourceName", "label": "Source Name", "kind": "text", "required": false, "max": 50}, {"key": "fieldTypeName", "label": "Field type name", "kind": "text", "required": true, "max": 50}]
 const initial:Record<string,string|boolean>=Object.fromEntries(fields.map(f=>[f.key,f.kind==='boolean'?f.key==='isActive':'']))
 const recordColumns=[{"key": "rFieldTypeId", "label": "ID"}, {"key": "fieldTypeName", "label": "Name"}, {"key": "displayName", "label": "Display name"}, {"key": "shortName", "label": "Short name"}, {"key": "abbreviation", "label": "Abbreviation"}, {"key": "isActive", "label": "Status"}, {"key": "rowCreatedBy", "label": "Created by"}]

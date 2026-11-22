@@ -1,13 +1,13 @@
 'use client'
 import dynamic from 'next/dynamic'
-import { assetsApi } from '../lib/store'
-import { catalogKey, filterKeys, type CatalogFilters, type CatalogIdentity, type CatalogRow } from '../lib/catalog-types'
+import { assetsApi } from '@/lib/store'
+import { catalogKey, filterKeys, type CatalogFilters, type CatalogIdentity, type CatalogRow } from '@/lib/catalog-types'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Accordion, AccordionDetails, AccordionSummary, Alert, Autocomplete, Box, Button, Checkbox, Chip, Drawer, FormControlLabel, LinearProgress, Paper, Stack, Tab, Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, TextField, Typography } from '@mui/material'
 import { ChevronDown, Filter, Globe, MapPin, Factory, Layers, Drill } from 'lucide-react'
 import { OrbitRing } from '@/components/loading-ui/orbit-ring'
 
-const CatalogMap = dynamic(() => import('./catalog-map'), {
+const CatalogMap = dynamic(() => import('@/features/catalog/catalog-map'), {
     ssr: false,
     loading: () => <Box sx={{ height: 420, p: 2 }}>Loading map…</Box>,
 })

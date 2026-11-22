@@ -4,14 +4,14 @@ import FormLoading from '@/components/loading-ui/form-loading'
 import dynamic from 'next/dynamic'
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { assetsApi } from '../lib/store'
+import { assetsApi } from '@/lib/store'
 import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material'
 import { Stack as JoyStack, Button as JoyButton, Alert as JoyAlert, Autocomplete, Box, Checkbox, FormControl, FormHelperText, FormLabel, Input, Textarea } from '@mui/joy'
 import { CssVarsProvider } from '@mui/joy/styles'
 import { Eye, Pencil, Trash2 } from 'lucide-react'
-import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '../components/ui/drawer'
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/ui/drawer'
 import { OrbitRing } from '@/components/loading-ui/orbit-ring'
-import { joyTheme } from './theme'
+import { joyTheme } from '@/theme/theme'
 
 const recordApi = assetsApi.enhanceEndpoints({ addTagTypes: ['EditableRecord', 'RecordReferences'] }).injectEndpoints({
     endpoints: builder => ({
@@ -82,7 +82,7 @@ function WellReferenceInput({ field, value, disabled, onSelect }: {
     </>
 }
 
-const LocationMap = dynamic(() => import('./catalog-map'), { ssr: false, loading: () => <FormLoading label="Loading map…" /> })
+const LocationMap = dynamic(() => import('@/features/catalog/catalog-map'), { ssr: false, loading: () => <FormLoading label="Loading map…" /> })
 const ignoreMapSelection = () => {}
 
 function WellLocation({ values, id, name }: { values: Record<string, Value>; id: number; name: string }) {

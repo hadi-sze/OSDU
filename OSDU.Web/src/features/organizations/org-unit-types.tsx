@@ -1,11 +1,11 @@
 'use client'
 import { OrbitRing } from '@/components/loading-ui/orbit-ring'
 import { useEffect, useState } from 'react'
-import OrgUnitTypeGrid from './org-unit-type-grid'
+import OrgUnitTypeGrid from '@/features/master-data/org-unit-type-grid'
 import { Alert, Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControlLabel, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
-import { Drawer as ShadDrawer, DrawerContent, DrawerTitle, DrawerDescription } from '../components/ui/drawer'
+import { Drawer as ShadDrawer, DrawerContent, DrawerTitle, DrawerDescription } from '@/components/ui/drawer'
 import { CssVarsProvider } from '@mui/joy/styles'
-import { joyTheme } from './theme'
+import { joyTheme } from '@/theme/theme'
 import JoyBox from '@mui/joy/Box'
 import JoyButton from '@mui/joy/Button'
 import JoyInput from '@mui/joy/Input'
@@ -19,7 +19,7 @@ import JoyTypography from '@mui/joy/Typography'
 import JoyIconButton from '@mui/joy/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import AddIcon from '@mui/icons-material/Add'
-import { useGetOrgUnitTypesQuery, useCreateOrgUnitTypeMutation } from '../lib/store'
+import { useGetOrgUnitTypesQuery, useCreateOrgUnitTypeMutation } from '@/lib/store'
 const initial = { orgUnitType: '', longName: '', shortName: '', remark: '', isActive: true }
 export default function OrgUnitTypes() {
     const { data: rows = [], error: loadError, isLoading, isFetching, refetch } = useGetOrgUnitTypesQuery()
@@ -47,9 +47,7 @@ export default function OrgUnitTypes() {
         <OrgUnitTypeGrid recordTable="org-unit-types" onRecordChange={() => void refetch()} rows={rows} loading={isLoading || isFetching || saving} />
         <ShadDrawer swipeDirection="right" open={open} onOpenChange={next => { if (!next) close() }}>
             <DrawerContent>
-                <Box>
-
-                </Box>
+                
                 <CssVarsProvider theme={joyTheme}>
                     <JoyBox component="form" onSubmit={save} sx={{ height: '100dvh', display: 'flex', flexDirection: 'column', bgcolor: 'background.surface', color: 'text.primary' }}>
                         <JoyBox sx={{ p: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid', borderColor: 'divider' }}>

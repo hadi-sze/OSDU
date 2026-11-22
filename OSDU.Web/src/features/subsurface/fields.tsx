@@ -1,11 +1,11 @@
 'use client'
 import { OrbitRing } from '@/components/loading-ui/orbit-ring'
 import { useEffect, useState } from 'react'
-import OrgUnitTypeGrid from './org-unit-type-grid'
+import OrgUnitTypeGrid from '@/features/master-data/org-unit-type-grid'
 import { Alert, AlertTitle, Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControlLabel, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
-import { Drawer as ShadDrawer, DrawerContent, DrawerTitle, DrawerDescription } from '../components/ui/drawer'
+import { Drawer as ShadDrawer, DrawerContent, DrawerTitle, DrawerDescription } from '@/components/ui/drawer'
 import { CssVarsProvider } from '@mui/joy/styles'
-import { joyTheme } from './theme'
+import { joyTheme } from '@/theme/theme'
 import JoyBox from '@mui/joy/Box'
 import JoyButton from '@mui/joy/Button'
 import JoyInput from '@mui/joy/Input'
@@ -19,7 +19,7 @@ import JoyTypography from '@mui/joy/Typography'
 import JoyIconButton from '@mui/joy/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import AddIcon from '@mui/icons-material/Add'
-import {useGetFieldsQuery,useCreateFieldMutation,useGetFieldLookupsQuery} from '../lib/store'
+import {useGetFieldsQuery,useCreateFieldMutation,useGetFieldLookupsQuery} from '@/lib/store'
 const fields=[{"key": "fieldName", "label": "Field name", "kind": "text", "required": true, "max": 100}, {"key": "rFieldTypeId", "label": "Field type", "kind": "lookup", "required": false, "max": 0}, {"key": "fieldTypeName", "label": "Field type name", "kind": "text", "required": false, "max": 50}, {"key": "fieldAbbreviation", "label": "Abbreviation", "kind": "text", "required": false, "max": 20}, {"key": "xCoordinate", "label": "X coordinate (WGS 84 latitude)", "kind": "number", "required": false, "max": 0}, {"key": "yCoordinate", "label": "Y coordinate (WGS 84 longitude)", "kind": "number", "required": false, "max": 0}, {"key": "crsId", "label": "Coordinate reference system", "kind": "lookup", "required": false, "max": 0}, {"key": "crsName", "label": "CRS name", "kind": "text", "required": false, "max": 50}, {"key": "remark", "label": "Remarks", "kind": "text", "required": false, "max": 2000}, {"key": "isActive", "label": "Active", "kind": "boolean", "required": false, "max": 0}, {"key": "sourceName", "label": "Source name", "kind": "text", "required": false, "max": 40}, {"key": "uidref", "label": "External UID reference", "kind": "text", "required": false, "max": 64}, {"key": "rDataAccessCategoryId", "label": "Data access category", "kind": "lookup", "required": false, "max": 0}]
 const initial:Record<string,string|boolean>=Object.fromEntries(fields.map(f=>[f.key,f.kind==='boolean'?f.key==='isActive':'']))
 const fieldColumns=[{key:"fieldId",label:"ID"},{key:"fieldName",label:"Field name"},{key:"fieldAbbreviation",label:"Abbreviation"},{key:"fieldTypeName",label:"Type"},{key:"isActive",label:"Status"},{key:"rowCreatedBy",label:"Created by"}]

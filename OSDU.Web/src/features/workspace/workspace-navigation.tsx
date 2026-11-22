@@ -15,8 +15,8 @@ import SearchOutlined from '@mui/icons-material/SearchOutlined'
 import UnfoldLess from '@mui/icons-material/UnfoldLess'
 import ChevronRight from '@mui/icons-material/ChevronRight'
 import type { SvgIconComponent } from '@mui/icons-material'
-import { useGetOrganizationUnitRecordsQuery } from '../lib/store'
-import { masterDataGroups } from './master-data-catalog'
+import { useGetOrganizationUnitRecordsQuery } from '@/lib/store'
+import { masterDataGroups } from '@/features/master-data/master-data-catalog'
 const groupIcons:Record<string,SvgIconComponent>={organization:BusinessOutlined,geography:PublicOutlined,wells:AccountTreeOutlined,infrastructure:FactoryOutlined,flow:AccountTreeOutlined,monitoring:SettingsOutlined,reference:LayersOutlined}
 const groups=masterDataGroups.map(group=>({...group,icon:groupIcons[group.id],items:group.items.map(item=>({...item,icon:groupIcons[group.id]}))}))
 export default function WorkspaceNavigation({ view, onNavigate, collapsed = false, onExpand }: { view: string; onNavigate: (value: string) => void; collapsed?: boolean; onExpand?: () => void }) {

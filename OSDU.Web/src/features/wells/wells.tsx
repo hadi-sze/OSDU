@@ -5,9 +5,9 @@ import { IconButton, Menu, MenuItem, Accordion, AccordionSummary, AccordionDetai
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import AddIcon from '@mui/icons-material/Add'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { assetsApi } from '../lib/store'
+import { assetsApi } from '@/lib/store'
 import FormLoading from '@/components/loading-ui/form-loading'
-import RecordEditor, { RowActions, type RecordAction } from './record-editor'
+import RecordEditor, { RowActions, type RecordAction } from '@/features/master-data/record-editor'
 
 type WellRow = { wellId: number; wellName: string; uwi: string; fieldName: string | null; isActive: boolean }
 type WellPage = { rows: WellRow[]; total: number; page: number; size: number; counts: { all: number; active: number; inactive: number } }

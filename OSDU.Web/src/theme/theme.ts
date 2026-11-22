@@ -1,7 +1,7 @@
 'use client'
 import { alpha, createTheme, type PaletteOptions } from '@mui/material/styles'
 import { extendTheme, type PaletteRange } from '@mui/joy/styles'
-import { projectColors } from './palette'
+import { projectColors } from '@/theme/palette'
 
 function joyPalette(mode:'light'|'dark') {
  const dark=mode==='dark'

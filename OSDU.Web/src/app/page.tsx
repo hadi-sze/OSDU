@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import Dashboard from './dashboard'
+import Dashboard from '@/features/workspace/dashboard'
 export const dynamic = 'force-dynamic'
 export default async function Page() {
     const cookie = (await cookies()).toString()

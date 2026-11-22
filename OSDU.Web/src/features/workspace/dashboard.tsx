@@ -1,32 +1,32 @@
 'use client'
 import dynamic from 'next/dynamic'
 import FormLoading from '@/components/loading-ui/form-loading'
-const DataCatalog = dynamic(() => import('./data-catalog'), { loading: () => <FormLoading /> })
-import WellRecords, { wellRecordPages } from './well-records'
+const DataCatalog = dynamic(() => import('@/features/catalog/data-catalog'), { loading: () => <FormLoading /> })
+import WellRecords, { wellRecordPages } from '@/features/wells/well-records'
 import { useState } from 'react'
-const PoolStatusRecords = dynamic(() => import('./pool-statuses'), { loading: () => <FormLoading /> })
-const PoolTypeRecords = dynamic(() => import('./pool-types'), { loading: () => <FormLoading /> })
-import OrganizationView, { FacilityOrgUnits, FieldOrgUnits, WellOrgUnits } from './organization-view'
-const Facilities = dynamic(() => import('./facilities'), { loading: () => <FormLoading /> })
-const FacilityFields = dynamic(() => import('./facility-field-associations'), { loading: () => <FormLoading /> })
-const CrsRecords = dynamic(() => import('./coordinate-reference-systems'), { loading: () => <FormLoading /> })
-const OrganizationUnitRecords = dynamic(() => import('./organization-units'), { loading: () => <FormLoading /> })
-const PoolRecords = dynamic(() => import('./pools'), { loading: () => <FormLoading /> })
-const EquipmentRecords = dynamic(() => import('./equipment'), { loading: () => <FormLoading /> })
-const FieldTypeRecords = dynamic(() => import('./field-types'), { loading: () => <FormLoading /> })
-const Fields = dynamic(() => import('./fields'), { loading: () => <FormLoading /> })
-const Wells = dynamic(() => import('./wells'), { loading: () => <FormLoading /> })
-const WellStatusTypes = dynamic(() => import('./well-status-types'), { loading: () => <FormLoading /> })
-const WellStatuses = dynamic(() => import('./well-statuses'), { loading: () => <FormLoading /> })
-const OrgUnitTypes = dynamic(() => import('./org-unit-types'), { loading: () => <FormLoading /> })
-import { masterDataItems } from './master-data-catalog'
+const PoolStatusRecords = dynamic(() => import('@/features/subsurface/pool-statuses'), { loading: () => <FormLoading /> })
+const PoolTypeRecords = dynamic(() => import('@/features/subsurface/pool-types'), { loading: () => <FormLoading /> })
+import OrganizationView, { FacilityOrgUnits, FieldOrgUnits, WellOrgUnits } from '@/features/organizations/organization-view'
+const Facilities = dynamic(() => import('@/features/facilities/facilities'), { loading: () => <FormLoading /> })
+const FacilityFields = dynamic(() => import('@/features/facilities/facility-field-associations'), { loading: () => <FormLoading /> })
+const CrsRecords = dynamic(() => import('@/features/subsurface/coordinate-reference-systems'), { loading: () => <FormLoading /> })
+const OrganizationUnitRecords = dynamic(() => import('@/features/organizations/organization-units'), { loading: () => <FormLoading /> })
+const PoolRecords = dynamic(() => import('@/features/subsurface/pools'), { loading: () => <FormLoading /> })
+const EquipmentRecords = dynamic(() => import('@/features/facilities/equipment'), { loading: () => <FormLoading /> })
+const FieldTypeRecords = dynamic(() => import('@/features/subsurface/field-types'), { loading: () => <FormLoading /> })
+const Fields = dynamic(() => import('@/features/subsurface/fields'), { loading: () => <FormLoading /> })
+const Wells = dynamic(() => import('@/features/wells/wells'), { loading: () => <FormLoading /> })
+const WellStatusTypes = dynamic(() => import('@/features/wells/well-status-types'), { loading: () => <FormLoading /> })
+const WellStatuses = dynamic(() => import('@/features/wells/well-statuses'), { loading: () => <FormLoading /> })
+const OrgUnitTypes = dynamic(() => import('@/features/organizations/org-unit-types'), { loading: () => <FormLoading /> })
+import { masterDataItems } from '@/features/master-data/master-data-catalog'
 import Image from 'next/image'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useDispatch, useSelector } from 'react-redux'
 import { Alert, AppBar, Box, Button, Chip, Container, Drawer, InputAdornment, Menu, MenuItem, ListItemIcon, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, LinearProgress, ListItemButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Toolbar, Typography, useColorScheme } from '@mui/material'
-import { RowActions } from './record-editor'
-import WorkspaceNavigation from './workspace-navigation'
+import { RowActions } from '@/features/master-data/record-editor'
+import WorkspaceNavigation from '@/features/workspace/workspace-navigation'
 import useScrollTrigger from '@mui/material/useScrollTrigger'
 
 import MenuIcon from '@mui/icons-material/Menu'
@@ -39,7 +39,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import AddIcon from '@mui/icons-material/Add'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
-import { setSearch, type RootState, type Asset, useGetOrganizationUnitRecordsQuery, useGetAssetsQuery, useCreateAssetMutation, useUpdateAssetMutation, useDeleteAssetMutation } from '../lib/store'
+import { setSearch, type RootState, type Asset, useGetOrganizationUnitRecordsQuery, useGetAssetsQuery, useCreateAssetMutation, useUpdateAssetMutation, useDeleteAssetMutation } from '@/lib/store'
 const domains = masterDataItems.map(item => item.label)
 const masterDataPages: Record<string, React.ComponentType> = {
   "Organization Relationships": OrganizationView,

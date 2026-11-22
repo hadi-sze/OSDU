@@ -1,11 +1,11 @@
 'use client'
 import { OrbitRing } from '@/components/loading-ui/orbit-ring'
 import { useEffect, useState } from 'react'
-import OrgUnitTypeGrid from './org-unit-type-grid'
+import OrgUnitTypeGrid from '@/features/master-data/org-unit-type-grid'
 import { Alert, Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControlLabel, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
-import { Drawer as ShadDrawer, DrawerContent, DrawerTitle, DrawerDescription } from '../components/ui/drawer'
+import { Drawer as ShadDrawer, DrawerContent, DrawerTitle, DrawerDescription } from '@/components/ui/drawer'
 import { CssVarsProvider } from '@mui/joy/styles'
-import { joyTheme } from './theme'
+import { joyTheme } from '@/theme/theme'
 import JoyBox from '@mui/joy/Box'
 import JoyButton from '@mui/joy/Button'
 import JoyInput from '@mui/joy/Input'
@@ -22,7 +22,7 @@ import AddIcon from '@mui/icons-material/Add'
 
 
 
-import { useGetEquipmentRecordsQuery, useCreateEquipmentMutation, useGetEquipmentLookupsQuery } from '../lib/store'
+import { useGetEquipmentRecordsQuery, useCreateEquipmentMutation, useGetEquipmentLookupsQuery } from '@/lib/store'
 const fields = [{ "key": "commissionDate", "label": "Commission Date", "kind": "date", "required": false, "max": 0 }, { "key": "decommissionDate", "label": "Decommission Date", "kind": "date", "required": false, "max": 0 }, { "key": "equipmentName", "label": "Equipment Name", "kind": "text", "required": true, "max": 40 }, { "key": "equipmentSubType", "label": "Equipment Sub Type", "kind": "text", "required": false, "max": 40 }, { "key": "equipmentType", "label": "Equipment Type", "kind": "text", "required": false, "max": 40 }, { "key": "isActive", "label": "Active", "kind": "boolean", "required": false, "max": 0 }, { "key": "rEquipmentSubTypeId", "label": "Equipment subtype", "kind": "lookup", "required": false, "max": 0 }, { "key": "rEquipmentTypeId", "label": "Equipment type", "kind": "lookup", "required": false, "max": 0 }, { "key": "remark", "label": "Remark", "kind": "text", "required": false, "max": 2000 }, { "key": "equipmentAliasName", "label": "Equipment Alias Name", "kind": "text", "required": false, "max": 40 }, { "key": "serialNum", "label": "Serial number", "kind": "number", "required": false, "max": 0 }, { "key": "manufacturerBaId", "label": "Manufacturer organization", "kind": "lookup", "required": false, "max": 0 }, { "key": "rDataAccessCategoryId", "label": "Data access category", "kind": "lookup", "required": false, "max": 0 }]
 const initial: Record<string, string | boolean> = Object.fromEntries(fields.map(f => [f.key, f.kind === 'boolean' ? f.key === 'isActive' : '']))
 const recordColumns = [{ "key": "equipmentId", "label": "ID" }, { "key": "equipmentName", "label": "Name" }, { "key": "equipmentType", "label": "Type" }, { "key": "equipmentSubType", "label": "Subtype" }, { "key": "serialNum", "label": "Serial number" }, { "key": "isActive", "label": "Status" }, { "key": "rowCreatedBy", "label": "Created by" }]

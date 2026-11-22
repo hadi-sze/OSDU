@@ -1,10 +1,10 @@
 'use client'
-import OrgUnitTypeGrid from './org-unit-type-grid'
+import OrgUnitTypeGrid from '@/features/master-data/org-unit-type-grid'
 import { useEffect, useState } from 'react'
 import { Alert, Autocomplete, Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Drawer, FormControlLabel, IconButton, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
-import { Drawer as ShadDrawer, DrawerContent, DrawerTitle, DrawerDescription } from '../components/ui/drawer'
+import { Drawer as ShadDrawer, DrawerContent, DrawerTitle, DrawerDescription } from '@/components/ui/drawer'
 import { CssVarsProvider } from '@mui/joy/styles'
-import { joyTheme } from './theme'
+import { joyTheme } from '@/theme/theme'
 import JoyBox from '@mui/joy/Box'
 import JoyButton from '@mui/joy/Button'
 import JoyInput from '@mui/joy/Input'
@@ -18,7 +18,7 @@ import JoyTypography from '@mui/joy/Typography'
 import JoyIconButton from '@mui/joy/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import AddIcon from '@mui/icons-material/Add'
-import {useGetWellStatusTypeOptionsQuery,useGetWellStatusesQuery,useGetWellStatusSourcesQuery,useCreateWellStatusMutation} from '../lib/store'
+import {useGetWellStatusTypeOptionsQuery,useGetWellStatusesQuery,useGetWellStatusSourcesQuery,useCreateWellStatusMutation} from '@/lib/store'
 const initial={wellStatus:'',longName:'',shortName:'',remark:'',rSourceId:null as number|null,isActive:true,rWellStatusTypeId:null as number|null}
 export default function WellStatuses() {
  const {data:rows=[],error:loadError,isLoading,refetch}=useGetWellStatusesQuery()
