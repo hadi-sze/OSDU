@@ -73,16 +73,17 @@ export default function Wells() {
         setAction({ mode: 'create', id: 0, name: 'well' })
     }
 
-    return <Stack spacing={2}>
+    return <Stack spacing={0.5}>
         {saved && <Alert severity="success" onClose={() => setSaved(false)}>Well changes saved.</Alert>}
         {error && <Alert severity="error" action={<Button onClick={() => refetch()}>Retry</Button>}>Unable to refresh wells. Any previously loaded records remain below.</Alert>}
-        <Paper component="section" aria-label="Well filters" variant="outlined" sx={{ p: 2 }}>
+          
+        <Paper component="section" aria-label="Well filters" variant="outlined" sx={{ p:1 }}>
             <Stack direction="row" sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1, mb: 1 }}>
                 <Typography variant="h6">Wells</Typography><Chip size="small" label={data?.total ?? '...'} />
                 <TextField size="small" label="Search wells" value={search} onChange={e => setSearch(e.target.value)} sx={{ ml: 'auto' }} />
-                <IconButton title="Refresh wells" onClick={refetch}><RestartIcon /></IconButton>
+                <IconButton size='small' title="Refresh wells" onClick={refetch}><RestartIcon /></IconButton>
                 <IconButton title="Choose columns" onClick={e => setColumnMenu(e.currentTarget)}><ColumnsIcon /></IconButton>
-                <IconButton title="Download current page as CSV" disabled={!rows.length || isFetching} onClick={() => {
+                <IconButton title="Download current page as CSV" size="small"  disabled={!rows.length || isFetching} onClick={() => {
                     const csv = [visible.map(c => c[1]), ...rows.map(row => visible.map(([key]) => display(row, key)))]
                         .map(line => line.map(cell => '"' + (/^[=+@\-\t\r]/.test(cell) ? "'" : '') + cell.replaceAll('"', '""') + '"').join(',')).join('\r\n')
                     const link = document.createElement('a')
@@ -91,7 +92,7 @@ export default function Wells() {
                     link.click()
                     setTimeout(() => URL.revokeObjectURL(link.href), 1000)
                 }}><DownloadIcon /></IconButton>
-                <IconButton title="Add well" onClick={addWell} sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', '&:hover': { bgcolor: 'primary.dark' } }}><AddIcon /></IconButton>
+                <IconButton title="Add well" onClick={addWell} size="small" sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', '&:hover': { bgcolor: 'primary.dark' }  }}><AddIcon /></IconButton>
             </Stack>
             <Menu anchorEl={columnMenu} open={!!columnMenu} onClose={() => setColumnMenu(null)}>
                 {columns.map(([key,label]) => <MenuItem key={key} disabled={visible.length === 1 && !hidden.includes(key)} onClick={() => setHidden(h => h.includes(key) ? h.filter(k => k !== key) : [...h,key])}><Checkbox checked={!hidden.includes(key)} />{label}</MenuItem>)}
@@ -100,7 +101,7 @@ export default function Wells() {
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}><FilterIcon fontSize="small" sx={{ mr: 1 }} />Filter Panel</AccordionSummary>
                 <AccordionDetails>
                     {lookupError && <Alert severity="error" action={<Button onClick={retryLookups}>Retry</Button>}>Unable to load filter options.</Alert>}
-                    <Box component="form" onSubmit={e => { e.preventDefault(); setParams(p => ({ ...p, ...draft, page: 0 })) }} sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2,1fr)', lg: 'repeat(4,1fr)' }, gap: 2 }}>
+                    <Box component="form" onSubmit={e => { e.preventDefault(); setParams(p => ({ ...p, ...draft, page: 0 })) }} sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2,1fr)', lg: 'repeat(4,1fr)' }, gap: 1.2 }}>
                         {choices('fieldId', 'Field', lookups?.fieldId ?? [], 'All fields')}
                         {choices('classId', 'Well Class', lookups?.currentClassId ?? [], 'All classes')}
                         {choices('profileId', 'Well Profile', lookups?.rWellProfileId ?? [], 'All profiles')}
@@ -113,6 +114,8 @@ export default function Wells() {
                 </AccordionDetails>
             </Accordion>
         </Paper>
+          
+        
         <Paper variant="outlined" sx={{ overflow: 'hidden', minWidth: 0 }} aria-busy={isFetching}>
             <Box sx={{ height: 3 }}>{isFetching && data && <LinearProgress aria-label="Refreshing wells" />}</Box>
             {!data && isFetching ? <FormLoading label="Loading wells…" /> : <>
