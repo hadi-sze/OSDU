@@ -1,26 +1,58 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { IconButton, Menu, MenuItem, Accordion, AccordionSummary, AccordionDetails, Alert, Box, Button, Chip, LinearProgress, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Tabs, Tab, TextField, Typography } from '@mui/material'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
+import { IconButton, Menu, MenuItem, Accordion, AccordionSummary, AccordionDetails, Alert, Box, Button, Chip, LinearProgress, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, Checkbox, TextField, Typography } from '@mui/material'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 import AddIcon from '@mui/icons-material/Add'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { assetsApi } from '@/lib/store'
+import RestartIcon from '@mui/icons-material/Refresh'
+import ColumnsIcon from '@mui/icons-material/ViewColumn'
+import DownloadIcon from '@mui/icons-material/Download'
+import FilterIcon from '@mui/icons-material/FilterAltOutlined'
+import { useGetWellLookupsQuery, assetsApi } from '@/lib/store'
 import FormLoading from '@/components/loading-ui/form-loading'
-import RecordEditor, { RowActions, type RecordAction } from '@/features/master-data/record-editor'
+import RecordEditor, { type RecordAction } from '@/features/master-data/record-editor'
 
-type WellRow = { wellId: number; wellName: string; uwi: string; fieldName: string | null; isActive: boolean }
+type WellRow = { wellId: number; wellAliasName: string | null; fieldId: number | null; wellOwner: string | null; maxTvd: number | null; wellName: string; uwi: string; fieldName: string | null; operator: string | null; wellClass: string | null; spudDate: string | null; isActive: boolean }
 type WellPage = { rows: WellRow[]; total: number; page: number; size: number; counts: { all: number; active: number; inactive: number } }
 const api = assetsApi.injectEndpoints({ endpoints: b => ({
     wellPage: b.query<WellPage, { page: number; size: number; search: string; status: string; sort: string; desc: boolean }>({
         query: params => ({ url: 'wells/page', params }), providesTags: ['Well'],
     }),
 }) })
-const columns = [{ key: 'wellName', label: 'Well name' }, { key: 'uwi', label: 'UWI' }, { key: 'fieldName', label: 'Field' }, { key: 'isActive', label: 'Status' }]
-
+const columns = [
+    ['wellName', 'Well'], ['fieldName', 'Field'], ['wellAliasName', 'Well Alias Name'],
+    ['fieldId', 'Field Identifier'], ['remark', 'Remark'], ['uwi', 'UWI'], ['wellOwner', 'Well Owner'],
+    ['spudDate', 'Spud Date'], ['maxTvd', 'Max TVD'], ['operator', 'Operator'],
+    ['wellClass', 'Well Class'], ['isActive', 'Status'],
+] as const
+const initialFilters = { fieldId: '', classId: '', profileId: '', operator: '', owner: '', offshore: '', virtual: '', status: '' }
+function display(row: WellRow, key: typeof columns[number][0]) {
+    if (key === 'remark') return ''
+    if (key === 'isActive') return row.isActive ? 'Active' : 'Inactive'
+    if (key === 'spudDate') return row.spudDate?.replace('T', ' ').slice(0, 16) || ''
+    return String(row[key] ?? '')
+}
 export default function Wells() {
     const [search, setSearch] = useState('')
-    const [params, setParams] = useState({ page: 0, size: 10, search: '', status: 'All', sort: 'wellName', desc: false })
+    const [draft, setDraft] = useState(initialFilters)
+    const [params, setParams] = useState({ ...initialFilters, page: 0, size: 10, search: '', sort: 'wellName', desc: false })
+    const [columnMenu, setColumnMenu] = useState<HTMLElement | null>(null)
+    const [hidden, setHidden] = useState<string[]>(['wellClass', 'isActive'])
+    const visible = columns.filter(([key]) => !hidden.includes(key))
+    const { data: lookups, isError: lookupError, refetch: retryLookups } = useGetWellLookupsQuery()
+    function reset() {
+        setDraft(initialFilters)
+        setSearch('')
+        setParams(p => ({ ...p, ...initialFilters, search: '', page: 0 }))
+    }
+    function choices(key: keyof typeof draft, label: string, options: {id: string | number; label: string}[], all: string) {
+        return <TextField select size="small" label={label} value={draft[key]} onChange={e => setDraft({ ...draft, [key]: e.target.value })}
+            slotProps={{ select: { displayEmpty: true }, inputLabel: { shrink: true } }}>
+            <MenuItem value="">{all}</MenuItem>
+            {options.map(option => <MenuItem key={option.id} value={String(option.id)}>{option.label}</MenuItem>)}
+        </TextField>
+    }
     useEffect(() => {
         const timer = setTimeout(() => setParams(p => p.search === search.trim() ? p : { ...p, search: search.trim(), page: 0 }), 250)
         return () => clearTimeout(timer)
@@ -42,44 +74,57 @@ export default function Wells() {
     }
 
     return <Stack spacing={2}>
-        <Stack direction={{ xs: 'column', sm: 'row' }} sx={{ justifyContent: 'space-between', gap: 2 }}>
-            <Typography color="text.secondary">Manage well identification, location, and operational details.</Typography>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={addWell}>Add well</Button>
-        </Stack>
-        <Accordion disableGutters elevation={0} sx={{ border: 1, borderColor: 'divider', borderRadius: 1 }}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}><Typography component="h2">About wells</Typography></AccordionSummary>
-            <AccordionDetails>A well is the location on the surface of the earth or sea bed where the drill bit is planned to penetrate or does penetrate the earth to establish or rework a well. The well will be the same with Well Origin in PPDM.</AccordionDetails>
-        </Accordion>
         {saved && <Alert severity="success" onClose={() => setSaved(false)}>Well changes saved.</Alert>}
         {error && <Alert severity="error" action={<Button onClick={() => refetch()}>Retry</Button>}>Unable to refresh wells. Any previously loaded records remain below.</Alert>}
-        <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ justifyContent: 'space-between' }}>
-            <Tabs value={params.status} onChange={(_, status: string) => setParams(p => ({ ...p, status, page: 0 }))} aria-label="Well status">
-                {(['All', 'Active', 'Inactive'] as const).map(status => <Tab key={status} value={status} label={status + (data ? ` (${data.counts[status.toLowerCase() as keyof WellPage['counts']]})` : '')} />)}
-            </Tabs>
-            <Stack direction="row" spacing={1}>
-                <TextField size="small" label="Search wells" placeholder="Name, UWI, or field" value={search} onChange={e => setSearch(e.target.value)} />
-                <Button onClick={() => refetch()} disabled={isFetching}>Refresh</Button>
+        <Paper component="section" aria-label="Well filters" variant="outlined" sx={{ p: 2 }}>
+            <Stack direction="row" sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1, mb: 1 }}>
+                <Typography variant="h6">Wells</Typography><Chip size="small" label={data?.total ?? '...'} />
+                <TextField size="small" label="Search wells" value={search} onChange={e => setSearch(e.target.value)} sx={{ ml: 'auto' }} />
+                <IconButton title="Refresh wells" onClick={refetch}><RestartIcon /></IconButton>
+                <IconButton title="Choose columns" onClick={e => setColumnMenu(e.currentTarget)}><ColumnsIcon /></IconButton>
+                <IconButton title="Download current page as CSV" disabled={!rows.length || isFetching} onClick={() => {
+                    const csv = [visible.map(c => c[1]), ...rows.map(row => visible.map(([key]) => display(row, key)))]
+                        .map(line => line.map(cell => '"' + (/^[=+@\-\t\r]/.test(cell) ? "'" : '') + cell.replaceAll('"', '""') + '"').join(',')).join('\r\n')
+                    const link = document.createElement('a')
+                    link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }))
+                    link.download = 'wells-page.csv'
+                    link.click()
+                    setTimeout(() => URL.revokeObjectURL(link.href), 1000)
+                }}><DownloadIcon /></IconButton>
+                <IconButton title="Add well" onClick={addWell} sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', '&:hover': { bgcolor: 'primary.dark' } }}><AddIcon /></IconButton>
             </Stack>
-        </Stack>
+            <Menu anchorEl={columnMenu} open={!!columnMenu} onClose={() => setColumnMenu(null)}>
+                {columns.map(([key,label]) => <MenuItem key={key} disabled={visible.length === 1 && !hidden.includes(key)} onClick={() => setHidden(h => h.includes(key) ? h.filter(k => k !== key) : [...h,key])}><Checkbox checked={!hidden.includes(key)} />{label}</MenuItem>)}
+            </Menu>
+            <Accordion disableGutters elevation={0}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}><FilterIcon fontSize="small" sx={{ mr: 1 }} />Filter Panel</AccordionSummary>
+                <AccordionDetails>
+                    {lookupError && <Alert severity="error" action={<Button onClick={retryLookups}>Retry</Button>}>Unable to load filter options.</Alert>}
+                    <Box component="form" onSubmit={e => { e.preventDefault(); setParams(p => ({ ...p, ...draft, page: 0 })) }} sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2,1fr)', lg: 'repeat(4,1fr)' }, gap: 2 }}>
+                        {choices('fieldId', 'Field', lookups?.fieldId ?? [], 'All fields')}
+                        {choices('classId', 'Well Class', lookups?.currentClassId ?? [], 'All classes')}
+                        {choices('profileId', 'Well Profile', lookups?.rWellProfileId ?? [], 'All profiles')}
+                        {(['operator', 'owner'] as const).map(key => <TextField key={key} size="small" label={key === 'operator' ? 'Operator' : 'Owner'} placeholder="Contains..." value={draft[key]} onChange={e => setDraft({ ...draft, [key]: e.target.value })} />)}
+                        {choices('offshore', 'Environment', [{id:'true',label:'Offshore'},{id:'false',label:'Onshore'}], 'All')}
+                        {choices('virtual', 'Virtual', [{id:'true',label:'Yes'},{id:'false',label:'No'}], 'All')}
+                        {choices('status', 'Status', ['Active','Inactive'].map(id => ({id,label:id})), 'All statuses')}
+                        <Stack direction="row" spacing={1} sx={{ gridColumn: '1 / -1', justifyContent: 'flex-end' }}><Button onClick={reset}>Reset</Button><Button type="submit" variant="contained">Apply</Button></Stack>
+                    </Box>
+                </AccordionDetails>
+            </Accordion>
+        </Paper>
         <Paper variant="outlined" sx={{ overflow: 'hidden', minWidth: 0 }} aria-busy={isFetching}>
             <Box sx={{ height: 3 }}>{isFetching && data && <LinearProgress aria-label="Refreshing wells" />}</Box>
             {!data && isFetching ? <FormLoading label="Loading wells…" /> : <>
-                <TableContainer><Table size="small" aria-label="Wells">
-                    <TableHead><TableRow>{columns.map(c => <TableCell key={c.key} sortDirection={params.sort === c.key ? params.desc ? 'desc' : 'asc' : false} sx={c.key === 'fieldName' ? { display: { xs: 'none', sm: 'table-cell' } } : {}}>
-                        <TableSortLabel active={params.sort === c.key} direction={params.sort === c.key && params.desc ? 'desc' : 'asc'} onClick={() => setParams(p => ({ ...p, page: 0, sort: c.key, desc: p.sort === c.key ? !p.desc : false }))}>{c.label}</TableSortLabel>
+                <TableContainer sx={{ maxHeight: '65vh' }}><Table stickyHeader size="small" aria-label="Wells" sx={{ minWidth: 1000 }}>
+                    <TableHead><TableRow>{visible.map(([key,label]) => <TableCell key={key}>
+                        {key === 'remark' ? label : <TableSortLabel active={params.sort === key} direction={params.sort === key && params.desc ? 'desc' : 'asc'} onClick={() => setParams(p => ({ ...p, page: 0, sort: key, desc: p.sort === key && !p.desc }))}>{label}</TableSortLabel>}
                     </TableCell>)}<TableCell align="right">Actions</TableCell></TableRow></TableHead>
                     <TableBody>{rows.map(row => <TableRow hover key={row.wellId}>
-                        <TableCell sx={{ overflowWrap: 'anywhere' }}><Button onClick={() => openWell(row, 'view')} sx={{ textAlign: 'left', minWidth: 0, p: 0 }}>{row.wellName}</Button></TableCell>
-                        <TableCell sx={{ overflowWrap: 'anywhere' }}>{row.uwi}</TableCell>
-                        <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{row.fieldName || '—'}</TableCell>
-                        <TableCell><Chip size="small" label={row.isActive ? 'Active' : 'Inactive'} color={row.isActive ? 'success' : 'default'} /></TableCell>
-                        <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}><Box sx={{ display: { xs: 'none', sm: 'block' } }}><RowActions name={row.wellName}
-                            onView={() => setAction({ mode: 'view', id: row.wellId, name: row.wellName })}
-                            onEdit={() => setAction({ mode: 'edit', id: row.wellId, name: row.wellName })}
-                            onDelete={() => openWell(row, 'delete')} /></Box>
-                        <IconButton aria-label={'Actions for ' + row.wellName} aria-haspopup="menu" onClick={e => setMenu({ anchor: e.currentTarget, row })} sx={{ display: { sm: 'none' } }}><MoreHorizIcon /></IconButton></TableCell>
-                    </TableRow>)}{!rows.length && !error && !isFetching && <TableRow><TableCell colSpan={5} align="center" sx={{ py: 5 }}>{data?.counts.all ? <Stack sx={{ alignItems: 'center' }} spacing={1}>No wells match your search or status filter.
-                            <Button onClick={() => { setSearch(''); setParams(p => ({ ...p, page: 0, search: '', status: 'All' })) }}>Clear filters</Button>
+                        {visible.map(([key]) => <TableCell key={key}>{key === 'wellName' ? <Button onClick={() => openWell(row, 'view')}>{row.wellName}</Button> : display(row,key) || '—'}</TableCell>)}
+                        <TableCell align="right"><IconButton aria-label={'Actions for ' + row.wellName} onClick={e => setMenu({ anchor: e.currentTarget, row })}><MoreVertIcon /></IconButton></TableCell>
+                    </TableRow>)}{!rows.length && !error && !isFetching && <TableRow><TableCell colSpan={visible.length + 1} align="center" sx={{ py: 5 }}>{data?.counts.all ? <Stack sx={{ alignItems: 'center' }} spacing={1}>No wells match your filters.
+                            <Button onClick={reset}>Clear filters</Button>
                         </Stack> : <Stack sx={{ alignItems: 'center' }} spacing={1}>No wells yet.<Button onClick={addWell}>Add your first well</Button></Stack>}</TableCell></TableRow>}</TableBody>
                 </Table></TableContainer>
                 <TablePagination component="div" count={data?.total ?? 0} page={data?.page ?? 0} rowsPerPage={params.size} rowsPerPageOptions={[10, 25, 50, 100]}
@@ -89,6 +134,10 @@ export default function Wells() {
         <Menu open={!!menu} anchorEl={menu?.anchor} onClose={() => setMenu(undefined)}>
             {(['view', 'edit', 'delete'] as const).map(mode => <MenuItem key={mode} onClick={() => { if (menu) openWell(menu.row, mode) }}>{mode[0].toUpperCase() + mode.slice(1)}</MenuItem>)}
         </Menu>
+        <Accordion disableGutters elevation={0} sx={{ border: 1, borderColor: 'divider', borderRadius: 1 }}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}><Typography component="h2">About wells</Typography></AccordionSummary>
+            <AccordionDetails>A well is the location on the surface of the earth or sea bed where the drill bit is planned to penetrate or does penetrate the earth to establish or rework a well. The well will be the same with Well Origin in PPDM.</AccordionDetails>
+        </Accordion>
         {action && <RecordEditor key={(action.table ?? 'well-master') + ':' + action.mode + ':' + action.id} table={action.table ?? 'well-master'} action={action} onClose={() => { setAction(parentWell); setParentWell(undefined) }} onChanged={() => setSaved(true)} onRelated={(table, id, name) => { setParentWell(action); setAction({ table, id, name, mode: 'view' }) }} />}
     </Stack>
 }

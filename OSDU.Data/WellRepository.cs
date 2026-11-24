@@ -2,30 +2,54 @@ using Microsoft.EntityFrameworkCore;
 using OSDU.Data.MasterData;
 using System.ComponentModel.DataAnnotations;
 namespace OSDU.Data;
+public class WellFilters {
+ public int? FieldId { get; set; }
+ public int? ClassId { get; set; }
+ public int? ProfileId { get; set; }
+ public string? Operator { get; set; }
+ public string? Owner { get; set; }
+ public bool? Offshore { get; set; }
+ public bool? Virtual { get; set; }
+}
 public class WellRepository(OsduDbContext db) {
  public Task<List<Well>> List(CancellationToken ct)=>db.Set<Well>().AsNoTracking().OrderBy(x=>x.WellName).ToListAsync(ct);
- public async Task<object> Page(int page, int size, string? search, string? status, string? sort, bool desc, CancellationToken ct) {
+ public async Task<object> Page(int page, int size, string? search, string? status, string? sort, bool desc, WellFilters filters, CancellationToken ct) {
  size=Math.Clamp(size,5,100);
  var all=db.Set<Well>().AsNoTracking();
  var active=await all.CountAsync(x=>x.IsActive,ct);
  var totalAll=await all.CountAsync(ct);
  var query=all;
+ if(filters.FieldId.HasValue) query=query.Where(x=>x.FieldId==filters.FieldId);
+ if(filters.ClassId.HasValue) query=query.Where(x=>x.CurrentClassId==filters.ClassId);
+ if(filters.ProfileId.HasValue) query=query.Where(x=>x.RWellProfileId==filters.ProfileId);
+ if(filters.Offshore.HasValue) query=query.Where(x=>x.OffshoreInd==filters.Offshore);
+ if(filters.Virtual.HasValue) query=query.Where(x=>x.IsVirtual==filters.Virtual);
+ if(!string.IsNullOrWhiteSpace(filters.Operator)) query=query.Where(x=>x.Operator!=null && x.Operator.Contains(filters.Operator.Trim()));
+ if(!string.IsNullOrWhiteSpace(filters.Owner)) query=query.Where(x=>x.WellOwner!=null && x.WellOwner.Contains(filters.Owner.Trim()));
  if(status=="Active")query=query.Where(x=>x.IsActive);
  if(status=="Inactive")query=query.Where(x=>!x.IsActive);
  if(!string.IsNullOrWhiteSpace(search)) {
   var text=search.Trim();
-  query=query.Where(x=>x.WellName.Contains(text)||x.Uwi.Contains(text)||(x.FieldName!=null&&x.FieldName.Contains(text)));
+  query=query.Where(x=>x.WellName.Contains(text)||x.Uwi.Contains(text)||(x.FieldName!=null&&x.FieldName.Contains(text))
+   ||(x.Operator!=null&&x.Operator.Contains(text))||(x.WellClass!=null&&x.WellClass.Contains(text)));
  }
  var total=await query.CountAsync(ct);
  page=Math.Clamp(page,0,Math.Max(0,(total-1)/size));
  var ordered=sort switch {
+  "wellAliasName"=>desc?query.OrderByDescending(x=>x.WellAliasName):query.OrderBy(x=>x.WellAliasName),
+  "fieldId"=>desc?query.OrderByDescending(x=>x.FieldId):query.OrderBy(x=>x.FieldId),
+  "maxTvd"=>desc?query.OrderByDescending(x=>x.MaxTvd):query.OrderBy(x=>x.MaxTvd),
+  "wellOwner"=>desc?query.OrderByDescending(x=>x.WellOwner):query.OrderBy(x=>x.WellOwner),
   "uwi"=>desc?query.OrderByDescending(x=>x.Uwi):query.OrderBy(x=>x.Uwi),
   "fieldName"=>desc?query.OrderByDescending(x=>x.FieldName):query.OrderBy(x=>x.FieldName),
+  "operator"=>desc?query.OrderByDescending(x=>x.Operator):query.OrderBy(x=>x.Operator),
+  "wellClass"=>desc?query.OrderByDescending(x=>x.WellClass):query.OrderBy(x=>x.WellClass),
+  "spudDate"=>desc?query.OrderByDescending(x=>x.SpudDate):query.OrderBy(x=>x.SpudDate),
   "isActive"=>desc?query.OrderByDescending(x=>x.IsActive):query.OrderBy(x=>x.IsActive),
   _=>desc?query.OrderByDescending(x=>x.WellName):query.OrderBy(x=>x.WellName)
  };
  var rows=await ordered.ThenBy(x=>x.WellId).Skip(page*size).Take(size)
-  .Select(x=>new{x.WellId,x.WellName,x.Uwi,x.FieldName,x.IsActive}).ToListAsync(ct);
+  .Select(x=>new{x.WellId,x.WellAliasName,x.FieldId,x.MaxTvd,x.WellOwner,x.WellName,x.Uwi,x.FieldName,x.Operator,x.WellClass,x.SpudDate,x.IsActive}).ToListAsync(ct);
  return new{rows,total,page,size,counts=new{all=totalAll,active,inactive=totalAll-active}};
  }
  public async Task<object> Lookups(CancellationToken ct) {
