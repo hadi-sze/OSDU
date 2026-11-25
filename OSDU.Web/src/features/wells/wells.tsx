@@ -134,6 +134,7 @@ export default function Wells() {
                     onPageChange={(_, page) => setParams(p => ({ ...p, page }))} onRowsPerPageChange={e => setParams(p => ({ ...p, size: Number(e.target.value), page: 0 }))} />
             </>}
         </Paper>
+         
         <Menu open={!!menu} anchorEl={menu?.anchor} onClose={() => setMenu(undefined)}>
             {(['view', 'edit', 'delete'] as const).map(mode => <MenuItem key={mode} onClick={() => { if (menu) openWell(menu.row, mode) }}>{mode[0].toUpperCase() + mode.slice(1)}</MenuItem>)}
         </Menu>
