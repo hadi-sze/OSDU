@@ -159,7 +159,7 @@ export default function Wells() {
             </>}
         </Paper>
          
-        <Menu open={!!menu} anchorEl={menu?.anchor} onClose={() => setMenu(undefined)}>
+        {/* <Menu open={!!menu} anchorEl={menu?.anchor} onClose={() => setMenu(undefined)}>
             {(['view', 'edit', 'delete'] as const).map(mode => <MenuItem key={mode} onClick={() => { if (menu) openWell(menu.row, mode) }}>{mode[0].toUpperCase() + mode.slice(1)}</MenuItem>)}
         </Menu>
         <Accordion disableGutters elevation={0} sx={{ border: 1, borderColor: 'divider', borderRadius: 1 }}>
@@ -167,5 +167,7 @@ export default function Wells() {
             <AccordionDetails>A well is the location on the surface of the earth or sea bed where the drill bit is planned to penetrate or does penetrate the earth to establish or rework a well. The well will be the same with Well Origin in PPDM.</AccordionDetails>
         </Accordion>
         {action && <RecordEditor key={(action.table ?? 'well-master') + ':' + action.mode + ':' + action.id} table={action.table ?? 'well-master'} action={action} onClose={() => { setAction(parentWell); setParentWell(undefined) }} onChanged={() => setSaved(true)} onRelated={(table, id, name) => { setParentWell(action); setAction({ table, id, name, mode: 'view' }) }} />}
-    </Stack>
+    */}
+   
+   </Stack>
 }
